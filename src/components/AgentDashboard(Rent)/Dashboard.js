@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import Dashboardcss from  "./Dashboard.css";
 // import "./DashComponent.css";
 import { Link } from "react-router-dom";
@@ -28,14 +28,52 @@ import ActiveLeads from "../Assets/Images/AgentDashboard/activeLeads.png";
 import ExtraCommonButton from "../ExtraCommonButton";
 
 function Dashboard() {
-  const token = localStorage.getItem("token");
-  console.log(token);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    localStorage.removeItem("token");
-    alert("You have been logged out.");
-  };
+  const [responseCountProperties, setresponseCountProperties] = useState();
+	const [loading, setLoading] = useState(false);
+  
+
+  const token = localStorage.getItem("token");
+  // console.log(token);
+
+
+    
+	let axiosConfig = {
+		headers: {
+		  "Content-Type": "application/json;charset=UTF-8",
+		  "Access-Control-Allow-Origin": "*",
+		  Authorization: `Basic ${token}`,
+		},
+	  };
+  useEffect(() => {
+		// event.preventDefault();
+		const fetchPosts = async () => {
+		  setLoading(true);
+		  axios
+			.get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/property", axiosConfig)
+			.then((response) => {
+			  console.log(response.data.data.properties);
+        var myArrayPropertyCount = response.data.data.properties;
+        setresponseCountProperties(myArrayPropertyCount.length);
+			  console.log(myArrayPropertyCount.length);
+
+        if(response.data.data.properties.propertyInfo.purposeRent==true){
+     
+          
+        }
+
+			  // alert("Your data has been submitted");
+			  // do something with the response
+			})
+			.catch((error) => {
+			  console.log(error);
+			  // handle the error
+			});
+		  setLoading(false);
+		};
+	
+		fetchPosts();
+	  }, []);
 
   return (
     <>
@@ -94,7 +132,7 @@ function Dashboard() {
             <div className="newboxSizingl">
 
            
-                <Link className="leftlink" to="/AvailablePropertyrental" ><DashComponent img={AvailaibleProperty} title="Available Properties" number="0"/></Link>
+                <Link className="leftlink" to="/AvailablePropertyrental" ><DashComponent img={AvailaibleProperty} title="Available Properties" number={responseCountProperties}/></Link>
                 <div style={{ marginTop: "5px" }}></div>
                <Link to="/My_propertyPV" className="leftlink" > <DashComponent img={PendingVerification} title="Pending Verification" number="0"/></Link>
                 <div style={{ marginTop: "5px" }}></div>

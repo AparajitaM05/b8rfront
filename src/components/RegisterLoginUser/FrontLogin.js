@@ -11,21 +11,20 @@ import CommonBtn from "../CommonButton";
 function FrontLogin() {
   //States
   const [formData, setFormData] = useState({
-    email: "",
-    phone: "",
+    phoneNumber: "",
     password: "",
   });
   const [data, setData] = useState(null);
 
-  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-  const validateEmail = () => {
-    if (emailRegex.test(formData.email)) {
-      // alert('Valid email address');
-    } else {
-      alert("Invalid email address");
-    }
-  };
+  // const validateEmail = () => {
+  //   if (emailRegex.test(formData.email)) {
+  //     // alert('Valid email address');
+  //   } else {
+  //     alert("Invalid email address");
+  //   }
+  // };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -35,17 +34,23 @@ function FrontLogin() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://localhost:5000/backend/login", formData)
+      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/signin", formData)
       .then((response) => {
         console.log(response.data);
-        setData(response.data);
+        // setData(response.data);
 
-        const token = response.data.token;
-        const name = response.data.name;
+        // alert(response.data.data.jwtToken);
+        // alert(response.data.data.user.name);
+        console.log(response.data.data);
+
+        const token = response.data.data.jwtToken;
+        const name = response.data.data.user.name;
+        const phone = response.data.data.user.phone;
 
         //set JWT token to local
         localStorage.setItem("token", token);
         localStorage.setItem("username", name);
+        localStorage.setItem("phone", phone);
 
         //set token to axios common header
         //  setAuthToken(token);
@@ -56,12 +61,12 @@ function FrontLogin() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error.response.data.error);
+        alert(error.response);
         // handle the error
       });
   };
 
-  console.log(data);
+  // console.log(data);
 
   // const styles = {
   //   backgroundColor:"white",
@@ -94,15 +99,15 @@ function FrontLogin() {
 
           <form onSubmit={handleSubmit} className="login-form">
             {/* phone */}
-            <label htmlFor="phone" className="label-phone">
+            <label htmlFor="phoneNumber" className="label-phone">
               Mobile Number
             </label>
             <input
-              type="number"
-              id="phone"
-              value={formData.phone}
+              type="text"
+              id="phoneNumber"
+              value={formData.phoneNumber}
               onChange={handleChange}
-              name="phone"
+              name="phoneNumber"
               className="input-field"
               required
             />

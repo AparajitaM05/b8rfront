@@ -14,8 +14,8 @@ function CommonHeader(props) {
   const [isLogin, setIsLogin] = useState(true);
   const [letter, setletter] = useState("");
   const token = localStorage.getItem("token");
-  // const username = localStorage.getItem("username");
-  const username = "Aparajita";
+  const username = localStorage.getItem("username");
+  // const username = "Aparajita";
   console.log(username);
 
   useEffect(() => {

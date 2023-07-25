@@ -11,7 +11,7 @@ function Footer() {
   const [isLogin, setIsLogin] = useState(false);
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
-  console.log(username);
+  // console.log(username);
 
   useEffect(() => {
     if(!token){

@@ -14,19 +14,19 @@ function SignUp() {
 
   const [formData, setFormData] = useState({
     email: "",
-    full_name: "",
+    name: "",
     password: "",
-    c_password: "",
-    icode: "",
-    phone: "",
-    status: "true",
+    confirmPassword: "",
+    inviteCode: "",
+    phoneNumber: "",
+    // status: "true",
   });
 
   const [formError, setFormError] = useState({
     email: "",
     password: "",
     confirmPassword: "",
-    // phone: ""
+    phoneNumber: ""
   });
 
   const handleChange = (event) => {
@@ -42,8 +42,8 @@ function SignUp() {
     let inputError = {
       email: "",
       password: "",
-      c_password: "",
-      phone: "",
+      confirmPassword: "",
+      phoneNumber: "",
     };
 
     if (!formData.email && !formData.password) {
@@ -63,7 +63,7 @@ function SignUp() {
       return;
     }
 
-    if (formData.c_password !== formData.password) {
+    if (formData.confirmPassword !== formData.password) {
       setFormError({
         ...inputError,
         confirmPassword: "Password and confirm password should be same",
@@ -82,9 +82,11 @@ function SignUp() {
     setFormError(inputError);
 
     console.log("Submit Clicked");
+    console.log(formData["phoneNumber"]);
+    const phone = formData["phoneNumber"];
 
     axios
-      .post("http://localhost:5000/backend/posts/", formData)
+      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/signup", formData)
       .then((response) => {
         console.log(response.data);
         // do something with the response
@@ -95,17 +97,48 @@ function SignUp() {
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);
 
+        // Get OTP
+          axios
+            .get(`https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/+91.${phone}/AUTOGEN`, formData)
+            .then((response) => {
+              console.log(response.data);
+              // do something with the response
+              // const token = response.data.token;
+            
+
+              const OTP_SESSION = response.data.Details;
+      
+              // //set JWT token to local
+              // localStorage.setItem("token", token);
+              // localStorage.setItem("username", username);
+      
+              //set token to axios common header
+              //  setAuthToken(token);
+      
+              alert("OTP has been send!");
+              //redirect user to Dashboard
+              window.location.href = `/ConfirmOTPAgent?sessionId=${OTP_SESSION}&phone=${phone}&username=${username}`;
+            })
+            .catch((error) => {
+              console.log(error);
+              // handle the error
+            });
+    
+
+
         //set token to axios common header
         //  setAuthToken(token);
 
         alert("You're Registerd!");
         //redirect user to Dashboard
-        window.location.href = "/FrontLogin";
+        // window.location.href = "/FrontLogin";
       })
       .catch((error) => {
         console.log(error);
         // handle the error
       });
+
+      //Handle Submit
   };
 
   return (
@@ -159,15 +192,15 @@ function SignUp() {
               />
               <p className="error-message">{formError.email}</p>
 
-              <label htmlFor="full_name" className="label-full-name">
+              <label htmlFor="name" className="label-name">
                 Enter your full name
               </label>
               <input
                 type="text"
-                id="full_name"
-                value={formData.full_name}
+                id="name"
+                value={formData.name}
                 onChange={handleChange}
-                name="full_name"
+                name="name"
                 required
               />
 
@@ -184,38 +217,38 @@ function SignUp() {
               />
               <p className="error-message">{formError.password}</p>
 
-              <label htmlFor="c_password" className="label-confirm-password">
+              <label htmlFor="confirmPassword" className="label-confirmPassword">
                 Confirm password
               </label>
               <input
                 type="password"
-                id="c_password"
-                value={formData.c_password}
+                id="confirmPassword"
+                value={formData.confirmPassword}
                 onChange={handleChange}
-                name="c_password"
+                name="confirmPassword"
                 required
               />
-              <p className="error-message">{formError.c_password}</p>
+              <p className="error-message">{formError.confirmPassword}</p>
 
-              <label htmlFor="icode" className="label-invitation-code">
+              <label htmlFor="inviteCode" className="label-inviteCode">
                 Invitation Code
               </label>
               <input
                 type="text"
-                id="icode"
-                value={formData.registration_number}
+                id="inviteCode"
+                value={formData.inviteCode}
                 onChange={handleChange}
-                name="icode"
+                name="inviteCode"
               />
 
-              <label htmlFor="phone" className="label-phone">
+              <label htmlFor="phoneNumber" className="label-phoneNumber">
                 Enter mobile number
               </label>
               <input
                 type="tel"
-                id="phone"
-                name="phone"
-                value={formData.phone}
+                id="phoneNumber"
+                name="phoneNumber"
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 required
               />

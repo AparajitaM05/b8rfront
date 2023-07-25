@@ -14,12 +14,13 @@ function ConfirmOTPAgent(props) {
   const queryParameters = new URLSearchParams(window.location.search);
   const OTP_SESSION = queryParameters.get("sessionId");
   const phone = queryParameters.get("phone");
+  const username = queryParameters.get("username");
 
   const [formData, setFormData] = useState({
     enter_otp: "",
-    password: "",
-    c_password: "",
-    phone: phone,
+    // password: "",
+    // c_password: "",
+    // phone: phone,
   });
 
   const handleChange = (event) => {
@@ -39,20 +40,22 @@ function ConfirmOTPAgent(props) {
           formData
         )
         .then((response) => {
-          alert(response.data);
+          // alert(response.data);
           const OTP_CHECK = response.data.Details;
           alert(OTP_CHECK);
 
-          axios
-            .put("http://localhost:5000/backend/updatepassword", formData)
-            .then((response) => {
-              alert(response.data);
-              alert("Your Password has been Updated!");
-              window.location.href = "/FrontLogin";
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+          window.location.href = "/FrontLogin";
+
+          // axios
+          //   .put("http://localhost:5000/backend/updatepassword", formData)
+          //   .then((response) => {
+          //     alert(response.data);
+          //     alert("Your Password has been Updated!");
+          //     window.location.href = "/FrontLogin";
+          //   })
+          //   .catch((error) => {
+          //     console.log(error);
+          //   });
         })
         .catch((error) => {
           console.log(error);

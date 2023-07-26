@@ -18,7 +18,7 @@ function PropertyInfo() {
     pin_code: "",
     area: "",
     map: "",
-    rented: "false",
+    // rented: "false",
     rent: "",
     sale: "",
 });

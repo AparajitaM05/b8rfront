@@ -34,7 +34,7 @@ import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
 
 
-function TenantPref2(){
+function TenantPref2({handleSubmitNext}){
 
   	
 	const queryParameters = new URLSearchParams(window.location.search)
@@ -45,15 +45,17 @@ function TenantPref2(){
 
     const [formData, setFormData] = useState({
 		// tenantid: tenentid,
-	  gated_security : true,
-    twentyfour_seven : true,
-    grocery_store : true,
-    Swimming_pool: true,
-    Gym : true,
-    club_house : true,
-    car_parking : '',
-   air_condition: true,
-    nonveg:true,
+	  gatedSecurity : true,
+    powerBackup : true,
+    groceryStore : true,
+    swimmingPool: true,
+    gym : true,
+    clubHouse : true,
+    carParking : '',
+    bikeParking:'',
+    bathoroom: '',
+   ac: true,
+    nonVeg:true,
    
 
 
@@ -82,23 +84,26 @@ function TenantPref2(){
 
 
 	  const handleSubmit = event => {
-		event.preventDefault();
+		
+    event.preventDefault();
+    handleSubmitNext(formData);
 		console.log(formData);
-		axios.post('http://localhost:5000/backend/propertydi', formData, axiosConfig )
-		  .then(response => {
+		// axios.post('http://localhost:5000/backend/propertydi', formData, axiosConfig )
+		//   .then(response => {
 
 
-			console.log(response.data.propertyDIc);
-			const propertyid = response.data.propertyDIc.propertyid;
-			console.log(propertyid)
-			alert("Your data has been submitted");
-			window.location.href = `/PropertyCreated?propertyid=${propertyid}&continue=details`;
+		// 	console.log(response.data.propertyDIc);
+		// 	const propertyid = response.data.propertyDIc.propertyid;
+		// 	console.log(propertyid)
+		// 	alert("Your data has been submitted");
+		// 	window.location.href = `/PropertyCreated?propertyid=${propertyid}&continue=details`;
 
-		  })
-		  .catch(error => {
-			console.log(error);
-			// handle the error
-		  });
+		//   })
+		//   .catch(error => {
+		// 	console.log(error);
+		// 	// handle the error
+		//   });
+
 	  };
 
   
@@ -124,10 +129,10 @@ function TenantPref2(){
                        <h5 style={{marginTop:"-2px",fontSize:"10px", fontFamily:"sans-serif"}}>Gated Security</h5>
                        <h6 style={{marginTop:"-13px", fontSize:"8px"}}>always secure</h6>
                        <ReactSwitch
-                      checked={formData.gated_security}
+                      checked={formData.gatedSecurity}
                       onChange={() =>  setFormData({
                         ...formData,
-                        gated_security: !formData.gated_security,
+                        gatedSecurity: !formData.gatedSecurity,
                       })}
                        onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -148,10 +153,10 @@ function TenantPref2(){
                         Power Back-up
                         </h5>
                         <ReactSwitch
-                        checked={formData.twentyfour_seven}
+                        checked={formData.powerBackup}
                         onChange={() =>  setFormData({
                           ...formData,
-                          twentyfour_seven: !formData.twentyfour_seven,
+                          powerBackup: !formData.powerBackup,
                           })}
                           onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -171,10 +176,10 @@ function TenantPref2(){
                           In Campus
                         </h5>
                         <ReactSwitch
-                        checked={formData.grocery_store}
+                        checked={formData.groceryStore}
                         onChange={() =>  setFormData({
                           ...formData,
-                          grocery_store: !formData.grocery_store,
+                          groceryStore: !formData.groceryStore,
                         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -190,10 +195,10 @@ function TenantPref2(){
                         <img src={swimming_pool} alt="Icon description" />
                         <h5 style={{marginTop:"-5px",marginBottom:"15px", fontSize:"10px"}}>Swimming Pool</h5>
                         <ReactSwitch
-                        checked={formData.Swimming_pool}
+                        checked={formData.swimmingPool}
                         onChange={() =>  setFormData({
                           ...formData,
-                          Swimming_pool: !formData.Swimming_pool,
+                          swimmingPool: !formData.swimmingPool,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -209,10 +214,10 @@ function TenantPref2(){
                         <img src={gym_1} alt="Icon description" />
                         <h5 style={{marginTop:"-1px",marginBottom:"20px", fontSize:"10px"}}>Gym</h5>
                         <ReactSwitch
-                        checked={formData.Gym}
+                        checked={formData.gym}
                         onChange={() =>  setFormData({
                           ...formData,
-                          Gym: !formData.Gym,
+                          gym: !formData.gym,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -229,10 +234,10 @@ function TenantPref2(){
                           Club house
                         </h5>
                         <ReactSwitch
-                        checked={formData.club_house}
+                        checked={formData.clubHouse}
                         onChange={() =>  setFormData({
                           ...formData,
-                          club_house: !formData.club_house,
+                          clubHouse: !formData.clubHouse,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -250,10 +255,10 @@ function TenantPref2(){
                           Car Parking
                         </h5>
                         <ReactSwitch
-                        checked={formData.car_parking}
+                        checked={formData.carParking}
                         onChange={() =>  setFormData({
                           ...formData,
-                          car_parking: !formData.car_parking,
+                          carParking: !formData.carParking,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -271,10 +276,10 @@ function TenantPref2(){
                           Bike Parking
                         </h5>
                         <ReactSwitch
-                        checked={formData.bike_parking}
+                        checked={formData.bikeParking}
                         onChange={() =>  setFormData({
                           ...formData,
-                          bike_parking: !formData.bike_parking,
+                          bikeParking: !formData.bikeParking,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -292,10 +297,10 @@ function TenantPref2(){
                           Non-Veg Allowed
                         </h5>
                         <ReactSwitch
-                        checked={formData.veg_nonveg}
+                        checked={formData.nonVeg}
                         onChange={() =>  setFormData({
                           ...formData,
-                          veg_nonveg: !formData.veg_nonveg,
+                          nonVeg: !formData.nonVeg,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -313,10 +318,10 @@ function TenantPref2(){
                           Air Condition
                         </h5>
                         <ReactSwitch
-                        checked={formData.air_condition}
+                        checked={formData.ac}
                         onChange={() =>  setFormData({
                           ...formData,
-                        air_condition: !formData.air_condition,
+                          ac: !formData.ac,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -334,10 +339,10 @@ function TenantPref2(){
                           Attached Bathroom
                         </h5>
                         <ReactSwitch
-                        checked={formData.club_house}
+                        checked={formData.bathoroom}
                         onChange={() =>  setFormData({
                           ...formData,
-                          Attached_Bathroom: !formData.Attached_Bathroom,
+                          bathoroom: !formData.bathoroom,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"

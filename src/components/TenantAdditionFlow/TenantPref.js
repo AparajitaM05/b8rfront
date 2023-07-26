@@ -12,11 +12,10 @@ import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
 
-function TenantPref(){
 
-  const [checkedState, setCheckedState] = useState(
-    []
-  );
+function TenantPref({handleChangeTwo}){
+
+  const [checkedState, setCheckedState] = useState();
 
   console.log(checkedState);
 
@@ -29,12 +28,13 @@ function TenantPref(){
   }
 
     const [formData, setFormData] = useState({
-		duration_of_stay: '',
-		deposit_comfortable_for: '',
-    house_conf:'',
-		type_of_furnishing: '',
-    house_type:'',
-    movein_from:'',
+		stayDuration: '',
+		numberOfMonth: '',
+    houseConfiguration:'',
+		furnishingType: '',
+    houseType:'',
+    preferredLocation: '',
+    moveIn:'',
     rent:''
 	  });
 
@@ -45,23 +45,26 @@ function TenantPref(){
 		setFormData(prevState => ({ ...prevState, [name]: value }));
     
 	  };
-	
-	  const handleSubmit = event => {
-		event.preventDefault();
-		console.log()
-		axios.post('http://127.0.0.1:5000/backend/tenantpref', formData)
-		  .then(response => {
-			console.log(response.data);
-			alert("Your tenant preferences has been submitted");
-			// do something with the response
-      window.location.href = '/tenantpref2'
 
-		  })
-		  .catch(error => {
-			console.log(error);
-			// handle the error
-		  });
-	  };
+      const handleSubmit = event => {
+        event.preventDefault();
+        console.log('Child Function');
+        console.log('Form Data:', formData);
+        handleChangeTwo(formData);
+      };
+		// axios.post('http://127.0.0.1:5000/backend/tenantpref', formData)
+		//   .then(response => {
+		// 	console.log(response.data);
+		// 	alert("Your tenant preferences has been submitted");
+		// 	// do something with the response
+    //   window.location.href = '/tenantpref2'
+
+		//   })
+		//   .catch(error => {
+		// 	console.log(error);
+		// 	// handle the error
+		//   });
+	
 
 
     return(
@@ -77,8 +80,8 @@ function TenantPref(){
 
                 
 
-                <label for="duration" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Duration of stay</label>
-                <select name="duration_of_stay" id="duration" value={formData.duration_of_stay} onChange={handleChange}  style={{
+                <label for="stayDuration" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Duration of stay</label>
+                <select name="stayDuration" id="stayduration" value={formData.stayDuration} onChange={handleChange}  style={{
                 backgroundColor: "white",
                 padding: "10px",
                 borderRadius: "5px",
@@ -94,8 +97,8 @@ function TenantPref(){
 
                
 
-                <label for="duration" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Deposit amount prefered</label>
-                <select name="deposit_comfortable_for" id="deposit" value={formData.deposit_comfortable_for} onChange={handleChange}  style={{
+                <label for="numberOfMonth" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Deposit amount prefered</label>
+                <select name="numberOfMonth" id="numberOfMonth" value={formData.numberOfMonth} onChange={handleChange}  style={{
                 backgroundColor: "white",
                 padding: "10px",
                 borderRadius: "5px",
@@ -108,14 +111,14 @@ function TenantPref(){
                 <option value="anything">Anything would be okay</option>
                 </select>
 
-                <label for="house_conf" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Preference of House Configuration</label>
+                <label for="houseConfiguration" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Preference of House Configuration</label>
                
 
                 
             <select
-              id="house_conf"
-              name="house_conf"
-              value={formData.house_conf}
+              id="houseConfiguration"
+              name="houseConfiguration"
+              value={formData.houseConfiguration}
               onChange={handleChange}
               style={{
                 backgroundColor: "white",
@@ -139,8 +142,8 @@ function TenantPref(){
             </select>
             <br></br>
 
-                <label for="furnishing" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Type of Furnishing</label>
-                <select name="type_of_furnishing" id="furnishing" value={formData.type_of_furnishing} onChange={handleChange}  style={{
+                <label for="furnishingType" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Type of Furnishing</label>
+                <select name="furnishingType" id="furnishingType" value={formData.furnishingType} onChange={handleChange}  style={{
                 backgroundColor: "white",
                 padding: "10px",
                 borderRadius: "5px",
@@ -153,11 +156,11 @@ function TenantPref(){
                 <option value="un">Un-Furnished</option>
                 </select>
                 
-                <label for="house_type" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>What is the House type?</label>
+                <label for="houseType" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>What is the House type?</label>
             <select
-              id="house_type"
-              name="house_type"
-              value={formData.house_type}
+              id="houseType"
+              name="houseType"
+              value={formData.houseType}
               onChange={handleChange}
               style={{
                       backgroundColor: "white",
@@ -184,10 +187,10 @@ function TenantPref(){
                         <h5 style={{marginTop:"-5px"}}>Available from</h5>
                         <input
                         type="date"
-                        id="movein_from"
-                        value={formData.movein_from}
+                        id="moveIn"
+                        value={formData.moveIn}
                         onChange={handleChange}
-                        name="movein_from"
+                        name="moveIn"
                         // placeholder="username"
                         style={{  backgroundColor:"white",
                         padding: "10px",

@@ -22,7 +22,6 @@ function BuyerDetails(){
     []
   );
 
-  console.log(checkedState);
 
   const handleOnChange = (position) => {
     const updatedCheckedState = checkedState.map((item, index) =>

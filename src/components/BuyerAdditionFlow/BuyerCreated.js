@@ -12,7 +12,9 @@ import CommonHeader from "../CommonHeader";
 import greenTick from "../Assets/Images/greenTick.png";
 
 function BuyerCreated() {
-
+  const queryParameters = new URLSearchParams(window.location.search);
+  const name = queryParameters.get("name");
+  const budget = queryParameters.get("budget");
 
 
   return (
@@ -44,17 +46,17 @@ function BuyerCreated() {
             {/* -----------for name----------- */}
             <div style={{marginTop:"70px"}}>
             <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Name</h4>
-            <h2 style={{color:"#1E0058",fontWeight:"bolder"}}>Buyer Name</h2>
+            <h2 style={{color:"#1E0058",fontWeight:"bolder"}}>{name}</h2>
             </div>
 
              {/* -----------budget details----------- */}
              <div  style={{marginTop:"40px"}}>
              <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Budget Details</h4>
-             <h2 style={{color:"#1E0058",fontWeight:"bolder"}}>2 Cr</h2>
+             <h2 style={{color:"#1E0058",fontWeight:"bolder"}}>{budget}Cr</h2>
              </div>
 
 
-            <CommonBtn title="Go to Agent Dashboard" margin="11%" fontweight="bolder"  color="#DAF0EE" bgColor="#3F007F" />
+            <Link to="/DashboardS"><CommonBtn title="Go to Agent Dashboard" margin="11%" fontweight="bolder"  color="#DAF0EE" bgColor="#3F007F" /></Link>
       
               
               <Footer />

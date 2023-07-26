@@ -14,6 +14,10 @@ import CommonTopButton from "../CommonTopButton";
 
 function TenantCreated(){
 
+  const queryParameters = new URLSearchParams(window.location.search);
+  const name = queryParameters.get("name");
+  const budget = queryParameters.get("budget");
+
   const [checkedState, setCheckedState] = useState(
     []
   );
@@ -77,13 +81,13 @@ function TenantCreated(){
             {/* -----------for name----------- */}
             <div style={{marginTop:"70px"}}>
             <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Name</h4>
-            <h2 style={{color:"#52796F"}}>Tenant Name</h2>
+            <h2 style={{color:"#52796F"}}>{name}</h2>
             </div>
 
              {/* -----------budget details----------- */}
              <div  style={{marginTop:"40px"}}>
              <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Budget Details</h4>
-             <h2 style={{color:"#52796F"}}>35,000/month</h2>
+             <h2 style={{color:"#52796F"}}>{budget} /month</h2>
              </div>
 
 

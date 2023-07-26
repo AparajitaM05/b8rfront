@@ -16,7 +16,7 @@ function CommonHeader(props) {
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   // const username = "Aparajita";
-  console.log(username);
+  // console.log(username);
 
   useEffect(() => {
     // if (!token) {

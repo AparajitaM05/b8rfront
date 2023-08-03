@@ -92,7 +92,6 @@ function SignUp() {
         // do something with the response
         const token = response.data.token;
         const username = response.data.name;
-
         //set JWT token to local
         localStorage.setItem("token", token);
         localStorage.setItem("username", username);

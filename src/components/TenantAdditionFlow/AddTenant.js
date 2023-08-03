@@ -43,7 +43,7 @@ function AddTenant() {
 
   const [formData, setFormData] = useState({
     name: "",
-    status: "Verified",
+    status: "New",
     tenantData: {
       email: "",
       phoneNumber: "",

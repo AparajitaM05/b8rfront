@@ -143,10 +143,10 @@ function PropertyDI(){
                        <h5 style={{marginTop:"-2px",fontSize:"10px", fontFamily:"sans-serif"}}>Gated Security</h5>
                        <h6 style={{marginTop:"-13px", fontSize:"8px"}}>always secure</h6>
                        <ReactSwitch
-                      checked={formData.gated_security}
+                      checked={formData.gatedSecurity}
                       onChange={() =>  setFormData({
                         ...formData,
-                        gated_security: !formData.gated_security,
+                        gatedSecurity: !formData.gatedSecurity,
                       })}
                        onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -164,10 +164,10 @@ function PropertyDI(){
                         Power Back-up
                         </h5>
                         <ReactSwitch
-                        checked={formData.twentyfour_seven}
+                        checked={formData.powerBackup}
                         onChange={() =>  setFormData({
                           ...formData,
-                          twentyfour_seven: !formData.twentyfour_seven,
+                          powerBackup: !formData.powerBackup,
                           })}
                           onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -185,10 +185,10 @@ function PropertyDI(){
                           In Campus
                         </h5>
                         <ReactSwitch
-                        checked={formData.grocery_store}
+                        checked={formData.groceryStore}
                         onChange={() =>  setFormData({
                           ...formData,
-                          grocery_store: !formData.grocery_store,
+                          groceryStore: !formData.groceryStore,
                         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -203,10 +203,10 @@ function PropertyDI(){
                         <img src={swimming_pool} alt="Icon description" />
                         <h5 style={{marginTop:"-5px",marginBottom:"15px", fontSize:"10px"}}>Swimming Pool</h5>
                         <ReactSwitch
-                        checked={formData.Swimming_pool}
+                        checked={formData.swimmingPool}
                         onChange={() =>  setFormData({
                           ...formData,
-                          Swimming_pool: !formData.Swimming_pool,
+                          swimmingPool: !formData.swimmingPool,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -221,10 +221,10 @@ function PropertyDI(){
                         <img src={gym_1} alt="Icon description" />
                         <h5 style={{marginTop:"-1px",marginBottom:"20px", fontSize:"10px"}}>Gym</h5>
                         <ReactSwitch
-                        checked={formData.Gym}
+                        checked={formData.gym}
                         onChange={() =>  setFormData({
                           ...formData,
-                          Gym: !formData.Gym,
+                          gym: !formData.gym,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -240,10 +240,10 @@ function PropertyDI(){
                           Club house
                         </h5>
                         <ReactSwitch
-                        checked={formData.club_house}
+                        checked={formData.clubHouse}
                         onChange={() =>  setFormData({
                           ...formData,
-                          club_house: !formData.club_house,
+                          clubHouse: !formData.clubHouse,
         })}
                         onColor="#DAF0EE"
                         onHandleColor="#fff"
@@ -274,10 +274,10 @@ function PropertyDI(){
                         <h6 style={{fontSize:"10px", marginTop:"-20px"}}>(in Square feet, sq.ft)</h6>
                         <input
                         type="number"
-                        id="Super_Carpet"
-                        value={formData.Super_Carpet}
+                        id="carpetArea"
+                        value={formData.carpetArea}
                         onChange={handleChange}
-                        name="Super_Carpet"
+                        name="carpetArea"
                         placeholder="number only*"
                         style={{  backgroundColor:"white",
                         padding: "10px",
@@ -298,9 +298,9 @@ function PropertyDI(){
                         <input
                         type="number"
                         id="Your_Floor"
-                        value={formData.Your_Floor}
+                        value={formData.propertyData.featureInfo.floors.your}
                         onChange={handleChange}
-                        name="Your_Floor"
+                        name="your"
                        placeholder="number*"
                         style={{  backgroundColor:"white",
                         padding: "10px",
@@ -314,7 +314,7 @@ function PropertyDI(){
                         <input
                         type="number"
                         id="Total_Floor"
-                        value={formData.Total_Floor}
+                        value={formData.propertyData.featureInfo.floors.total}
                         onChange={handleChange}
                         name="Total_Floor"
                         placeholder="number*"
@@ -678,7 +678,7 @@ function PropertyDI(){
                                           <input
                                           type="number"
                                           id="sec_dep"
-                                          value={formData.sec_dep}
+                                          value={formData.propertyData.featureInfo.securityDeposit}
                                           onChange={handleChange}
                                           name="sec_dep"
                                           placeholder="-number only*-"
@@ -710,7 +710,7 @@ function PropertyDI(){
                    <input
                    type="number"
                    id="maint"
-                   value={formData.maint}
+                   value={formData.propertyData.featureInfo.rentMaintenance}
                    onChange={handleChange}
                    name="maint"
                    placeholder="-number only*-"
@@ -731,7 +731,7 @@ function PropertyDI(){
                    <input
                    type="number"
                    id="lockin"
-                   value={formData.lockin}
+                   value={formData.propertyData.featureInfo.lockInPeriod}
                    onChange={handleChange}
                    name="lockin"
                   placeholder="-number only*-"
@@ -760,7 +760,7 @@ function PropertyDI(){
                    <input
                    type="number"
                    id="rent"
-                   value={formData.rent}
+                   value={formData.propertyData.featureInfo.saleAmount}
                    onChange={handleChange}
                    name="rent"
                    placeholder="-number only*-"
@@ -780,10 +780,10 @@ function PropertyDI(){
                    <h6 style={{marginTop:"-20px"}}>(Refundable)</h6>
                    <input
                    type="number"
-                   id="sec_dep"
-                   value={formData.sec_dep}
+                   id="saleDeposit"
+                   value={formData.propertyData.featureInfo.saleDeposit}
                    onChange={handleChange}
-                   name="sec_dep"
+                   name="sec_saleDepositdep"
                    placeholder="-number only*-"
                    style={{  backgroundColor:"white",
                    marginTop:"-15px",
@@ -805,10 +805,10 @@ function PropertyDI(){
                    <h6 style={{marginTop:"-20px"}}>(for buyer)</h6>
                    <input
                    type="number"
-                   id="maint"
-                   value={formData.maint}
+                   id="saleMaintenance"
+                   value={formData.propertyData.featureInfo.saleMaintenance}
                    onChange={handleChange}
-                   name="maint"
+                   name="saleMaintenance"
                    placeholder="-number only*-"
                    style={{  backgroundColor:"white",
                    padding: "10px",
@@ -826,10 +826,10 @@ function PropertyDI(){
                    
                    <input
                    type="number"
-                   id="lockin"
-                   value={formData.lockin}
+                   id="moveInFrom"
+                   value={formData.propertyData.featureInfo.moveInFrom}
                    onChange={handleChange}
-                   name="lockin"
+                   name="moveInFrom"
                   placeholder="-number only*-"
                    style={{  backgroundColor:"white",
                    marginTop:"-20px",

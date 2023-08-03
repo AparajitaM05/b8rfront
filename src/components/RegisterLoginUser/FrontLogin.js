@@ -46,6 +46,8 @@ function FrontLogin() {
         const token = response.data.data.jwtToken;
         const name = response.data.data.user.name;
         const phone = response.data.data.user.phone;
+        const inviteCode = response.data.data.user.inviteCode;
+        console.log(inviteCode.substring(0, 2));
 
         //set JWT token to local
         localStorage.setItem("token", token);
@@ -57,7 +59,13 @@ function FrontLogin() {
 
         alert("You're Logged In");
         //redirect user to Dashboard
-        window.location.href = "/dashboard";
+        if(inviteCode.substring(0, 2) == "FL"){
+          window.location.href = "/FieldAgentHomeN";
+        }
+
+        if(inviteCode.substring(0, 2) == "PA"){
+          window.location.href = "/dashboard";
+        }
       })
       .catch((error) => {
         console.log(error);

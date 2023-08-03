@@ -16,8 +16,6 @@ import AddBuyer from "./components/BuyerAdditionFlow/AddBuyer";
 import BuyerDetails from "./components/BuyerAdditionFlow/BuyerDetails";
 import BuyerCreated from "./components/BuyerAdditionFlow/BuyerCreated";
 
-
-
 // RegisterLoginUser ------------------------------------------------------
 import SignUp from "./components/RegisterLoginUser/SignUp";
 import EnterOTP from "./components/RegisterLoginUser/EnterOTP";
@@ -46,8 +44,7 @@ import ReactivateProperty from "./components/AgentDashboard(Rent)/ReactivateProp
 import DeactivateTenant from "./components/AgentDashboard(Rent)/DeactivateTenant";
 // _________________________________________________________________________
 
-
-
+import AuthCode from "./components/AuthCode";
 // AgentFlow --------------------------------------------------
 import FieldAgentHomeN from "./components/FieldAgentFlow/FieldAgentHomeN";
 import ConfirmOTPAgent from "./components/RegisterLoginUser/ConfirmOTPAgent";
@@ -64,13 +61,11 @@ import VerificationComplete from "./components/FieldAgentFlow/VerificationComple
 
 // _________________________________________________________________________
 
-
 //TenantSideView
 import DetailImgView from "./components/TenantSideView/DetailImgView";
 import DetailView from "./components/TenantSideView/DetailView";
 import OTPscreen from "./components/TenantSideView/OTPscreen";
 import TenantSideView from "./components/TenantSideView/TenantSideView";
-
 
 //PropertyCreate -Imports ---------------------------------------------------
 // import PropertyDetails from "./components/PropertyDetails";
@@ -102,14 +97,11 @@ import My_propertyPVS from "./components/AgentDashboard(Sale)/My_propertyPVS";
 import MyPropSNAS from "./components/AgentDashboard(Sale)/MyPropSNAS";
 import My_PropertySS from "./components/AgentDashboard(Sale)/My_PropertySS";
 import My_PropertyYTSS from "./components/AgentDashboard(Sale)/My_PropertyYTSS";
-import PropertyClosedS from "./components/AgentDashboard(Sale)/PropertyClosedS"; 
+import PropertyClosedS from "./components/AgentDashboard(Sale)/PropertyClosedS";
 // import propertyComp from "./components/AgentDashboard(Sale)/propertyComp";
 import PropertyViewingStatusS from "./components/AgentDashboard(Sale)/PropertyViewingStatusS";
 import ReactivatePropertyS from "./components/AgentDashboard(Sale)/ReactivatePropertyS";
 // _________________________________________________________________________
-
-
-
 
 import UserLoginDetails from "./components/UserLoginDetails";
 // import TenantDetails from "./components/TenantDetails";
@@ -123,148 +115,212 @@ import PropertyCreated from "./components/PropertyCreate/PropertyCreated";
 
 //Field Agent
 
-
 //footer
 import Footer from "./components/Footer";
 
 function App(props) {
   const [isLogin, setIsLogin] = useState(false);
-  const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
   console.log(username);
 
+  const token = localStorage.getItem("token");
+  console.log(token);
+
   useEffect(() => {
-    if(!token){
-      setIsLogin(false);
+    if (token) {
+      setIsLogin(true);
       console.log(isLogin);
     } else {
-      setIsLogin(true);
+      setIsLogin(false);
       console.log(isLogin);
     }
   });
 
+  const check = () => {
+    alert("Please Login First 🙏🏻")
+  };
 
   return (
     <>
-    <BrowserRouter>
-      <div>
-    {/* <UserLoginDetails /> */}
+      <BrowserRouter>
+        <div>
+          <Routes>
+            {isLogin ? (
+            <>
+              <Route exact path="Dashboard" element={<Dashboard />} />
+              <Route exact path="AllProperty" element={<AllProperty />} />
+            </>
+            ) : (
+              <>
+                       
+              {/* <div className="drt_clearfix drt_CartableItem" onClick={() => alert("Please Login First 🙏🏻") }>
+            </div> */}
+              </>
 
-        <Routes>
+            )}
+            {/* RegisterLoginUser */}
+            <Route exact path="/" element={<SignUp />} />
+            <Route exact path="FrontLogin" element={<FrontLogin />} />
+            <Route exact path="AuthCode" element={<AuthCode />} />
+            <Route exact path="ResetPassword" element={<ResetPassword />} />
+            <Route exact path="EnterOTP" element={<EnterOTP />} />
+            <Route exact path="VerifyPage" element={<VerifyPage />} />
 
-          {/* RegisterLoginUser */}
-          <Route exact path="/" element={<SignUp />} />
-          <Route exact path="FrontLogin" element={<FrontLogin />} />
-          <Route exact path="ResetPassword" element={<ResetPassword/>}/>
-          <Route exact path="EnterOTP" element={<EnterOTP/>}/>
-          <Route exact path="VerifyPage" element={<VerifyPage />} />
+            <Route exact path="FieldAgentHomeN" element={<FieldAgentHomeN />} />
+            <Route exact path="ConfirmOTPAgent" element={<ConfirmOTPAgent />} />
+            <Route exact path="TenantCreated" element={<TenantCreated />} />
+            {/* <Route exact path="FieldAgentDetails" element={<FieldAgentDetails />} /> */}
+            <Route exact path="ChangeStatus" element={<ChangeStatus />} />
+            <Route exact path="ActiveLeads" element={<ActiveLeads />} />
+            <Route
+              exact
+              path="AllActiveProperties"
+              element={<AllActiveProperties />}
+            />
+            <Route exact path="AllProperty" element={<AllProperty />} />
+            <Route
+              exact
+              path="AvailablePropertyrental"
+              element={<AvailablePropertyrental />}
+            />
+            <Route exact path="PropertyClosed" element={<PropertyClosed />} />
+            <Route
+              exact
+              path="PropertyViewingStatus"
+              element={<PropertyViewingStatus />}
+            />
+            <Route
+              exact
+              path="ReactivateProperty"
+              element={<ReactivateProperty />}
+            />
+            <Route
+              exact
+              path="DeactivateTenant"
+              element={<DeactivateTenant />}
+            />
 
-          <Route exact path="FieldAgentHomeN" element={<FieldAgentHomeN />} />
-          <Route exact path="ConfirmOTPAgent" element={<ConfirmOTPAgent />} />
-          <Route exact path="TenantCreated" element={<TenantCreated />} />
-          {/* <Route exact path="FieldAgentDetails" element={<FieldAgentDetails />} /> */}
-          <Route exact path="Dashboard" element={<Dashboard />} />
-          <Route exact path="ChangeStatus" element={<ChangeStatus />} />
-          <Route exact path="ActiveLeads" element={<ActiveLeads />} />
-          <Route exact path="AllActiveProperties" element={<AllActiveProperties />} />
-          <Route exact path="AllProperty" element={<AllProperty />} />
-          <Route exact path="AvailablePropertyrental" element={<AvailablePropertyrental />} />
-          <Route exact path="PropertyClosed" element={<PropertyClosed />} />
-          <Route exact path="PropertyViewingStatus" element={<PropertyViewingStatus />} />
-          <Route exact path="ReactivateProperty" element={<ReactivateProperty />} />
-          <Route exact path="DeactivateTenant" element={<DeactivateTenant />} />
+            <Route exact path="My_PropertyPV" element={<My_propertyPV />} />
+            <Route exact path="My_PropertyYTS" element={<My_PropertyYTS />} />
+            <Route exact path="My_PropertySNA" element={<My_PropertySNA />} />
+            <Route exact path="My_PropertyS" element={<My_PropertyS />} />
+            <Route exact path="CreateBoard" element={<CreateBoard />} />
+            <Route exact path="ViewBoard" element={<ViewBoard />} />
+            <Route exact path="BoardCreated" element={<BoardCreated />} />
 
-          <Route exact path="My_PropertyPV" element={<My_propertyPV />} />
-          <Route exact path="My_PropertyYTS" element={<My_PropertyYTS />} />
-          <Route exact path="My_PropertySNA" element={<My_PropertySNA />} />
-          <Route exact path="My_PropertyS" element={<My_PropertyS />} />
-          <Route exact path="CreateBoard" element={<CreateBoard />} />
-          <Route exact path="ViewBoard" element={<ViewBoard />} />
-          <Route exact path="BoardCreated" element={<BoardCreated />} />
+            <Route exact path="CreateBoardS" element={<CreateBoardS />} />
+            <Route exact path="ViewBoardS" element={<ViewBoardS />} />
+            <Route exact path="BoardCreatedS" element={<BoardCreatedS />} />
 
+            <Route exact path="FieldPending" element={<FieldPending />} />
+            <Route
+              exact
+              path="FieldAgentVerifyProperty"
+              element={<FieldAgentVerifyProperty />}
+            />
+            <Route
+              exact
+              path="FieldAgentVerifyPropertyF"
+              element={<FieldAgentVerifyPropertyF />}
+            />
 
-          <Route exact path="CreateBoardS" element={<CreateBoardS />} />
-          <Route exact path="ViewBoardS" element={<ViewBoardS />} />
-          <Route exact path="BoardCreatedS" element={<BoardCreatedS />} />
-         
-          <Route exact path="FieldPending" element={<FieldPending />} />
-          <Route exact path="FieldAgentVerifyProperty" element={<FieldAgentVerifyProperty />} />
-          <Route exact path="FieldAgentVerifyPropertyF" element={<FieldAgentVerifyPropertyF />} />
+            <Route exact path="PhotosCapture" element={<PhotosCapture />} />
+            <Route exact path="PhotoCaptureTwo" element={<PhotoCaptureTwo />} />
+            <Route
+              exact
+              path="PhotoCaptureThree"
+              element={<PhotoCaptureThree />}
+            />
 
-          <Route exact path="PhotosCapture" element={<PhotosCapture />} />
-          <Route exact path="PhotoCaptureTwo" element={<PhotoCaptureTwo />} />
-          <Route exact path="PhotoCaptureThree" element={<PhotoCaptureThree />} />
+            <Route
+              exact
+              path="VerificationComplete"
+              element={<VerificationComplete />}
+            />
 
-          <Route exact path="VerificationComplete" element={<VerificationComplete />} />
+            <Route exact path="SignUp" element={<SignUp />} />
 
+            <Route
+              exact
+              path="UserLoginDetails"
+              element={<UserLoginDetails isloggedIn={isLogin} />}
+            />
+            {/* <Route exact path="PropertyDetails" element={<PropertyDetails />} /> */}
+            {/* <Route exact path="TenantDetails" element={<TenantDetails />} /> */}
+            <Route exact path="AddTenant" element={<AddTenant />} />
+            <Route exact path="AllTenantOne" element={<AllTenantOne />} />
 
-          <Route exact path="SignUp" element={<SignUp />} />
+            <Route exact path="AddBuyer" element={<AddBuyer />} />
+            <Route exact path="BuyerDetails" element={<BuyerDetails />} />
+            <Route exact path="BuyerCreated" element={<BuyerCreated />} />
 
-          <Route exact path="UserLoginDetails" element={<UserLoginDetails isloggedIn={isLogin}/>} />
-          {/* <Route exact path="PropertyDetails" element={<PropertyDetails />} /> */}
-          {/* <Route exact path="TenantDetails" element={<TenantDetails />} /> */}
-          <Route exact path="AddTenant" element={<AddTenant />} />
-          <Route exact path="AllTenantOne" element={<AllTenantOne />} />
+            {/* TennantSide View */}
+            <Route exact path="OTPscreen" element={<OTPscreen />} />
+            <Route exact path="DetailView" element={<DetailView />} />
+            <Route exact path="TenantSideView" element={<TenantSideView />} />
+            <Route exact path="DetailImgView" element={<DetailImgView />} />
+            {/* OTP VERIFY */}
 
-          <Route exact path="AddBuyer" element={<AddBuyer />} />
-          <Route exact path="BuyerDetails" element={<BuyerDetails />} />
-          <Route exact path="BuyerCreated" element={<BuyerCreated />} />
+            {/* <Route exact path="SuccesfulSignup" element={<SuccessfulSignup />} /> */}
 
+            <Route
+              exact
+              path="AllActivePropertyS"
+              element={<AllActivePropertyS />}
+            />
+            <Route exact path="ActiveLeadsS" element={<ActiveLeadsS />} />
+            <Route exact path="AllPropertyS" element={<AllPropertyS />} />
+            <Route exact path="AllTenantOneS" element={<AllTenantOneS />} />
+            <Route
+              exact
+              path="AvailablePropertyrentalS"
+              element={<AvailablePropertyrentalS />}
+            />
+            <Route exact path="ChangeStatusS" element={<ChangeStatusS />} />
+            <Route exact path="DashboardS" element={<DashboardS />} />
+            <Route
+              exact
+              path="DeactivateTenantS"
+              element={<DeactivateTenantS />}
+            />
+            <Route exact path="My_propertyPVS" element={<My_propertyPVS />} />
+            <Route exact path="MyPropSNAS" element={<MyPropSNAS />} />
+            <Route exact path="My_PropertySS" element={<My_PropertySS />} />
+            <Route exact path="My_PropertyYTSS" element={<My_PropertyYTSS />} />
+            <Route exact path="PropertyClosedS" element={<PropertyClosedS />} />
+            <Route
+              exact
+              path="PropertyViewingStatusS"
+              element={<PropertyViewingStatusS />}
+            />
+            <Route
+              exact
+              path="ReactivatePropertyS"
+              element={<ReactivatePropertyS />}
+            />
 
-          {/* TennantSide View */}
-          <Route exact path="OTPscreen" element={<OTPscreen />} />
-          <Route exact path="DetailView" element={<DetailView />} />
-          <Route exact path="TenantSideView" element={<TenantSideView />} />
-          <Route exact path="DetailImgView" element={<DetailImgView />} />
-          {/* OTP VERIFY */}
+            <Route exact path="LandlordInfo" element={<LandlordInfo />} />
+            <Route exact path="PropertyDI" element={<PropertyDI />} />
+            <Route exact path="PropertyInfo" element={<PropertyInfo />} />
+            {/* <Route exact path="TenantAdded" element={<TenantAdded />} /> */}
+            <Route exact path="TenantPref" element={<TenantPref />} />
+            <Route exact path="UploadPhotos" element={<UploadPhotos />} />
+            {/* <Route exact path="UploadPhoto2" element={<UploadPhoto2 />} /> */}
+            <Route exact path="UploadPhotos3" element={<UploadPhotos3 />} />
+            <Route exact path="dropNav" element={<dropNav />} />
+            <Route exact path="PropertyCreated" element={<PropertyCreated />} />
 
-          {/* <Route exact path="SuccesfulSignup" element={<SuccessfulSignup />} /> */}
-         
-          <Route exact path="AllActivePropertyS" element={<AllActivePropertyS />} />
-          <Route exact path="ActiveLeadsS" element={<ActiveLeadsS />} />
-          <Route exact path="AllPropertyS" element={<AllPropertyS />} />
-          <Route exact path="AllTenantOneS" element={<AllTenantOneS />} />
-          <Route exact path="AvailablePropertyrentalS" element={<AvailablePropertyrentalS />} />
-          <Route exact path="ChangeStatusS" element={<ChangeStatusS />} />
-          <Route exact path="DashboardS" element={<DashboardS />} />
-          <Route exact path="DeactivateTenantS" element={<DeactivateTenantS />} />
-          <Route exact path="My_propertyPVS" element={<My_propertyPVS />} />
-          <Route exact path="MyPropSNAS" element={<MyPropSNAS />} />
-          <Route exact path="My_PropertySS" element={<My_PropertySS />} />
-          <Route exact path="My_PropertyYTSS" element={<My_PropertyYTSS />} />
-          <Route exact path="PropertyClosedS" element={<PropertyClosedS />} />
-          <Route exact path="PropertyViewingStatusS" element={<PropertyViewingStatusS />} />
-          <Route exact path="ReactivatePropertyS" element={<ReactivatePropertyS />} />
+            <Route exact path="TenantPref2" element={<TenantPref2 />} />
 
-          
-          <Route exact path="LandlordInfo" element={<LandlordInfo />} />
-          <Route exact path="PropertyDI" element={<PropertyDI />} />
-          <Route exact path="PropertyInfo" element={<PropertyInfo />} />
-          {/* <Route exact path="TenantAdded" element={<TenantAdded />} /> */}
-          <Route exact path="TenantPref" element={<TenantPref />} />
-          <Route exact path="UploadPhotos" element={<UploadPhotos />} />
-          {/* <Route exact path="UploadPhoto2" element={<UploadPhoto2 />} /> */}
-          <Route exact path="UploadPhotos3" element={<UploadPhotos3 />} />
-          <Route exact path="dropNav" element={<dropNav />} />
-          <Route exact path="PropertyCreated" element={<PropertyCreated />} />
+            <Route exact path="Footer" element={<Footer />} />
 
-         
-          <Route exact path="TenantPref2" element={<TenantPref2 />} />
+            <Route exact path="fieldAgentHome" element={<fieldAgentHome />} />
 
-          
-
-          <Route exact path="Footer" element={<Footer/>}/>
-
-          <Route exact path="fieldAgentHome" element={<fieldAgentHome />} />
-
-          <Route exact path="AddBuyer" element={<AddBuyer />} />
-
-        </Routes>
-      {/* <Footer /> */}
-
-      </div>
-    </BrowserRouter>
-    
+            <Route exact path="AddBuyer" element={<AddBuyer />} />
+          </Routes>
+          {/* <Footer /> */}
+        </div>
+      </BrowserRouter>
     </>
   );
 }

@@ -11,26 +11,26 @@ function CommonHeader(props) {
   const { title, color } = props;
 
   // console.log(props.title);
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(false);
   const [letter, setletter] = useState("");
-  const token = localStorage.getItem("token");
+ 
   const username = localStorage.getItem("username");
   // const username = "Aparajita";
-  // console.log(username);
+
+  const token = localStorage.getItem("token");
+  console.log(token);
 
   useEffect(() => {
-    // if (!token) {
-    //   setIsLogin(false);
-    //   console.log(isLogin);
-    // } else {
-      // setIsLogin(true);
+    if (token) {
+      setIsLogin(true);
       console.log(isLogin);
       let letter = username.charAt(0);
       console.log(letter);
       setletter(letter);
-
-
-    // }
+    } else {
+      setIsLogin(false);
+      console.log(isLogin);
+    }
   });
 
   const handleLogout = (event) => {

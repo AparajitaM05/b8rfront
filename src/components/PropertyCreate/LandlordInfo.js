@@ -91,22 +91,25 @@ function LandlordInfo(){
 			{/* Landlord FIRST NAME */}
 			<h4 style={{ color:"#52796f" }} > Who owns this Property?</h4>
 
-		<label for="landlord_first_name" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Landlord First Name* </label>
-		<input type="text" id="landlord_first_name" placeholder="Landlord First Name" name="landlord_first_name" value={formData.landlord_first_name} onChange={handleChange} style={ styles }/><br></br>
+		<label for="first" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Landlord First Name* </label>
+		<input type="text" id="first" placeholder="Landlord First Name" name="first" value={formData.OwnerInfo.name.first} onChange={handleChange} style={ styles }/><br></br>
 		{/* Landlord LAST NAME */}
-		 <label for="landlord_last_name" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Landlord Last Name* </label>
-		<input type="text" id="landlord_last_name" placeholder = "Landlord last name" name="landlord_last_name" value={formData.landlord_last_name} onChange={handleChange} style={ styles }/><br></br> 
+		 <label for="last" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Landlord Last Name* </label>
+		<input type="text" id="last" placeholder = "Landlord last name" name="last" value={formData.OwnerInfo.name.last} onChange={handleChange} style={ styles }/><br></br> 
 		
 		
 		{/* CONTACT NUM */}
-		<label for="contact_number" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Contact Number*</label>
-		<input type="tel" id="contact_number" placeholder="contact number" name="contact_number" value={formData.contact_number} onChange={handleChange} style={ styles }/><br></br>
+		<label for="phoneNumber" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left"}}>Contact Number*</label>
+		<input type="tel" id="phoneNumber" placeholder="contact number" name="phoneNumber" value={formData.OwnerInfo.phoneNumber} onChange={handleChange} style={ styles }/><br></br>
 			{/* PAN CARD */}
-		<label for="pan_card" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Pan Card(Useful for Rental Agreement)</label>
-		<input type="number" id="pan_card" placeholder="pan number" name="pan_card" value={formData.pan_card} onChange={handleChange} style={ styles }/><br></br>
+		<label for="panNumber" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Pan Card(Useful for Rental Agreement)</label>
+		<input type="number" id="panNumber" placeholder="pan number" name="panNumber" value={formData.OwnerInfo.panNumber} onChange={handleChange} style={ styles }/><br></br>
 		{/* Residing Country */}
-		<label for="residing_country" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Country of residence of Landlord*</label>
-		<input type="text" id="residing_country" placeholder="residing country" name="residing_country" value={formData.residing_country} onChange={handleChange} style={ styles }/><br></br>
+		<label for="country" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>Country of residence of Landlord*</label>
+		<input type="text" id="country" placeholder="residing country" name="country" value={formData.OwnerInfo.country} onChange={handleChange} style={ styles }/><br></br>
+
+		<label for="city" style={{textAlign: "left",display: "block",marginBottom: "0.5rem",fontWeight: "300",float: "left",}}>City of residence of Landlord*</label>
+		<input type="text" id="city" placeholder="residing city" name="city" value={formData.OwnerInfo.city} onChange={handleChange} style={ styles }/><br></br>
 		
 		
 		

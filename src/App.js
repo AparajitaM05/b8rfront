@@ -137,7 +137,7 @@ function App(props) {
   });
 
   const check = () => {
-    alert("Please Login First 🙏🏻")
+    alert("Please Login First 🙏🏻");
   };
 
   return (
@@ -146,17 +146,15 @@ function App(props) {
         <div>
           <Routes>
             {isLogin ? (
-            <>
-              <Route exact path="Dashboard" element={<Dashboard />} />
-              <Route exact path="AllProperty" element={<AllProperty />} />
-            </>
+              <>
+                <Route exact path="Dashboard" element={<Dashboard />} />
+                <Route exact path="AllProperty" element={<AllProperty />} />
+              </>
             ) : (
               <>
-                       
-              {/* <div className="drt_clearfix drt_CartableItem" onClick={() => alert("Please Login First 🙏🏻") }>
+                {/* <div className="drt_clearfix drt_CartableItem" onClick={() => alert("Please Login First 🙏🏻") }>
             </div> */}
               </>
-
             )}
             {/* RegisterLoginUser */}
             <Route exact path="/" element={<SignUp />} />

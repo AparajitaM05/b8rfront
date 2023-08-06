@@ -34,11 +34,62 @@ function SignUp() {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
+
+  const [passwordMatch, setPasswordMatch] = useState(true);
+
+
+   
+  function checkPasswordStrength(password) {
+    // Define regular expressions to check for password strength
+    const uppercaseRegex = /[A-Z]/;
+    const lowercaseRegex = /[a-z]/;
+    const numberRegex = /[0-9]/;
+    const specialCharRegex = /[!@#$%^&*()_+{}\[\]:;<>,.?~\-=/\\|]/;
+
+    // Define the minimum length required for a strong password
+    const minPasswordLength = 8;
+
+    // Check for uppercase letter
+    if (!uppercaseRegex.test(password)) {
+      return "Weak: Password must contain at least one uppercase letter.";
+    }
+
+    // Check for lowercase letter
+    if (!lowercaseRegex.test(password)) {
+      return "Weak: Password must contain at least one lowercase letter.";
+    }
+
+    // Check for a number
+    if (!numberRegex.test(password)) {
+      return "Weak: Password must contain at least one number.";
+    }
+
+    // Check for a special character
+    if (!specialCharRegex.test(password)) {
+      return "Weak: Password must contain at least one special character.";
+    }
+    // Check password length
+    if (password.length < minPasswordLength) {
+      return "Weak: Password must be at least 8 characters long.";
+    }
+    // If all checks pass, the password is considered strong
+    return (
+      <p style={{ fontSize: "10px", color: "green", marginTop: "-10px",textAlign:"right"}}>
+        Strong: Password meets all strength criteria.{" "}
+      </p>
+    );
+  }
+  const getPasswordStrength = (password) => {
+    return checkPasswordStrength(password);
+  };
+
+  const passwordStrength = getPasswordStrength(formData.password);
+
+
   const handleSubmit = (event) => {
     event.preventDefault();
 
     //Validation
-
     let inputError = {
       email: "",
       password: "",
@@ -120,6 +171,8 @@ function SignUp() {
             })
             .catch((error) => {
               console.log(error);
+              const errorMessage = error.response.data.message;
+              alert(errorMessage);
               // handle the error
             });
     
@@ -215,7 +268,9 @@ function SignUp() {
                 required
               />
               <p className="error-message">{formError.password}</p>
-
+              <p style={{ fontSize: "10px", color: "red", marginTop: "-10px",textAlign:"right" }}>
+                {passwordStrength}
+              </p>
               <label htmlFor="confirmPassword" className="label-confirmPassword">
                 Confirm password
               </label>

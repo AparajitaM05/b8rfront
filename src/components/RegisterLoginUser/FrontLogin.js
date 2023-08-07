@@ -32,11 +32,12 @@ function FrontLogin() {
   };
 
   const handleSubmit = (event) => {
+    alert("SignIn Hit");
     event.preventDefault();
     axios
       .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/signin", formData)
       .then((response) => {
-        console.log(response.data);
+        // console.log(response.data);
         // setData(response.data);
 
         // alert(response.data.data.jwtToken);

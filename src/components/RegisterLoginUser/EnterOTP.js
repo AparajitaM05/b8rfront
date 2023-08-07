@@ -169,7 +169,7 @@ function EnterOTP() {
             .then((response) => {
               console.log(response.data);
               alert(response.data.message);
-
+              window.location.href = "/FrontLogin";
               // alert("Your Password has been Updated!");
             })
             .catch((error) => {
@@ -179,7 +179,7 @@ function EnterOTP() {
             });
           console.log(OTP_CHECK);
 
-          window.location.href = "/FrontLogin";
+         
         })
         .catch((error) => {
           console.log(error);

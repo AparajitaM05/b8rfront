@@ -40,9 +40,9 @@ function FrontLogin() {
         // console.log(response.data);
         // setData(response.data);
 
-        // alert(response.data.data.jwtToken);
+        alert(response.data.data.jwtToken);
         // alert(response.data.data.user.name);
-        console.log(response.data.data);
+        // console.log(response.data.data);
 
         const token = response.data.data.jwtToken;
         const name = response.data.data.user.name;
@@ -51,9 +51,20 @@ function FrontLogin() {
         console.log(inviteCode.substring(0, 2));
 
         //set JWT token to local
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", name);
-        localStorage.setItem("phone", phone);
+        if (typeof localStorage !== 'undefined') {
+          // localStorage is available
+          // Your code using localStorage goes here
+
+          localStorage.setItem("token", token);
+          localStorage.setItem("username", name);
+          localStorage.setItem("phone", phone);
+        } else {
+          // localStorage is not available or disabled
+          // Handle this situation gracefully
+           alert("Localstorage");
+
+        }
+
 
         //set token to axios common header
         //  setAuthToken(token);

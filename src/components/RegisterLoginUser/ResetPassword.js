@@ -64,9 +64,21 @@ function ResetPassword() {
   return (
     
     <>
-<div className="login-page">
-  <div className="form"  style={{  borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundImage: `url(${backgroundSecond})`, backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%' }} >
-  <div className="MainLogoDesign">
+{/* <div className="login-page"> */}
+  {/* <div className="form"  style={{  borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundImage: `url(${backgroundSecond})`, backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%', width: "100%" }} > */}
+  <div className="login-page">
+        <div
+          class="form"
+          style={{
+            borderRadius: "16px",
+            backgroundRepeat: "no-repeat",
+            backgroundImage: `url(${backgroundSecond})`,
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "100% 100%",
+            width: "100%",
+            
+          }} >
+ <div className="MainLogoDesign">
         <Link to="/dashboard"><img  src={logo} height={40} alt="fireSpot"/></Link>
         </div>
         

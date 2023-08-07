@@ -2,7 +2,7 @@ import React, { Component, useState, useEffect } from "react";
 import FronLogin from "./FrontLogin.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import backgroundSecond from "../Assets/Images/RegisterLoginUser/otherbg_2.png";
+import backgroundSecond from "../Assets/Images/RegisterLoginUser/other_bg.png";
 import Footer from "../Footer";
 import vector from "../Assets/Images/RegisterLoginUser/vector.png";
 import logo from "../Assets/Images/Logo.png";

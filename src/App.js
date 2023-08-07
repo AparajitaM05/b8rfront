@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component, useEffect, useState , Redirect, Navigate} from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -120,7 +120,7 @@ import PropertyCreated from "./components/PropertyCreate/PropertyCreated";
 import Footer from "./components/Footer";
 
 function App(props) {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isLogin, setIsLogin] = useState(true);
   const username = localStorage.getItem("username");
   console.log(username);
 
@@ -156,21 +156,14 @@ function App(props) {
           <div>
             <Routes>
               {/* Protected routes */}
-
               <Route
                 exact
                 path="Dashboard"
-                render={() =>
-                  isLogin ? (
-                    <Dashboard handleLogout={handleLogout} />
-                  ) : (
-                    <Redirect to="/FrontLogin" />
-                  )
-                }
-                element={<Dashboard />}
+                element={isLogin ? (<Dashboard />) : <FrontLogin />}
               />
+              {/* Protected routes ends */}
 
-              
+
               <Route exact path="AllProperty" element={<AllProperty />} />
 
               {/* RegisterLoginUser */}

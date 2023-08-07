@@ -70,7 +70,7 @@ function FrontLogin() {
       .catch((error) => {
         console.log(error);
         // handle the error
-        alert(error.data.response.data.message);
+        alert(error.response.data.message);
       });
   };
 

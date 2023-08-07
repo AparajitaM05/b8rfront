@@ -52,7 +52,6 @@ function DashboardS() {
           backgroundImage: `url(${backgroundSecond})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "100% 100%",
-          zoom: "0.9"
         }}
       >
         {/* <h2 style={{color:"#52796F"}}>Agent Dashboard</h2> */}
@@ -148,8 +147,8 @@ function DashboardS() {
     <div className="btnGroup">
 
             <div className="btnGroupOne" style={{display:"flex", flexDirection:"row" }}>
-            <Link to="/AllPropertyS"><CommonBtn title="All Properties"  margin="" fontweight="bolder" bgColor="#1E0058" /></Link>
-            <Link to="/AllTenantOneS"><CommonBtn title="All Buyer"  margin="50%" fontweight="bolder" bgColor="#3F007F" /></Link>
+            <Link to="/AllPropertyS"><CommonBtn title="All Properties"  margin="2%" fontweight="bolder" bgColor="#1E0058" /></Link>
+            <Link to="/AllTenantOneS"><CommonBtn title="All Buyer"  margin="55%" fontweight="bolder" bgColor="#3F007F" /></Link>
             </div>
        
 
@@ -164,8 +163,8 @@ function DashboardS() {
 
             <div className="btnGroupTwo" style={{display:"flex", flexDirection:"row",marginTop:"80px", justifyContent:"space-between" }}>
             
-            <Link to="/Propertyinfo"><ExtraCommonButton title="Add New Property"  margin="25px" fontweight="bolder" bgColor="#1E0058" isHeight="true" /></Link>
-            <Link to="/AddBuyer"><ExtraCommonButton title="Add New Buyer"  margin="25px 1px" fontweight="bolder" isHeight="true" bgColor="#3F007F" /></Link>
+            <Link to="/Propertyinfo"><ExtraCommonButton title="Add New Property"  margin="25px 0px 0px 22px" fontweight="bolder" bgColor="#1E0058" isHeight="true" /></Link>
+            <Link to="/AddBuyer"><ExtraCommonButton title="Add New Buyer"  margin="25px 30px" fontweight="bolder" isHeight="true" bgColor="#3F007F" /></Link>
             </div>
             
 

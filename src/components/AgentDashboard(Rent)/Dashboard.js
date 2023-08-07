@@ -184,7 +184,7 @@ function Dashboard() {
 
             <div className="btnGroupOne" style={{display:"flex", flexDirection:"row" }}>
             <Link to="/AllProperty"><CommonBtn title="All Properties"  margin="" fontweight="bolder" bgColor="#5D6560" /></Link>
-            <Link to="/AllTenantOne"><CommonBtn title="All Tenants"  margin="50%" fontweight="bolder" /></Link>
+            <Link to="/AllTenantOne"><CommonBtn title="All Tenants"  margin="52%" fontweight="bolder" /></Link>
             </div>
        
 
@@ -199,8 +199,8 @@ function Dashboard() {
 
             <div className="btnGroupTwo" style={{display:"flex", flexDirection:"row",marginTop:"80px", justifyContent:"space-between" }}>
             
-            <Link to="/Propertyinfo"><ExtraCommonButton title="Add New Property"  margin="25px" fontweight="bolder" bgColor="#5D6560" isHeight="true" /></Link>
-            <Link to="/AddTenant"><ExtraCommonButton title="Add New Tenant"  margin="25px 1px" fontweight="bolder" isHeight="true" /></Link>
+            <Link to="/Propertyinfo"><ExtraCommonButton title="Add New Property"  margin="10px 0px 0px 25px" fontweight="bolder" bgColor="#5D6560" isHeight="true" /></Link>
+            <Link to="/AddTenant"><ExtraCommonButton title="Add New Tenant"  margin="10px 15px 0px 20px" fontweight="bolder" isHeight="true" /></Link>
             </div>
             
 

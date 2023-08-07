@@ -179,7 +179,7 @@ function EnterOTP() {
             });
           console.log(OTP_CHECK);
 
-          // window.location.href = "/FrontLogin";
+          window.location.href = "/FrontLogin";
         })
         .catch((error) => {
           console.log(error);

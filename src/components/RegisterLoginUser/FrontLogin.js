@@ -69,8 +69,8 @@ function FrontLogin() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error.response);
         // handle the error
+        alert(error.data.response.data.message);
       });
   };
 

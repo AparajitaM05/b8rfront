@@ -201,7 +201,6 @@ function SignUp() {
             className="form"
             style={{
               borderRadius: "16px",
-              marginTop: "10%",
               backgroundRepeat: "no-repeat",
               backgroundImage: `url(${background})`,
               backgroundRepeat: "no-repeat",

@@ -7,7 +7,7 @@
   
   .form {
     border-radius: 16px;
-    margin-top: 40%;
+    /* margin-top: 40%; */
     background-repeat: no-repeat;
     background-image: url("../Assets/Images/RegisterLoginUser/other_bg.png");
     background-size: 100% 100%;

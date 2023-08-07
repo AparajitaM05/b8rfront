@@ -3,6 +3,7 @@ import logo from "./logo.svg";
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
+import { useMediaQuery } from 'react-responsive';
 
 // import FrontPage from "./components/FrontPage";
 import AddTenant from "./components/TenantAdditionFlow/AddTenant";
@@ -136,12 +137,22 @@ function App(props) {
     }
   });
 
+  // const isDesktopOrLaptop = useMediaQuery({
+  //   query: '(min-width: 1224px)'
+  // })
+  // const isBigScreen = useMediaQuery({ query: '(min-width: 1824px)' })
+  const isTabletOrMobile = useMediaQuery({ query: '(max-width: 1224px)' })
+  // const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
+  // const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+  
+
   const check = () => {
     alert("Please Login First 🙏🏻");
   };
 
   return (
     <>
+    {isTabletOrMobile &&
       <BrowserRouter>
         <div>
           <Routes>
@@ -319,7 +330,9 @@ function App(props) {
           {/* <Footer /> */}
         </div>
       </BrowserRouter>
+      }
     </>
+  
   );
 }
 

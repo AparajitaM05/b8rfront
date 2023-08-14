@@ -131,7 +131,7 @@ function SignUp() {
     }
 
     setFormError(inputError);
-
+    alert("Register Hit");
     console.log("Submit Clicked");
     console.log(formData["phoneNumber"]);
     const phone = formData["phoneNumber"];

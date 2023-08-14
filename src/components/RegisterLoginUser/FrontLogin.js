@@ -54,7 +54,6 @@ function FrontLogin() {
         if (typeof localStorage !== 'undefined') {
           // localStorage is available
           // Your code using localStorage goes here
-
           localStorage.setItem("token", token);
           localStorage.setItem("username", name);
           localStorage.setItem("phone", phone);
@@ -62,7 +61,6 @@ function FrontLogin() {
           // localStorage is not available or disabled
           // Handle this situation gracefully
            alert("Localstorage");
-
         }
 
 

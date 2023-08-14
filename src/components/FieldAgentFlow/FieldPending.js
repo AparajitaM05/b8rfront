@@ -13,6 +13,7 @@ import sharedOut from "../Assets/Images/sharedOut.png";
 import shortListed from "../Assets/Images/shortListed.png";
 import yetShared from "../Assets/Images/yetShared.png";
 import check from "../Assets/Images/check.png";
+import CommonHeader from "../CommonHeader";
 
 function FieldPending(){
 
@@ -31,8 +32,8 @@ function FieldPending(){
         <>
 
         <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%'}}>
-            <h2 style={{color:"#52796F"}}>Pending Pipeline</h2>
-
+            {/* <h2 style={{color:"#52796F"}}>Pending Pipeline</h2> */}
+            <CommonHeader title="Pending Pipeline" color="#52796F"/>
         <h5 style={{marginLeft:"-290px"}}>Hey Yash,</h5>
         <h5>Properties show here are pending for verfification and photo submission.</h5>
         {/* design for pending */}

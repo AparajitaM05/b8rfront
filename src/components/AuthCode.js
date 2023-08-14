@@ -51,7 +51,15 @@ function AuthCode() {
       })
       .catch((error) => {
         console.log(error);
-        alert(error.response);
+        if (error.response && error.response.data) {
+          const errorMessage = error.response.data.message;
+          if (errorMessage.includes("E11000 duplicate key")) {
+            alert("Entity Code already exists");
+          } else {
+            alert("Error: " + errorMessage);
+          }
+        }
+        // alert(error.response.data.message);
         // handle the error
       });
   };

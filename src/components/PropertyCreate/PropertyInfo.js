@@ -454,11 +454,11 @@ function PropertyInfo() {
                 </option>
                 {/* <option value="Studio">Studio</option> */}
                 {/* <option value="1BHK">1BHK</option> */}
-                <option value="2BHK">2BHK</option>
+                <option value="2 BHK">2BHK</option>
                 {/* <option value="2.5BHK">2.5BHK</option> */}
-                <option value="3BHK">3BHK</option>
+                <option value="3 BHK">3BHK</option>
                 {/* <option value="3.BHK">3.5BHK</option> */}
-                <option value="4BHK">4BHK</option>
+                <option value="4 BHK">4BHK</option>
                 {/* <option value="4.5BHK">4.5BHK</option> */}
               </select>
               <br></br>

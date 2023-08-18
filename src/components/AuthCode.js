@@ -24,7 +24,7 @@ function AuthCode() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/authcode", formData)
+      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/agent/authcode", formData)
       .then((response) => {
         console.log(response.data);
         // setData(response.data);
@@ -56,7 +56,7 @@ function AuthCode() {
           if (errorMessage.includes("E11000 duplicate key")) {
             alert("Entity Code already exists");
           } else {
-            alert("Error: " + errorMessage);
+            alert(error);
           }
         }
         // alert(error.response.data.message);

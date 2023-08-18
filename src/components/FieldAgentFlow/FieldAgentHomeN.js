@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useEffect, useState } from "react";
 import Dashboardcss from '../Dashboard.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -29,17 +29,53 @@ import CommonTopButton from "../CommonTopButton";
 
 function FieldAgentHomeN(){
 
+  const token = localStorage.getItem("token");
+  console.log(token);
 
-    const token = localStorage.getItem("token");
-    console.log(token);
-    
-    const handleSubmit = event => {
-	event.preventDefault();
-       localStorage.removeItem("token");
-			alert("You have been logged out.");
+	  const [loading, setLoading] = useState(false);
+    const [PendingCount, setPendingCount] = useState();
+    const [VerifiedCount, setVerifiedCount] = useState();
+
+
+      let axiosConfig = {
+		headers: {
+		  "Content-Type": "application/json;charset=UTF-8",
+		  "Access-Control-Allow-Origin": "*",
+		  Authorization: `Basic ${token}`,
+		},
 	  };
+      useEffect(() => {
+		// event.preventDefault();
+		const fetchPosts = async () => {
+		  setLoading(true);
+		  axios
+			.get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/field-agent/count", axiosConfig)
+			.then((response) => {
+			  console.log(response.data.data.pending);
+              var PendingCount = response.data.data.pending;
+              setPendingCount(PendingCount);
 
+              console.log(response.data.data.verified);
+              var VerifiedCount = response.data.data.verified;
+              setVerifiedCount(VerifiedCount);
+			  // console.log(myArrayPropertyCount.length);
 
+			  // alert("Your data has been submitted");
+			  // do something with the response
+			})
+			.catch((error) => {
+			  console.log(error);
+			  // handle the error
+			});
+		  setLoading(false);
+		};
+	
+		fetchPosts();
+	  }, []);
+
+      const username = localStorage.getItem("username");
+      const name = username.substring(0, username.indexOf(' ')); 
+      
     return(
         <>
 
@@ -52,8 +88,8 @@ function FieldAgentHomeN(){
                 {/* for title and text */}
                 <div style={{textAlign:"left"}}>
 
-                
-                <label>Hey <b>Yash,</b></label><br/>
+                 
+                <label>Hey <b>{name},</b></label><br/>
                 <h5 style={{fontWeight:"lighter"}}>Please Complete all the properties at the earliest</h5>
                 </div>
                 <div>
@@ -74,7 +110,7 @@ function FieldAgentHomeN(){
                  <div>
 
                  
-                 <DashComponent img={fieldAgent} title="Properties" number="10"/>
+                 <DashComponent img={fieldAgent} title="Properties" number={PendingCount}/>
                  </div>
                  <div style={{position:"absolute"}}>
 
@@ -82,7 +118,7 @@ function FieldAgentHomeN(){
                 <CommonBtn title="Check & Complete" margin="70px" />
                 </div>
                <div style={{ margin: "25% 0"}}>
-                <DashComponent img={ActiveListing} title="Properties" number="10"/>
+                <DashComponent img={ActiveListing} title="Properties" number={VerifiedCount}/>
                 </div>
                
                 {/* <img src={done} style={{marginTop:"70px"}}/> */}

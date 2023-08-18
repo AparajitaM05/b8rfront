@@ -159,7 +159,7 @@ function EnterOTP() {
 
           axios
             .put(
-              "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/reset-password",
+              "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/agent/reset-password",
               {
                 password: formData.password,
                 phoneNumber: formData.phone,

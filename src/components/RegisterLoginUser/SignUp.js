@@ -131,13 +131,13 @@ function SignUp() {
     }
 
     setFormError(inputError);
-    alert("Register Hit");
+    // alert("Register Hit");
     console.log("Submit Clicked");
     console.log(formData["phoneNumber"]);
     const phone = formData["phoneNumber"];
 
     axios
-      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/user/signup", formData)
+      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/agent/signup", formData)
       .then((response) => {
         console.log(response.data);
         // do something with the response

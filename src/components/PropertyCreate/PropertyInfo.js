@@ -452,14 +452,15 @@ function PropertyInfo() {
                 <option value="houseConfig" disabled>
                   Select from Drop Down
                 </option>
-                {/* <option value="Studio">Studio</option> */}
-                {/* <option value="1BHK">1BHK</option> */}
-                <option value="2 BHK">2BHK</option>
-                {/* <option value="2.5BHK">2.5BHK</option> */}
-                <option value="3 BHK">3BHK</option>
-                {/* <option value="3.BHK">3.5BHK</option> */}
-                <option value="4 BHK">4BHK</option>
-                {/* <option value="4.5BHK">4.5BHK</option> */}
+                
+                <option value="Studio">Studio</option>
+               
+                <option value="1 BHK">1 BHK</option>
+                
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="4 BHK">4 BHK</option>
+               
               </select>
               <br></br>
 
@@ -1531,15 +1532,16 @@ function PropertyInfo() {
                         "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
                     }}
                   >
+                    
                     <option value="furnish">Drop Down</option>
                     <option
                       style={{ textAlign: "center", backgroundColor: "red" }}
-                      value="Unfurnished"
+                      value="Un-furnished"
                     >
                       Un-furnished
                     </option>
                     <option value="Semi-furnished">Semi-Furnished</option>
-                    <option value="Fully-furnished">Full-Furnished</option>
+                    <option value="Full-furnished">Full-Furnished</option>
                   </select>
                 </div>
 

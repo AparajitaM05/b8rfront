@@ -39,13 +39,13 @@ function FieldAgentVerifyPropertyF(){
 
 
   const queryParameters = new URLSearchParams(window.location.search)
-	const propertyid = queryParameters.get("propertyid");
+	const idProperty = queryParameters.get("propertyid");
 	const isContinue = queryParameters.get("continue")
 	// console.log(propertyid);
 
 
     const [formData, setFormData] = useState({
-		propertyid: propertyid,
+		propertyid: idProperty,
 	  gated_security : true,
     twentyfour_seven : true,
     grocery_store : true,
@@ -97,7 +97,7 @@ function FieldAgentVerifyPropertyF(){
 	  const handleSubmit = event => {
 		event.preventDefault();
 		console.log(formData);
-		axios.post('http://localhost:5000/backend/propertydi', formData, axiosConfig )
+		axios.put(`https://b8rliving.com/property/`, formData, axiosConfig )
 		  .then(response => {
 
 
@@ -123,7 +123,7 @@ function FieldAgentVerifyPropertyF(){
         <div>
       <div className="login-page" >
         <div class="form" style={{  borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%' }} >
-				  <h2 style={{color:"#52796F"}}>Property Features<br/>Verification</h2>
+				  <CommonHeader title="Property Verification(2/2)" color="#52796F"/>
           
           <h3 style={{ fontSize: "21px", fontWeight: "bold", margin: "5px 0 0", textAlign: "left", marginLeft:"45px" }}>Fuji 802, Pavillion SJR</h3>
                 <form className='login-form' onSubmit={handleSubmit}>
@@ -624,7 +624,7 @@ function FieldAgentVerifyPropertyF(){
 		                <button className="CommonnButton" style={{ fontWeight: "1000" , textAlign: "left", fontStyle: "normal", width: "80%" }}>Submit & Upload Photos<img className="vectorSignIn" src={vector} alt="fireSpot" style={{ float: "right", marginRight: "-5%",marginTop:"-24px" }}/></button>
 		                </div> */}
                     <div style={{ display: "flex", flexDirection: "row" }}>
-                    <BackButton title="Back" margin="" fontweight="bolder" />
+                    <Link to="/FieldAgentVerifyPro"></Link><BackButton title="Back" margin="" fontweight="bolder" />
                     <CommonBtn title="Upload Photos" margin="38%" fontweight="bolder" />
                     </div>
                    

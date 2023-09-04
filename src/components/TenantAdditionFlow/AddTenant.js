@@ -120,7 +120,7 @@ function AddTenant() {
     // console.log(JSON.stringify(formData));
     axios
       .post(
-        "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/tenant",
+        "https://b8rliving.com/tenant",
         formData,
         axiosConfig
       )

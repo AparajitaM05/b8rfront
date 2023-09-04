@@ -20,6 +20,9 @@ function ActiveLeads()
     // Perform search operations here
   };
 
+  const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(' ')); 
+
     return(
         <>
          <div
@@ -37,7 +40,7 @@ function ActiveLeads()
 
         <SearchBar onSearch={handleSearch} placeholder="Search by Tenant Name"/>
 
-        <p style={{textAlign:"left"}}>Hey, <br/>
+        <p style={{textAlign:"left"}}>Hey,{name} <br/>
 
         Here are all the tenants that you have onboarded </p>
         <img src={ActiveLeadsI} height={80} style={{borderRadius:"20px"}}/>

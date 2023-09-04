@@ -29,7 +29,11 @@ import ExtraCommonButton from "../ExtraCommonButton";
 
 function Dashboard() {
 
+  // const [CountProperties, setCountProperties] = useState([]);
   const [responseCountProperties, setresponseCountProperties] = useState();
+  const [responseProperties, setresponseProperties] = useState([]);
+  const [CountProperties, setCountProperties] = useState([]);
+  const [CountTenants, setCountTenants] = useState([]);
 	const [loading, setLoading] = useState(false);
   
 
@@ -46,21 +50,22 @@ function Dashboard() {
 		},
 	  };
   useEffect(() => {
-		// event.preventDefault();
 		const fetchPosts = async () => {
 		  setLoading(true);
 		  axios
-			.get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/property", axiosConfig)
+			.get("https://b8rliving.com/property", axiosConfig)
 			.then((response) => {
-			  console.log(response.data.data.properties);
+			  // console.log(response.data.data.properties);
         var myArrayPropertyCount = response.data.data.properties;
         setresponseCountProperties(myArrayPropertyCount.length);
-			  console.log(myArrayPropertyCount.length);
+			  // console.log(myArrayPropertyCount.length);
 
-        if(response.data.data.properties.propertyInfo.purposeRent==true){
+        setresponseProperties(response.data.data.properties);
+        
+        // if(response.data.data.properties.status == "pending"){
      
-          
-        }
+        //   console.log("apending");
+        // }
 
 			  // alert("Your data has been submitted");
 			  // do something with the response
@@ -71,9 +76,64 @@ function Dashboard() {
 			});
 		  setLoading(false);
 		};
-	
+
+
+    
+
+    const fetchPropertiesCounts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("https://b8rliving.com/property/count", axiosConfig);
+        // Update the countProperties state with the response data
+        setCountProperties(response.data.data.counts);
+        // console.log(response.data.data.counts)
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        // Handle the error
+        setLoading(false);
+      }
+		};
+
+    
+    const fetchTententCounts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get("https://b8rliving.com/tenant/count", axiosConfig);
+        // Update the countProperties state with the response data
+        setCountTenants(response.data.data.tenant);
+        // console.log(response.data.data.counts)
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+        // Handle the error
+        setLoading(false);
+      }
+		};
+
+
+
 		fetchPosts();
-	  }, []);
+		fetchPropertiesCounts();
+    fetchTententCounts();
+    console.log(CountTenants.Total)
+	  }, [CountProperties]);
+
+
+
+    var pendingCounting = 0;
+    var activeCounting = 0;
+    responseProperties.map((element) => {
+      // console.log(element.status);
+        if(element.fieldAgentStatus = "Completed" && element.imagesApproved == true){
+          activeCounting = activeCounting + 1;
+          // console.log(activeCounting);
+        } else {
+          pendingCounting = pendingCounting + 1;
+          // console.log(pendingCounting);
+        }
+      return null; // You should return something when using map to avoid React warnings.
+    });
 
   return (
     <>
@@ -132,17 +192,17 @@ function Dashboard() {
             <div className="newboxSizingl">
 
            
-                <Link className="leftlink" to="/AvailablePropertyrental" ><DashComponent img={AvailaibleProperty} title="Available Properties" number={responseCountProperties}/></Link>
+                <Link className="leftlink" to="/AvailablePropertyrental" ><DashComponent img={AvailaibleProperty} title="Available Properties" number={CountProperties.Total}/></Link>
                 <div style={{ marginTop: "5px" }}></div>
-               <Link to="/My_propertyPV" className="leftlink" > <DashComponent img={PendingVerification} title="Pending Verification" number="0"/></Link>
+               <Link to="/My_propertyPV" className="leftlink" > <DashComponent img={PendingVerification} title="Pending Verification" number={CountProperties.Pending}/></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/AllProperty" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number="0"/></Link>
+                <Link to="/AllProperty" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number={CountProperties.New} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/My_PropertyYTS" className="leftlink" ><DashComponent img={yetToShare} title="Yet To Share" number="0"/></Link>
+                <Link to="/My_PropertyYTS" className="leftlink" ><DashComponent img={yetToShare} title="Yet To Share" number={CountProperties.YetToShare} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/My_PropertySNA" className="leftlink" ><DashComponent img={sharedOut} title="Shared" number="0"/></Link>
+                <Link to="/My_PropertySNA" className="leftlink" ><DashComponent img={sharedOut} title="Shared" number={CountProperties.Shared} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/My_PropertyS" className="leftlink" ><DashComponent img={shortlisted} title="Shortlisted" number="0"/></Link>
+                <Link to="/My_PropertyS" className="leftlink" ><DashComponent img={shortlisted} title="Shortlisted" number={CountProperties.Sortlisted} /></Link>
                 
             
                 </div>
@@ -163,13 +223,13 @@ function Dashboard() {
         
             <div className="newboxSizingr" >
             
-            <Link className="Link" to="/ActiveLeads"><DashComponent img={ActiveLeads} title="Active Leads" number="0"/></Link>
+            <Link className="Link" to="/ActiveLeads"><DashComponent img={ActiveLeads} title="Active Leads" number={CountTenants.Total}/></Link>
             <div style={{ marginTop: "5px"}}></div>
-            <Link className="Link" to="/AllTenantOne"><DashComponent img={PendingVerification} title="Waiting For Property" number="0"/></Link>
+            <Link className="Link" to="/AllTenantOne"><DashComponent img={PendingVerification} title="Waiting For Property" number={CountTenants.WaitingForProperty}/></Link>
             <div style={{ marginTop: "5px" }}></div>
-            <Link to="/AllTenantOne" className="Link"><DashComponent img={CurrentlyViewing} title="Currently Viewing" number="0"/></Link>
+            <Link to="/AllTenantOne" className="Link"><DashComponent img={CurrentlyViewing} title="Currently Viewing" number={CountTenants.CurrentlyViewing}/></Link>
             <div style={{ marginTop: "5px" }}></div>
-            <Link to="/AllTenantOne" className="Link"><DashComponent img={shortlisted} title="ShortListed" number="0"/></Link>
+            <Link to="/AllTenantOne" className="Link"><DashComponent img={shortlisted} title="ShortListed" number={CountTenants.Shortlisted}/></Link>
            
             
             </div>

@@ -18,18 +18,18 @@ function CommonHeader(props) {
   // const username = "Aparajita";
 
   const token = localStorage.getItem("token");
-  console.log(token);
+  // console.log(token);
 
   useEffect(() => {
     if (token) {
       setIsLogin(true);
-      console.log(isLogin);
+      // console.log(isLogin);
       let letter = username.charAt(0);
-      console.log(letter);
+      // console.log(letter);
       setletter(letter);
     } else {
       setIsLogin(false);
-      console.log(isLogin);
+      // console.log(isLogin);
     }
   });
 

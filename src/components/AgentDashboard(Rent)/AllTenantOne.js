@@ -13,6 +13,7 @@ import searchImg from "../Assets/Search.png";
 import propertyComp from "./propertyComp";
 import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
 import PendingVerification from "../Assets/Images/AgentDashboard/PendingVerification.png";
+import TenantComp from "./TenantComp";
 
 function AllTenantOne()
 {
@@ -22,9 +23,12 @@ function AllTenantOne()
   const [ActiveBorderColor, setBorderColor] = useState("#A9C0BA");
   const [activeColor, setColor] = useState("#77A8A4");
 	const [loading, setLoading] = useState(false);
-  const [responseTenat, setresponseTenat] = useState();
-  
 
+
+  const [responseTenat, setresponseTenat] = useState();
+  const [responseTenatWaitingForProperty, setresponseTenatWaitingForProperty] = useState();
+  
+  
   const token = localStorage.getItem("token");
   // console.log(token);
 
@@ -41,7 +45,7 @@ function AllTenantOne()
 		const fetchPosts = async () => {
 		  setLoading(true);
 		  axios
-			.get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/tenant", axiosConfig)
+			.get("https://b8rliving.com/tenant", axiosConfig)
 			.then((response) => {
 			  console.log(response.data.data.tenants);
         // var myArrayPropertyCount = response.data.data.properties;
@@ -49,8 +53,6 @@ function AllTenantOne()
 			  // console.log(myArrayPropertyCount.length);
 
         if(response.data.data.properties.propertyInfo.purposeRent==true){
-     
-          
         }
 
 			  // alert("Your data has been submitted");
@@ -71,6 +73,37 @@ function AllTenantOne()
     console.log("Searching for:", searchValue);
 
     // Perform search operations here
+  };
+
+  
+    // Perform search operations here
+  
+  const WaitingForProperty = (query) => {
+    // Custom search handling logic
+    console.log("WaitingForProperty:", query);
+    const fetchPosts = async () => {
+		  setLoading(true);
+		  axios
+			.get("https://b8rliving.com/tenant?filter=WaitingForProperty", axiosConfig)
+			.then((response) => {
+			  console.log(response.data.data.tenants);
+        // var myArrayPropertyCount = response.data.data.properties;
+        setresponseTenatWaitingForProperty(response.data.data);
+			  // console.log(myArrayPropertyCount.length);
+
+        if(response.data.data.properties.propertyInfo.purposeRent==true){
+        }
+
+			  // alert("Your data has been submitted");
+			  // do something with the response
+			})
+			.catch((error) => {
+			  console.log(error);
+			  // handle the error
+			});
+		  setLoading(false);
+		};
+
   };
 
 
@@ -102,6 +135,8 @@ function AllTenantOne()
 
     // Perform search operations here
   };
+  const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(' ')); 
 
     return(
         <>
@@ -289,7 +324,7 @@ function AllTenantOne()
           
             </div>
           
-          <p style={{textAlign:"left"}}> Hey Yash,<br/>
+          <p style={{textAlign:"left"}}> Hey <b>{name}</b>,<br/>
           Here are all the tenants that you have onboarded
          </p>
   
@@ -298,45 +333,13 @@ function AllTenantOne()
           ) : (
                     
 
-        <p style={{textAlign:"left"}}>Hey Yash, <br/>
+        <p style={{textAlign:"left"}}>Hey <b>{name}</b>, <br/>
         Here are all the tenants that you have onboarded
        </p>
           ) } 
-        {/* ------------------------------------First Tab-------------------------------------------------- */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
-                {/* left side */}
-            <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
-                    {/* img */}
-                    <div style={{display:"flex"}}>
-                            <img src={PendingVerification} alt="imgOne" style={{marginLeft:"10px", marginTop:"25px"}} height={30}/>
-                            <h6 style={{marginLeft:"-5px"}}>Waiting for property</h6>
-                            <hr style={{ flex: "1", marginLeft: "-1px" }} />
 
-                    </div>
-                    <div style={{marginTop:"10px"}}>
-                            <text style={{fontSize:"13px"}}>904, Central Park Homes</text>
-
-                            <div style={{width:"150px",height:"25px",background:"#FFEEDB",borderRadius:"10px",marginTop:"20px",marginLeft:"10px"}}>
-                                    <text style={{fontSize:"12px",color:"#BA7B28",marginLeft:"-50px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}>Incorrect Info</text>
-                            </div>
-
-                    </div>
-            </div>
-            {/* right side */}
-            
-            <div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
-
-                <Link to="">
-            <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
-            <text style={{fontSize:"12px",color:"#5D6560",fontWeight:"bold"}}>Take Action</text>
-            </Link>
-            </div>
-               
-
-
-            </div>
-  
-        {/* ------------------------------------First Tab END-------------------------------------------------- */}
+          <TenantComp/>
+        
         <Footer/>
         </div>
         </>

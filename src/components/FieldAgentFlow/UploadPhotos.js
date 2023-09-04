@@ -34,6 +34,7 @@ function UploadPhotos() {
       "Content-Type": "multipart/form-data",
       "Access-Control-Allow-Origin": "*",
       Authorization: `Basic ${token}`,
+      // "Connection": "keep-alive"
     },
   };
 
@@ -63,18 +64,20 @@ function UploadPhotos() {
   const onUpload = async () => {
     setUploadStatus("Uploading....");
     console.log(uploadStatus);
+    console.log(selectedImages);
     const formData = new FormData();
 
     selectedImages.forEach((image) => {
       console.log("Image:", image); // Log image data
       formData.append("images", image);
       formData.append("propertyId", "64ccb0f8373022e054041c07");
-      console.log("FormData:", formData); // Log formData after appending
     });
+
+    console.log("FormData:", formData); // Log formData after appending
 
     axios
       .post(
-        "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/property/upload",
+        "https://b8rliving.com/property/upload",
         formData,
         axiosConfig
       )
@@ -253,7 +256,7 @@ function UploadPhotos() {
               alignItems: "center",
             }}
           >
-            <CommonBtn title="Save & Complete" />
+            <CommonBtn title="Save & Upload" />
           </div>
           <Footer />
         </div>

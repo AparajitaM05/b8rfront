@@ -8,11 +8,11 @@ import vector from "./Assets/Images/RegisterLoginUser/vector.png";
 import logo from "./Assets/Images/Logo.png";
 import CommonBtn from "./CommonButton";
 
-function AuthCode() {
+function AssignProperty() {
   //States
   const [formData, setFormData] = useState({
-    entity: "",
-    code: "",
+    fieldAgentId: "",
+    propertyId: "",
   });
   const [data, setData] = useState(null);
 
@@ -24,7 +24,7 @@ function AuthCode() {
   const handleSubmit = (event) => {
     event.preventDefault();
     axios
-      .post("https://b8rliving.com/agent/authcode", formData)
+      .post("https://b8rliving.com/property/assign", formData)
       .then((response) => {
         console.log(response.data);
         // setData(response.data);
@@ -45,20 +45,20 @@ function AuthCode() {
         //set token to axios common header
         //  setAuthToken(token);
 
-        alert("New Invitation Code Has Been Created");
+        alert("Property has been assigned to the Field Agent");
         //redirect user to Dashboard
-        window.location.href = "/SignUp";
+        // window.location.href = "/SignUp";
       })
       .catch((error) => {
         console.log(error);
-        if (error.response && error.response.data) {
-          const errorMessage = error.response.data.message;
-          if (errorMessage.includes("E11000 duplicate key")) {
-            alert("Entity Code already exists");
-          } else {
-            alert(error);
-          }
-        }
+        // if (error.response && error.response.data) {
+        //   const errorMessage = error.response.data.message;
+        //   if (errorMessage.includes("E11000 duplicate key")) {
+        //     alert("Entity Code already exists");
+        //   } else {
+        //     alert(error);
+        //   }
+        // }
         // alert(error.response.data.message);
         // handle the error
       });
@@ -85,33 +85,33 @@ function AuthCode() {
               <img src={logo} height={40} alt="fireSpot" />
             </Link>
           </div>
-          <h3 className="Htitle">Invitation Code</h3>
+          <h3 className="Htitle">Assign Property to Field Agent</h3>
 
           <form onSubmit={handleSubmit} className="login-form">
             {/* Entity */}
             <label htmlFor="entity" className="label-phone">
-              Entity
+              Field Agent Id
             </label>
             <input
               type="text"
-              id="entity"
-              value={formData.entity}
+              id="fieldAgentId"
+              value={formData.fieldAgentId}
               onChange={handleChange}
-              name="entity"
+              name="fieldAgentId"
               className="input-field"
               required
             />
 
             {/* Code */}
             <label htmlFor="code" className="label-password">
-              Code
+              Property Id
             </label>
             <input
               type="text"
-              id="code"
-              value={formData.code}
+              id="propertyId"
+              value={formData.propertyId}
               onChange={handleChange}
-              name="code"
+              name="propertyId"
               className="input-field"
               required
             ></input>
@@ -126,4 +126,4 @@ function AuthCode() {
     </>
   );
 }
-export default AuthCode;
+export default AssignProperty;

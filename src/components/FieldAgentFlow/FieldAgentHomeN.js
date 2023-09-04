@@ -49,7 +49,7 @@ function FieldAgentHomeN(){
 		const fetchPosts = async () => {
 		  setLoading(true);
 		  axios
-			.get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/field-agent/count", axiosConfig)
+			.get("https://b8rliving.com/field-agent/count", axiosConfig)
 			.then((response) => {
 			  console.log(response.data.data.pending);
               var PendingCount = response.data.data.pending;
@@ -115,7 +115,7 @@ function FieldAgentHomeN(){
                  <div style={{position:"absolute"}}>
 
                 
-                <CommonBtn title="Check & Complete" margin="70px" />
+                <Link to="/FieldPending"><CommonBtn title="Check & Complete" margin="70px" /></Link>
                 </div>
                <div style={{ margin: "25% 0"}}>
                 <DashComponent img={ActiveListing} title="Properties" number={VerifiedCount}/>

@@ -137,7 +137,7 @@ function SignUp() {
     const phone = formData["phoneNumber"];
 
     axios
-      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/agent/signup", formData)
+      .post("https://b8rliving.com/agent/signup", formData)
       .then((response) => {
         console.log(response.data);
         // do something with the response

@@ -44,7 +44,7 @@ function PropertyCreated() {
 //     const fetchPosts = async () => {
 //       setLoading(true);
 //       axios
-//         .get("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/property", axiosConfig)
+//         .get("https://b8rliving.com/property", axiosConfig)
 //         .then((response) => {
 //           setresponseTenant(response.data);
 //           console.log(responseTenant);

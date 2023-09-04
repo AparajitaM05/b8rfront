@@ -1,48 +1,59 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef , useState } from 'react';
 import Dashboardcss from '../Dashboard.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-// import UserLoginDetails from '../UserLoginDetails';
-// import homeDown from '../Assets/Images/homeDown.png';
-// import peopleDown from '../Assets/Images/peopleDown.png';
 import Housimg from "../Assets/Images/TenantSideView/TenantSideViewS.png";
 import Footer from '../Footer';
 import logo from "../Assets/Images/Logo.png";
+import TenantSideViewComp from './TenantSideViewComp';
 
 
 function TenantSideView() {
   const Name= "Prashant"
-  const token = localStorage.getItem('token');
-  console.log(token);
+  const [loading, setLoading] = useState(false);
+  const [responseBoards, setresponseBoards] = useState([]);
 
-  const containerRef = useRef(null);
+  const token = localStorage.getItem("token");
+//   console.log(token);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    localStorage.removeItem('token');
-    alert('You have been logged out.');
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
   };
 
   useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://static.kuula.io/embed.js';
-    script.async = true;
-    script.setAttribute(
-      'data-kuula',
-      'https://kuula.co/share/collection/7FVHk?logo=0&info=0&fs=1&vr=1&sd=1&initload=0&thumbs=1'
-    );
-    script.setAttribute('data-width', '100%');
-    script.setAttribute('data-height', '640px');
-
-    containerRef.current.appendChild(script);
-
-    return () => {
-      containerRef.current.innerHTML = '';
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "https://b8rliving.com/board/64e8afdb9609518e5beb7c9a",
+          axiosConfig
+        );
+  
+        setresponseBoards(response.data.data.board.propertyId);
+      } catch (error) {
+        console.log(error);
+        // Handle the error here if needed
+      } finally {
+        setLoading(false);
+      }
     };
+  
+    fetchPosts();
   }, []);
+  
+  // This useEffect will log the updated state after it has been set.
+  useEffect(() => {
+    console.log(responseBoards);
+  }, [responseBoards]);
 
   return (
     <>
+
+    
     
       <div
         className="form"
@@ -63,6 +74,7 @@ function TenantSideView() {
           <br />
           Check them out and pick which you like.
         </h5>
+
         <div
           // className="containered form"
           // style={{
@@ -72,25 +84,16 @@ function TenantSideView() {
           //   background: '#DAF0EE',
           // }}
         >
-          <Link to="/DetailView"><img
+          {/* <Link to="/DetailView"><img
             src={Housimg}
             alt="Tenant"
             height={320}
-          /></Link>
-          <img
-            
-            style={{ height: '40px', cursor: 'pointer' }}
-            onClick={() => {
-              window.open(
-                'https://kuula.co/share/collection/7FVHk?logo=0&info=0&fs=1&vr=1&sd=1&initload=0&thumbs=1',
-                '_blank'
-              );
-            }}
-          />
-          <div ref={containerRef}></div>
-          <div>
-            <h5></h5>
-          </div>
+          /></Link> */}
+        
+       
+        
+        <TenantSideViewComp boards={responseBoards} />
+          
         </div>
         <Footer />
       </div>

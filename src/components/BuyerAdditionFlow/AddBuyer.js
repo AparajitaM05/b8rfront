@@ -86,7 +86,7 @@ function AddBuyer() {
 
     axios
       .post(
-        "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/buyer",
+        "https://b8rliving.com/buyer",
         formData,
         axiosConfig
       )

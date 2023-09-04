@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import PropertyInfocss from "./PropertyInfo.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
@@ -42,20 +42,35 @@ import broom from "../Assets/Images/PropertyAdditionPageIcons/floor_number/broom
 import Movein from "../Assets/Images/Move-in.png";
 
 function PropertyInfo() {
+  const queryParameters = new URLSearchParams(window.location.search);
+  const idProperty = queryParameters.get("propertyId");
+  console.log("id" + idProperty);
+
   const [checkedStateOne, setCheckedStateOne] = useState(true);
   const [checkedStateTwo, setCheckedStateTwo] = useState(false);
   const [checkedStateThree, setCheckedStateThree] = useState(false);
 
-  const [isCheckRent, setisCheckRent] = useState(Boolean);
-  const [isCheckSale, setisCheckSale] = useState(Boolean);
+  const [loading, setLoading] = useState(false);
+  const [responseDataPendingProperties, setresponseDataPendingProperties] =
+    useState([]);
+  const token = localStorage.getItem("token");
+  //   console.log(token);
+
+  // const [formDataNew, setFormDataNew] = useState([]);
 
   const [formData, setFormData] = useState({
-    status: "Pending",
+    // success: true,
+    // data: {
+    // property: {
+    _id: "",
     houseName: "",
     societyName: "",
     pinCode: "",
+    status: "Pending",
+    fieldAgentStatus: "Pending",
 
-    propertyData: {
+    propertyDetails: {
+      _id: "",
       propertyInfo: {
         houseType: "",
         houseConfig: "",
@@ -63,33 +78,41 @@ function PropertyInfo() {
         mapLocation: "",
         purposeRent: false,
         purposeSale: false,
+        rented: false,
       },
-
       ownerInfo: {
-        phoneNumber: "",
-        panNumber: "",
-        country: "",
-        city: "",
         name: {
           first: "",
           last: "",
         },
+        phoneNumber: "",
+        panNumber: "",
+        country: "",
+        city: "",
       },
-
       featureInfo: {
         gatedSecurity: true,
         powerBackup: true,
         groceryStore: true,
-        swimmingPool: true,
-        gym: true,
-        clubHouse: true,
+        swimmingPool: false,
+        gym: false,
+        clubHouse: false,
         carpetArea: "",
+        floors: {
+          total: "",
+          your: "",
+        },
+        parking: {
+          car: "",
+          bike: "",
+          type: "",
+        },
         houseHelpRoom: "",
         bathrooms: "",
         balconies: "",
         furnishingType: "",
         ac: true,
-        nonVeg: true,
+        nonVeg: false,
         constructionYear: "",
         availableFrom: "",
         rentAmount: 0,
@@ -100,103 +123,196 @@ function PropertyInfo() {
         saleDeposit: 0,
         saleMaintenance: 0,
         moveInFrom: 0,
-
-        floors: {
-          total: "",
-          your: "",
-        },
-
-        parking: {
-          car: "",
-          bike: "",
-          type: "",
-        },
       },
+      approveInfo: null,
+      version: 1,
+      agentId: "",
+      createdAt: "",
+      updatedAt: "",
+      __v: 0,
     },
+    images: [],
+    imagesApproved: false,
+    closeListingDetails: null,
+    reactivateDetails: null,
+    sharedProperty: [],
+    sharedBuyerProperty: [],
+    createdAt: "",
+    updatedAt: "",
+    __v: 0,
+    // },
+    // },
+    // message: "Property found successfully.",
+    // meta: {},
+    // errors: [],
   });
 
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   setFormData((prevState) => ({ ...prevState, [name]: value }));
-  // };
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    const fetchpropertyDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://b8rliving.com/property/${idProperty}`,
+          axiosConfig
+        );
+
+        // setformData(response.data.data.property);
+        // Assuming you have your response data stored in a variable called 'response'
+        const responseData = response.data.data.property;
+
+        // Update the formData state with the response data
+        setFormData(responseData);
+        // setFormDataNew(response.data.data.property);
+
+        // Log the updated state
+        // console.log(formDataNew);
+        // console.log(JSON.stringify(formData));
+      } catch (error) {
+        // Handle any errors that occur during the API request
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+    };
+
+    fetchpropertyDetails(); // Call the fetch function
+  }, [idProperty]); // Make sure to include idProperty in the dependency array if it's dynamic.
+
+  useEffect(() => {
+    console.log("Changed Widgets: ", formData);
+  }, [formData]);
+
+  // // This useEffect will log the updated state after it has been set.
+  // useEffect(() => {
+  //   console.log(formData);
+  // }, [formData]);
+
+  //PUT
+  const [isCheckRent, setisCheckRent] = useState(Boolean);
+  const [isCheckSale, setisCheckSale] = useState(Boolean);
+
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
 
     setFormData((prevState) => {
-      if (name in prevState.propertyData.propertyInfo) {
+      if (name in prevState.propertyDetails.propertyInfo) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
+
+          propertyDetails: {
+            ...prevState.propertyDetails,
             propertyInfo: {
-              ...prevState.propertyData.propertyInfo,
+              ...prevState.propertyDetails.propertyInfo,
               [name]: value,
               [name]: type === "checkbox" ? checked : value,
             },
           },
         };
-      } else if (name in prevState.propertyData.ownerInfo.name) {
+      } else if (name in prevState.propertyDetails) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
-            ownerInfo: {
-              ...prevState.propertyData.ownerInfo,
-              name: {
-                ...prevState.propertyData.ownerInfo.name,
-                [name]: value,
-              },
-            },
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            [name]: value,
           },
         };
-      } else if (name in prevState.propertyData.ownerInfo) {
+      } else if (name in prevState.propertyDetails.featureInfo) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
-            ownerInfo: {
-              ...prevState.propertyData.ownerInfo,
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            featureInfo: {
+              ...prevState.propertyDetails.featureInfo,
               [name]: value,
             },
           },
         };
-      } else if (name in prevState.propertyData.featureInfo.floors) {
+      } else if (name in prevState.propertyDetails.featureInfo.floors) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
+          propertyDetails: {
+            ...prevState.propertyDetails,
             featureInfo: {
-              ...prevState.propertyData.featureInfo,
+              ...prevState.propertyDetails.featureInfo,
               floors: {
-                ...prevState.propertyData.featureInfo.floors,
+                ...prevState.propertyDetails.featureInfo.floors,
                 [name]: value,
               },
             },
           },
         };
-      } else if (name in prevState.propertyData.featureInfo.parking) {
+      } else if (name in prevState.propertyDetails.featureInfo.parking) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
+          propertyDetails: {
+            ...prevState.propertyDetails,
             featureInfo: {
-              ...prevState.propertyData.featureInfo,
+              ...prevState.propertyDetails.featureInfo,
               parking: {
-                ...prevState.propertyData.featureInfo.parking,
+                ...prevState.propertyDetails.featureInfo.parking,
                 [name]: value,
               },
             },
           },
         };
-      } else if (name in prevState.propertyData.featureInfo) {
+      } else if (name in prevState.propertyDetails.ownerInfo.name) {
         return {
           ...prevState,
-          propertyData: {
-            ...prevState.propertyData,
-            featureInfo: {
-              ...prevState.propertyData.featureInfo,
-
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            ownerInfo: {
+              ...prevState.propertyDetails.ownerInfo,
+              name: {
+                ...prevState.propertyDetails.ownerInfo.name,
+                [name]: value,
+              },
+            },
+          },
+        };
+      } else if (name in prevState.propertyDetails.ownerInfo) {
+        return {
+          ...prevState,
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            ownerInfo: {
+              ...prevState.propertyDetails.ownerInfo,
               [name]: value,
+            },
+          },
+        };
+      } else if (name in prevState.propertyDetails.featureInfo.floors) {
+        return {
+          ...prevState,
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            featureInfo: {
+              ...prevState.propertyDetails.featureInfo,
+              floors: {
+                ...prevState.propertyDetails.featureInfo.floors,
+                [name]: value,
+              },
+            },
+          },
+        };
+      } else if (name in prevState.propertyDetails.featureInfo.parking) {
+        return {
+          ...prevState,
+          propertyDetails: {
+            ...prevState.propertyDetails,
+            featureInfo: {
+              ...prevState.propertyDetails.featureInfo,
+              parking: {
+                ...prevState.propertyDetails.featureInfo.parking,
+                [name]: value,
+              },
             },
           },
         };
@@ -209,76 +325,61 @@ function PropertyInfo() {
     });
   };
 
-  // const handleChange = (event) => {
-  //   //   const { name, value } = event.target;
-  //   //   setFormData((prevState) => ({ ...prevState, [name]: value }));
+  const handleChangeOne = (event) => {
+    event.preventDefault();
 
-  //   const { name, value, type, checked } = event.target;
-
-  //   setFormData((prevState) => ({
-  //     ...prevState,
-
-  //     propertyData: {
-  //       ...prevState.propertyData,
-
-  //       propertyInfo: {
-  //         ...prevState.propertyData.propertyInfo,
-  //         [name]: value,
-  //         [name]: type === "checkbox" ? checked : value,
-  //       },
-
-  //     //   ownerInfo: {
-  //     //     ...prevState.propertyData.ownerInfo,
-  //     //     [name]: value,
-
-  //     //     name: {
-  //     //       ...prevState.propertyData.ownerInfo.name,
-  //     //       [name]: value,
-  //     //     },
-  //     //   },
-  //     //   featureInfo: {
-  //     //     ...prevState.propertyData.featureInfo,
-  //     //     [name]: value,
-  //     //     // [name]: type === 'checkbox' ? checked : value,
-
-  //     //     floors: {
-  //     //       ...prevState.propertyData.featureInfo.floors,
-  //     //       [name]: value,
-  //     //     },
-  //     //     parking: {
-  //     //       ...prevState.propertyData.featureInfo.parking,
-  //     //       [name]: value,
-  //     //     },
-  //     //   },
-  //     // },
-  //     [name]: value, // this will set houseName in the state
-  //   },
-  //   })
-  //   );
-
-  // };
-
-  const token = localStorage.getItem("token");
-  console.log(token);
-  // console.log(formData);
-
-  const handleChangeOne = () => {
+    console.log("CLICKED");
     setCheckedStateOne((current) => !current);
     setCheckedStateTwo((current) => !current);
     console.log("Received from PrpertyInfo - 1s In state:", formData);
 
-    formData.propertyData.propertyInfo.purposeRent
-      ? setisCheckRent(true)
-      : setisCheckRent(false);
-    formData.propertyData.propertyInfo.purposeSale
-      ? setisCheckSale(true)
-      : setisCheckSale(false);
+    // formData.propertyDetails.propertyInfo.purposeRent
+    //   ? setisCheckRent(true)
+    //   : setisCheckRent(false);
+    // formData.propertyInfo.houseType
+    //   ? setisCheckSale(true)
+    //   : setisCheckSale(false);
   };
 
-  const handleChangeTwo = () => {
+  const handleChangeTwo = (event) => {
+    event.preventDefault();
+
+    console.log("CLICKED 2");
     setCheckedStateTwo((current) => !current);
     setCheckedStateThree((current) => !current);
-    console.log("Received from TenantPref In state:", formData);
+
+    console.log("Received from PrpertyInfo - 1s In state 2:", formData);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log("Received from Final In state:", formData);
+
+    try {
+      const response = await axios.put(
+        `https://b8rliving.com/property/${idProperty}`,
+        formData,
+        axiosConfig
+      );
+
+      // setformData(response.data.data.property);
+      // Assuming you have your response data stored in a variable called 'response'
+      // const responseData = response.data.data.property;
+
+      // Update the formData state with the response data
+      // setFormData(responseData);
+      // setFormDataNew(response.data.data.property);
+
+      // Log the updated state
+      console.log(response);
+      alert(response);
+      // console.log(JSON.stringify(formData));
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
   };
 
   const pincodeRegex = /^\d{6}$/;
@@ -290,59 +391,6 @@ function PropertyInfo() {
     } else {
       alert("Invalid PIN code");
     }
-  };
-
-  //API REQUEST
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: `Basic ${token}`,
-    },
-  };
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // const Jdata =  JSON.stringify(formData, null, 2);
-    // console.log("JSON VARIABLE",Jdata);
-    console.log(JSON.stringify(formData));
-    axios
-      .post(
-        "http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/property",
-        formData,
-        axiosConfig
-      )
-      .then((response) => {
-        console.log(response.data);
-        alert("Your Property details has been submitted");
-        // do something with the response
-        if (response.data.data.property.propertyDetails.length > 0) {
-          const rentAmountConst =
-            response.data.data.property.propertyDetails[0].featureInfo
-              .rentAmount;
-          const saleAmountConst =
-            response.data.data.property.propertyDetails[0].featureInfo
-              .rentAmount;
-          console.log("Rent Amount:", rentAmountConst);
-          if (rentAmountConst > 1 && saleAmountConst > 1) {
-            window.location.href = `/PropertyCreated?name=${formData.propertyData.ownerInfo.name.first}&furnishingType=${formData.propertyData.featureInfo.furnishingType}&rentAmount=${formData.propertyData.featureInfo.rentAmount}&rentDeposit=${formData.propertyData.featureInfo.rentDeposit}&saleAmount=${formData.propertyData.featureInfo.saleAmount}&saleDeposit=${formData.propertyData.featureInfo.saleDeposit}&houseConfig=${formData.propertyData.propertyInfo.houseConfig}`;
-          }
-          else if (rentAmountConst > 1) {
-            window.location.href = `/PropertyCreated?name=${formData.houseName}&furnishingType=${formData.propertyData.featureInfo.furnishingType}&rentAmount=${formData.propertyData.featureInfo.rentAmount}&rentDeposit=${formData.propertyData.featureInfo.rentDeposit}&houseConfig=${formData.propertyData.propertyInfo.houseConfig}`;
-          }
-          else if (saleAmountConst > 1) {
-            window.location.href = `/PropertyCreated?name=${formData.propertyData.ownerInfo.name.first}&furnishingType=${formData.propertyData.featureInfo.furnishingType}&saleAmount=${formData.propertyData.featureInfo.saleAmount}&saleDeposit=${formData.propertyData.featureInfo.saleDeposit}&houseConfig=${formData.propertyData.propertyInfo.houseConfig}`;
-          }
-         
-        } else {
-          console.log("propertyDetails array is empty. Try Again");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-        // handle the error
-      });
-    console.log("Finale In state:", formData);
   };
 
   const styles = {
@@ -396,7 +444,7 @@ function PropertyInfo() {
               <select
                 id="houseType"
                 name="houseType"
-                value={formData.propertyData.propertyInfo.houseType}
+                value={formData.houseType}
                 onChange={handleChange}
                 style={{
                   backgroundColor: "white",
@@ -405,8 +453,12 @@ function PropertyInfo() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="Selectfromdropdown">
-                  Select from Drop Down
+                <option
+                  selected
+                  value="{formData.propertyDetails.propertyInfo.houseType}"
+                  disabled
+                >
+                  {formData.propertyDetails.propertyInfo.houseType}
                 </option>
                 <option value="Flat (in Gated Society)">
                   Flat (in Gated Society)
@@ -440,7 +492,7 @@ function PropertyInfo() {
               <select
                 id="houseConfig"
                 name="houseConfig"
-                value={formData.propertyData.propertyInfo.houseConfig}
+                value={formData.houseConfig}
                 onChange={handleChange}
                 style={{
                   backgroundColor: "white",
@@ -449,18 +501,20 @@ function PropertyInfo() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="houseConfig" disabled>
-                  Select from Drop Down
+                <option
+                  selected
+                  value="{formData.propertyDetails.propertyInfo.houseConfig}"
+                  disabled
+                >
+                  {formData.propertyDetails.propertyInfo.houseConfig}
                 </option>
-                
                 <option value="Studio">Studio</option>
-               
+
                 <option value="1 BHK">1 BHK</option>
-                
+
                 <option value="2 BHK">2 BHK</option>
                 <option value="3 BHK">3 BHK</option>
                 <option value="4 BHK">4 BHK</option>
-               
               </select>
               <br></br>
 
@@ -569,7 +623,7 @@ function PropertyInfo() {
                 type="text"
                 id="area"
                 name="area"
-                value={formData.propertyData.propertyInfo.area}
+                value={formData.propertyDetails.propertyInfo.area}
                 onChange={handleChange}
                 placeholder="Area/Locality"
                 style={{
@@ -598,7 +652,7 @@ function PropertyInfo() {
                 type="text"
                 id="mapLocation"
                 name="mapLocation"
-                value={formData.propertyData.propertyInfo.mapLocation}
+                value={formData.propertyDetails.propertyInfo.mapLocation}
                 onChange={handleChange}
                 placeholder="Google Maps Plug-in"
                 style={{
@@ -631,7 +685,12 @@ function PropertyInfo() {
                     type="checkbox"
                     id="purposeRent"
                     name="purposeRent"
-                    value={formData.propertyData.propertyInfo.purposeRent}
+                    checked={
+                      formData.propertyDetails.propertyInfo.purposeRent
+                        ? true
+                        : false
+                    }
+                    // value={formData.propertyDetails.propertyInfo.purposeRent}
                     style={{
                       width: "10px",
                       padding: "1%",
@@ -655,8 +714,13 @@ function PropertyInfo() {
                     type="checkbox"
                     id="purposeSale"
                     name="purposeSale"
-                    value={formData.propertyData.propertyInfo.purposeSale}
+                    // value={formData.propertyInfo.purposeSale}
                     // checked={saleChecked}
+                    checked={
+                      formData.propertyDetails.propertyInfo.purposeSale
+                        ? true
+                        : false
+                    }
                     onChange={handleChange}
                   />
                   <label htmlFor="purposeSale">For Sale</label>
@@ -715,7 +779,7 @@ function PropertyInfo() {
                 id="first"
                 placeholder="Landlord First Name"
                 name="first"
-                value={formData.propertyData.ownerInfo.name.first}
+                value={formData.propertyDetails.ownerInfo.name.first}
                 onChange={handleChange}
                 style={styles}
               />
@@ -738,7 +802,7 @@ function PropertyInfo() {
                 id="last"
                 placeholder="Landlord last name"
                 name="last"
-                value={formData.propertyData.ownerInfo.name.last}
+                value={formData.propertyDetails.ownerInfo.name.last}
                 onChange={handleChange}
                 style={styles}
               />
@@ -762,7 +826,7 @@ function PropertyInfo() {
                 id="phoneNumber"
                 placeholder="contact number"
                 name="phoneNumber"
-                value={formData.propertyData.ownerInfo.phoneNumber}
+                value={formData.propertyDetails.ownerInfo.phoneNumber}
                 onChange={handleChange}
                 style={styles}
               />
@@ -785,7 +849,7 @@ function PropertyInfo() {
                 id="panNumber"
                 placeholder="Pan number"
                 name="panNumber"
-                value={formData.propertyData.ownerInfo.panNumber}
+                value={formData.propertyDetails.ownerInfo.panNumber}
                 onChange={handleChange}
                 style={styles}
               />
@@ -808,7 +872,7 @@ function PropertyInfo() {
                 id="country"
                 placeholder="residing country"
                 name="country"
-                value={formData.propertyData.ownerInfo.country}
+                value={formData.propertyDetails.ownerInfo.country}
                 onChange={handleChange}
                 style={styles}
               />
@@ -831,7 +895,7 @@ function PropertyInfo() {
                 id="city"
                 placeholder="residing city"
                 name="city"
-                value={formData.propertyData.ownerInfo.city}
+                value={formData.propertyDetails.ownerInfo.city}
                 onChange={handleChange}
                 style={styles}
               />
@@ -922,20 +986,22 @@ function PropertyInfo() {
                       always secure
                     </h6>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.gatedSecurity}
+                      checked={
+                        formData.propertyDetails.featureInfo.gatedSecurity
+                      }
                       //  onChange={() =>  setFormData({
                       //    ...formData,
-                      //    gatedSecurity: !formData.propertyData.featureInfo.gatedSecurity,
+                      //    gatedSecurity: !formData.propertyDetails.featureInfo.gatedSecurity,
                       //  })}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["gatedSecurity"]:
-                                !formData.propertyData.featureInfo
+                                !formData.propertyDetails.featureInfo
                                   .gatedSecurity,
                             },
                           },
@@ -957,16 +1023,17 @@ function PropertyInfo() {
                       Power Back-up
                     </h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.powerBackup}
+                      checked={formData.propertyDetails.featureInfo.powerBackup}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["powerBackup"]:
-                                !formData.propertyData.featureInfo.powerBackup,
+                                !formData.propertyDetails.featureInfo
+                                  .powerBackup,
                             },
                           },
                         }))
@@ -989,16 +1056,19 @@ function PropertyInfo() {
                       In Campus
                     </h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.groceryStore}
+                      checked={
+                        formData.propertyDetails.featureInfo.groceryStore
+                      }
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["groceryStore"]:
-                                !formData.propertyData.featureInfo.groceryStore,
+                                !formData.propertyDetails.featureInfo
+                                  .groceryStore,
                             },
                           },
                         }))
@@ -1024,16 +1094,19 @@ function PropertyInfo() {
                       Swimming Pool
                     </h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.swimmingPool}
+                      checked={
+                        formData.propertyDetails.featureInfo.swimmingPool
+                      }
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["swimmingPool"]:
-                                !formData.propertyData.featureInfo.swimmingPool,
+                                !formData.propertyDetails.featureInfo
+                                  .swimmingPool,
                             },
                           },
                         }))
@@ -1059,15 +1132,16 @@ function PropertyInfo() {
                       Gym
                     </h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.gym}
+                      checked={formData.propertyDetails.featureInfo.gym}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
-                              ["gym"]: !formData.propertyData.featureInfo.gym,
+                              ...prevState.propertyDetails.featureInfo,
+                              ["gym"]:
+                                !formData.propertyDetails.featureInfo.gym,
                             },
                           },
                         }))
@@ -1093,16 +1167,16 @@ function PropertyInfo() {
                       Club house
                     </h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.clubHouse}
+                      checked={formData.propertyDetails.featureInfo.clubHouse}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["clubHouse"]:
-                                !formData.propertyData.featureInfo.clubHouse,
+                                !formData.propertyDetails.featureInfo.clubHouse,
                             },
                           },
                         }))
@@ -1169,7 +1243,7 @@ function PropertyInfo() {
                     <input
                       type="number"
                       id="carpetArea"
-                      value={formData.propertyData.featureInfo.carpetArea}
+                      value={formData.propertyDetails.featureInfo.carpetArea}
                       onChange={handleChange}
                       name="carpetArea"
                       placeholder="number only*"
@@ -1213,7 +1287,7 @@ function PropertyInfo() {
                       <input
                         type="number"
                         id="your"
-                        value={formData.propertyData.featureInfo.floors.your}
+                        value={formData.propertyDetails.featureInfo.floors.your}
                         onChange={handleChange}
                         name="your"
                         placeholder="number only*"
@@ -1232,7 +1306,9 @@ function PropertyInfo() {
                       <input
                         type="number"
                         id="total"
-                        value={formData.propertyData.featureInfo.floors.total}
+                        value={
+                          formData.propertyDetails.featureInfo.floors.total
+                        }
                         onChange={handleChange}
                         name="total"
                         placeholder="number*"
@@ -1281,7 +1357,7 @@ function PropertyInfo() {
                     <select
                       id="car"
                       name="car"
-                      value={formData.propertyData.featureInfo.parking.car}
+                      value={formData.propertyDetails.featureInfo.parking.car}
                       onChange={handleChange}
                       style={{
                         backgroundColor: "white",
@@ -1312,7 +1388,7 @@ function PropertyInfo() {
                     <select
                       id="bike"
                       name="bike"
-                      value={formData.propertyData.featureInfo.parking.bike}
+                      value={formData.propertyDetails.featureInfo.parking.bike}
                       onChange={handleChange}
                       style={{
                         backgroundColor: "white",
@@ -1342,7 +1418,7 @@ function PropertyInfo() {
                     <select
                       id="type"
                       name="type"
-                      value={formData.propertyData.featureInfo.parking.type}
+                      value={formData.propertyDetails.featureInfo.parking.type}
                       onChange={handleChange}
                       style={{
                         backgroundColor: "white",
@@ -1387,7 +1463,7 @@ function PropertyInfo() {
                   <select
                     id="houseHelpRoom"
                     name="houseHelpRoom"
-                    value={formData.propertyData.featureInfo.houseHelpRoom}
+                    value={formData.propertyDetails.featureInfo.houseHelpRoom}
                     onChange={handleChange}
                     style={{
                       backgroundColor: "white",
@@ -1426,7 +1502,7 @@ function PropertyInfo() {
                     <select
                       id="bathrooms"
                       name="bathrooms"
-                      value={formData.propertyData.featureInfo.bathrooms}
+                      value={formData.propertyDetails.featureInfo.bathrooms}
                       onChange={handleChange}
                       style={{
                         backgroundColor: "white",
@@ -1470,7 +1546,7 @@ function PropertyInfo() {
                     <select
                       id="balconies"
                       name="balconies"
-                      value={formData.propertyData.featureInfo.balconies}
+                      value={formData.propertyDetails.featureInfo.balconies}
                       onChange={handleChange}
                       style={{
                         backgroundColor: "white",
@@ -1521,7 +1597,7 @@ function PropertyInfo() {
                   <select
                     id="furnishingType"
                     name="furnishingType"
-                    value={formData.propertyData.featureInfo.furnishingType}
+                    value={formData.propertyDetails.featureInfo.furnishingType}
                     onChange={handleChange}
                     style={{
                       backgroundColor: "white",
@@ -1532,7 +1608,6 @@ function PropertyInfo() {
                         "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
                     }}
                   >
-                    
                     <option value="furnish">Drop Down</option>
                     <option
                       style={{ textAlign: "center", backgroundColor: "red" }}
@@ -1563,15 +1638,15 @@ function PropertyInfo() {
                     <img src={Ac_png} alt="Icon description" />
                     <h5>Air Conditioner</h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.ac}
+                      checked={formData.propertyDetails.featureInfo.ac}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
-                              ["ac"]: !formData.propertyData.featureInfo.ac,
+                              ...prevState.propertyDetails.featureInfo,
+                              ["ac"]: !formData.propertyDetails.featureInfo.ac,
                             },
                           },
                         }))
@@ -1602,16 +1677,16 @@ function PropertyInfo() {
                     <img src={veg_nonveg} alt="Icon description" />
                     <h5 style={{ marginTop: "0px" }}>Non Veg Allowed?</h5>
                     <ReactSwitch
-                      checked={formData.propertyData.featureInfo.nonVeg}
+                      checked={formData.propertyDetails.featureInfo.nonVeg}
                       onChange={() =>
                         setFormData((prevState) => ({
                           ...prevState,
-                          propertyData: {
-                            ...prevState.propertyData,
+                          propertyDetails: {
+                            ...prevState.propertyDetails,
                             featureInfo: {
-                              ...prevState.propertyData.featureInfo,
+                              ...prevState.propertyDetails.featureInfo,
                               ["nonVeg"]:
-                                !formData.propertyData.featureInfo.nonVeg,
+                                !formData.propertyDetails.featureInfo.nonVeg,
                             },
                           },
                         }))
@@ -1658,7 +1733,9 @@ function PropertyInfo() {
                     <input
                       type="number"
                       id="constructionYear"
-                      value={formData.propertyData.featureInfo.constructionYear}
+                      value={
+                        formData.propertyDetails.featureInfo.constructionYear
+                      }
                       onChange={handleChange}
                       name="constructionYear"
                       placeholder="-year drop-down* -"
@@ -1694,7 +1771,7 @@ function PropertyInfo() {
                       type="date"
                       id="availableFrom"
                       pattern="\d{2}-\d{2}-\d{4}"
-                      value={formData.propertyData.featureInfo.availableFrom}
+                      value={formData.propertyDetails.featureInfo.availableFrom}
                       onChange={handleChange}
                       name="availableFrom"
                       // placeholder="username"
@@ -1756,7 +1833,7 @@ function PropertyInfo() {
                       <input
                         type="number"
                         id="rentAmount"
-                        value={formData.propertyData.featureInfo.rentAmount}
+                        value={formData.propertyDetails.featureInfo.rentAmount}
                         onChange={handleChange}
                         name="rentAmount"
                         placeholder="-number only*-"
@@ -1788,7 +1865,7 @@ function PropertyInfo() {
                       <input
                         type="number"
                         id="rentDeposit"
-                        value={formData.propertyData.featureInfo.rentDeposit}
+                        value={formData.propertyDetails.featureInfo.rentDeposit}
                         onChange={handleChange}
                         name="rentDeposit"
                         placeholder="-number only*-"
@@ -1827,7 +1904,7 @@ function PropertyInfo() {
                         type="number"
                         id="rentMaintenance"
                         value={
-                          formData.propertyData.featureInfo.rentMaintenance
+                          formData.propertyDetails.featureInfo.rentMaintenance
                         }
                         onChange={handleChange}
                         name="rentMaintenance"
@@ -1862,7 +1939,9 @@ function PropertyInfo() {
                       <input
                         type="number"
                         id="lockInPeriod"
-                        value={formData.propertyData.featureInfo.lockInPeriod}
+                        value={
+                          formData.propertyDetails.featureInfo.lockInPeriod
+                        }
                         onChange={handleChange}
                         name="lockInPeriod"
                         placeholder="-number only*-"
@@ -1927,7 +2006,9 @@ function PropertyInfo() {
                         <input
                           type="number"
                           id="saleAmount"
-                          value={formData.propertyData.featureInfo.saleAmount}
+                          value={
+                            formData.propertyDetails.featureInfo.saleAmount
+                          }
                           onChange={handleChange}
                           name="saleAmount"
                           placeholder="-number only*-"
@@ -1961,7 +2042,9 @@ function PropertyInfo() {
                         <input
                           type="number"
                           id="saleDeposit"
-                          value={formData.propertyData.featureInfo.saleDeposit}
+                          value={
+                            formData.propertyDetails.featureInfo.saleDeposit
+                          }
                           onChange={handleChange}
                           name="saleDeposit"
                           placeholder="-number only*-"
@@ -2001,7 +2084,7 @@ function PropertyInfo() {
                           type="number"
                           id="saleMaintenance"
                           value={
-                            formData.propertyData.featureInfo.saleMaintenance
+                            formData.propertyDetails.featureInfo.saleMaintenance
                           }
                           onChange={handleChange}
                           name="saleMaintenance"
@@ -2036,7 +2119,9 @@ function PropertyInfo() {
                         <input
                           type="number"
                           id="moveInFrom"
-                          value={formData.propertyData.featureInfo.moveInFrom}
+                          value={
+                            formData.propertyDetails.featureInfo.moveInFrom
+                          }
                           onChange={handleChange}
                           name="moveInFrom"
                           placeholder="-number only*-"

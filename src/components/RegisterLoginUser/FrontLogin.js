@@ -14,7 +14,8 @@ function FrontLogin() {
     phoneNumber: "",
     password: "",
   });
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
+	const [loading, setLoading] = useState(false);
 
   // const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
@@ -35,7 +36,7 @@ function FrontLogin() {
     // alert("SignIn Hit");
     event.preventDefault();
     axios
-      .post("http://b8rhomes-api.ap-south-1.elasticbeanstalk.com:8080/agent/signin", formData)
+      .post("https://b8rliving.com/agent/signin", formData)
       .then((response) => {
         // console.log(response.data);
         // setData(response.data);

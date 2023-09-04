@@ -72,8 +72,8 @@ import TenantSideView from "./components/TenantSideView/TenantSideView";
 //PropertyCreate -Imports ---------------------------------------------------
 // import PropertyDetails from "./components/PropertyDetails";
 import PropertyInfo from "./components/PropertyCreate/PropertyInfo";
-import PropertyDI from "./components/PropertyCreate/PropertyDI";
-import LandlordInfo from "./components/PropertyCreate/LandlordInfo";
+// import PropertyDI from "./components/PropertyCreate/PropertyDI";
+// import LandlordInfo from "./components/PropertyCreate/LandlordInfo";
 // _________________________________________________________________________
 
 //Board Creation Rent
@@ -329,8 +329,8 @@ function App(props) {
                 element={<ReactivatePropertyS />}
               />
 
-              <Route exact path="LandlordInfo" element={<LandlordInfo />} />
-              <Route exact path="PropertyDI" element={<PropertyDI />} />
+              {/* <Route exact path="LandlordInfo" element={<LandlordInfo />} />
+              <Route exact path="PropertyDI" element={<PropertyDI />} /> */}
               <Route exact path="PropertyInfo" element={<PropertyInfo />} />
               {/* <Route exact path="TenantAdded" element={<TenantAdded />} /> */}
               <Route exact path="TenantPref" element={<TenantPref />} />

@@ -170,10 +170,8 @@ function SignUp() {
               window.location.href = `/ConfirmOTPAgent?sessionId=${OTP_SESSION}&phone=${phone}&username=${username}`;
             })
             .catch((error) => {
-              console.log(error);
-              const errorMessage = error.response.data.message;
-              alert(errorMessage);
-              // handle the error
+              alert( error );
+              // handle the OTP error
             });
     
 
@@ -186,8 +184,10 @@ function SignUp() {
         // window.location.href = "/FrontLogin";
       })
       .catch((error) => {
-        console.log(error);
-        // handle the error
+        // console.log(error);
+        console.warn ( error.response.data.message);
+        alert(error.response.data.message);
+        // handle the form error
       });
 
       //Handle Submit

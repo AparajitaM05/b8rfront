@@ -7,9 +7,9 @@ import ActiveListing from "../Assets/Images/AgentDashboard/ActiveListing.png";
 import PendingVerification from "../Assets/Images/AgentDashboard/PendingVerification.png";
 import SearchBar from "../SearchBar";
 
-const AvailablePropertyComp = ({ properties , name }) => {
+const AvailablePropertyComp = ({ props , name }) => {
 
-        const [filteredProperties, setFilteredProperties] = useState(properties);
+        const [filteredData, setfilteredData] = useState(props);
         const [searchValue, setSearchValue] = useState('');
       
         const handleSearch = (searchTerm) => {
@@ -17,27 +17,25 @@ const AvailablePropertyComp = ({ properties , name }) => {
             
                 // If search term is empty, show all properties
                 if (searchTerm === '') {
-                  setFilteredProperties(properties);
+                  setfilteredData(props);
                 } else {
                   // Filter properties based on houseName
-                  const filtered = properties.filter((property) =>
+                  const filtered = props.filter((property) =>
                     property.houseName.toLowerCase().includes(searchTerm.toLowerCase())
                   );
-                  setFilteredProperties(filtered);
+                  setfilteredData(filtered);
                 }
               };
 
               useEffect(() => {
-                // Initialize filteredProperties with all properties when the component loads
-                setFilteredProperties(properties);
-              }, [properties]);
+                // Initialize filteredData with all properties when the component loads
+                setfilteredData(props);
+              }, [props]);
     
   return (
     <>
-{/*    
-   <SearchBar value={searchValue}
-        onChange={(e) => handleSearch(e.target.value)}
-        placeholder="Search by property Name" /> */}
+   
+
    <input
         type="text"
         value={searchValue}
@@ -49,7 +47,7 @@ const AvailablePropertyComp = ({ properties , name }) => {
         Here are all the rent properties that are available for renting out.</p>
 
    {/* Mapping */}
-   {filteredProperties.map((property, index) => (
+   {filteredData.map((values, index) => (
         <div key={index}>
 
         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px", padding: "5%"}}>
@@ -61,11 +59,11 @@ const AvailablePropertyComp = ({ properties , name }) => {
                     </div>
                             {/* <p style={{fontSize:"12px", marginLeft:"20px", width:"400%"}}>904, Central Park Homes</p> */}
                     <div style={{display: "flex", flexDirection: "column", marginLeft: "20px", textAlign:"left"}}>
-                            <p style={{fontSize: "12px"}}>{property.houseName},</p>
-                            <p style={{fontSize: "12px",marginTop:"-10px"}}>{property.societyName}</p>
+                            <p style={{fontSize: "12px"}}>{values.houseName},</p>
+                            <p style={{fontSize: "12px",marginTop:"-10px"}}>{values.societyName}</p>
                             </div>
                     <div style={{marginTop:"10px",marginLeft:"-30px"}}>
-                    {property.imagesApproved ? 
+                    {values.imagesApproved ? 
                           
                           <img style={{ marginLeft:"20px"}} src={ActiveListing} height={30}/>
                           :
@@ -73,7 +71,7 @@ const AvailablePropertyComp = ({ properties , name }) => {
 
                     }
                             <div style={{width:"150px",height:"20px",borderRadius:"10px",marginTop:"10px",marginLeft:"90px"}}>
-                            {property.imagesApproved ? 
+                            {values.imagesApproved ? 
                                 <text style={{fontSize:"12px",color:"#2F9E3A",marginLeft:"-100px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}>Active Listing</text>
                                 : 
                                 <text style={{fontSize:"12px",color:"#E13018",marginLeft:"-120px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}>Pending Verification</text>
@@ -84,7 +82,7 @@ const AvailablePropertyComp = ({ properties , name }) => {
                     </div>
             </div>
            
-            <Link to={`/propertyInfo?propertyId=${property._id}`} ><div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
+            <Link to={`/EditpropertyInfo?propertyId=${values._id}`} ><div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
 
             <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
             <text style={{fontSize:"15px",color:"#5D6560",fontWeight:"bold"}}>Edit</text>

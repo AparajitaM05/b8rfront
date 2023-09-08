@@ -19,13 +19,6 @@ function AvailablePropertyrental()
 {
 
 
-  const handleSearch = (searchValue) => {
-    // Custom search handling logic
-    console.log("Searching for:", searchValue);
-
-    // Perform search operations here
-  };
-
   const [loading, setLoading] = useState(false);
   const [responsePendingProperties, setresponsePendingProperties] = useState([]);
 
@@ -87,7 +80,7 @@ function AvailablePropertyrental()
       
 
        
-        <AvailablePropertyComp properties={responsePendingProperties} name={name}/>
+        <AvailablePropertyComp props={responsePendingProperties} name={name}/>
         <Footer/>
         </div>
         </>

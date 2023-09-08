@@ -9,7 +9,7 @@ import { useMediaQuery } from "react-responsive";
 import AddTenant from "./components/TenantAdditionFlow/AddTenant";
 // import SuccessfulSignup from "./components/SuccessfulSignup";
 // import dropNav from "./components/dropNav";
-import TenantPref2 from "./components/TenantAdditionFlow/TenantPref2";
+
 // import TenantSideView from "./components/TenantSideView";
 
 //Add Buyer
@@ -72,6 +72,7 @@ import TenantSideView from "./components/TenantSideView/TenantSideView";
 //PropertyCreate -Imports ---------------------------------------------------
 // import PropertyDetails from "./components/PropertyDetails";
 import PropertyInfo from "./components/PropertyCreate/PropertyInfo";
+import EditPropertyInfo from "./components/PropertyCreate/EditPropertyInfo";
 // import PropertyDI from "./components/PropertyCreate/PropertyDI";
 // import LandlordInfo from "./components/PropertyCreate/LandlordInfo";
 // _________________________________________________________________________
@@ -108,7 +109,7 @@ import ReactivatePropertyS from "./components/AgentDashboard(Sale)/ReactivatePro
 import UserLoginDetails from "./components/UserLoginDetails";
 // import TenantDetails from "./components/TenantDetails";
 // import TenantAdded from "./components/TenantAdded";
-import TenantPref from "./components/TenantAdditionFlow/TenantPref";
+
 // import UploadPhotos from "./components/FieldAgentFlow/UploadPhotos";
 // import UploadPhoto2 from "./components/UploadPhoto2";
 // import UploadPhotos3 from "./components/FieldAgentFlow/UploadPhotos3";
@@ -332,8 +333,9 @@ function App(props) {
               {/* <Route exact path="LandlordInfo" element={<LandlordInfo />} />
               <Route exact path="PropertyDI" element={<PropertyDI />} /> */}
               <Route exact path="PropertyInfo" element={<PropertyInfo />} />
+              <Route exact path="EditPropertyInfo" element={<EditPropertyInfo />} />
               {/* <Route exact path="TenantAdded" element={<TenantAdded />} /> */}
-              <Route exact path="TenantPref" element={<TenantPref />} />
+              
               <Route exact path="UploadPhotos" element={<UploadPhotos />} />
               {/* <Route exact path="UploadPhoto2" element={<UploadPhoto2 />} /> */}
               <Route exact path="UploadPhotos3" element={<UploadPhotos3 />} />
@@ -344,7 +346,6 @@ function App(props) {
                 element={<PropertyCreated />}
               />
 
-              <Route exact path="TenantPref2" element={<TenantPref2 />} />
 
               <Route exact path="Footer" element={<Footer />} />
 

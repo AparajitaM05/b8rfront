@@ -1,4 +1,5 @@
-import React from "react";
+import React, { Component, useEffect, useState } from "react";
+
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from '../CommonTopButton';
@@ -9,16 +10,53 @@ import backgroundSecond from "../Assets/Images/other_bg.png";
 import searchImg from "../Assets/Search.png";
 import SearchBar from "../SearchBar";
 import ActiveLeadsI from "../Assets/Images/AgentDashboard/ActiveLeadsI.png";
+import TenantComp from "./TenantComp";
 
 function ActiveLeads()
 {
 
-  const handleSearch = (searchValue) => {
-    // Custom search handling logic
-    console.log("Searching for:", searchValue);
+  const [loading, setLoading] = useState(false);
+  const [responsePendingTenants, setresponsePendingTenants] = useState([]);
 
-    // Perform search operations here
+  const token = localStorage.getItem("token");
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
   };
+
+
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "https://b8rliving.com/tenant",
+          axiosConfig
+        );
+  
+      //      // Sort the response data by the 'imagesApproved' property in descending order
+      // const sortedTenants = response.data.data.tenants.sort((a, b) => {
+      //   return a.status - b.status;
+      // });
+
+      console.log(response.data.data.tenants);
+
+      setresponsePendingTenants(response.data.data.tenants);
+
+      } catch (error) {
+        console.log(error);
+        // Handle the error here if needed
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchPosts();
+  }, []);
 
   const username = localStorage.getItem("username");
   const name = username.substring(0, username.indexOf(' ')); 
@@ -38,12 +76,15 @@ function ActiveLeads()
       >
         <CommonHeader title="Active Leads" color="#52796F" />
 
-        <SearchBar onSearch={handleSearch} placeholder="Search by Tenant Name"/>
+        {/* <SearchBar onSearch={handleSearch} placeholder="Search by Tenant Name"/> */}
 
         <p style={{textAlign:"left"}}>Hey,{name} <br/>
 
         Here are all the tenants that you have onboarded </p>
-        <img src={ActiveLeadsI} height={80} style={{borderRadius:"20px"}}/>
+        
+
+        <TenantComp props={responsePendingTenants} name={name}/>
+        
         <Footer/>
         </div>
         </>

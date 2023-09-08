@@ -1,6 +1,8 @@
 import React, { Component, useState } from "react";
 import { Link } from "react-router-dom";
 import AddTenantcss from "./AddTenant.css";
+import PropertDI from "./PropertyDI.css";
+import TenantPref from "./TenantPref.css";
 import axios from "axios";
 import backgroundSecond from "../Assets/Images/other_bg.png";
 import vector from "../Assets/Images/vector.png";
@@ -10,8 +12,8 @@ import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
 
-import TenantPref from "./TenantPref";
-import TenantPref2 from "./TenantPref2";
+// import TenantPref from "./TenantPref";
+// import TenantPref2 from "./TenantPref2";
 
 import ReactSwitch from "react-switch";
 import num3 from "../Assets/Images/num3.png";
@@ -42,11 +44,11 @@ function AddTenant() {
   const [checkedStateThree, setCheckedStateThree] = useState(false);
 
   const [formData, setFormData] = useState({
-    name: "",
-    status: "New",
+   
+    phoneNumber: "",
     tenantData: {
+      name: "",
       email: "",
-      phoneNumber: "",
       onBoard: false,
       stayDuration: "",
       numberOfMonth: "",
@@ -64,7 +66,7 @@ function AddTenant() {
       clubHouse: false,
       carParking: false,
       bikeParking: false,
-      bathoroom: false,
+      bathroom: false,
       ac: false,
       nonVeg: false,
     },
@@ -75,7 +77,7 @@ function AddTenant() {
 
     console.log(name, value);
 
-    if (name === "name" || name === "status") {
+    if (name === "phoneNumber") {
       setFormData((prevState) => ({
         ...prevState,
         [name]: value,
@@ -128,15 +130,16 @@ function AddTenant() {
         // console.log(response.data.userID);
         alert("Your Tenant details has been submitted");
         //redirect user to Dashboard
-        window.location.href = `/TenantCreated?name=${formData.name}&budget=${formData.tenantData.rent}`;
+        window.location.href = `/TenantCreated?name=${formData.tenantData.name}&budget=${formData.tenantData.rent}`;
         // do something with the response
       })
       .catch((error) => {
+        alert(error);
         console.log(error);
         // handle the error
       });
     console.log("Finale In state:", formData);
-    alert("Tenant Created!");
+    // alert("Tenant Created!");
   };
 
 
@@ -186,7 +189,7 @@ function AddTenant() {
                 type="text"
                 id="name"
                 name="name"
-                value={formData.name}
+                value={formData.tenantData.name}
                 onChange={handleChange}
                 required
                 style={styles}
@@ -208,7 +211,7 @@ function AddTenant() {
                 type="number"
                 id="phoneNumber"
                 name="phoneNumber"
-                value={formData.tenantData.phoneNumber}
+                value={formData.phoneNumber}
                 onChange={handleChange}
                 required
                 style={styles}
@@ -291,7 +294,7 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option>Duration of Stay</option>
+                <option value="" disabled selected>Select from Drop Drown</option>
                 <option value="0-3">0-3 months</option>
                 <option value="3-6">3-6 months</option>
                 <option value="6-11">6-11 months</option>
@@ -308,25 +311,27 @@ function AddTenant() {
                   float: "left",
                 }}
               >
-                Deposit amount prefered
+                Deposit amount prefered(in Months)
               </label>
-              <select
-                name="numberOfMonth"
-                id="numberOfMonth"
-                value={formData.numberOfMonth}
-                onChange={handleChange}
-                style={{
-                  backgroundColor: "white",
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: "1px solid #52796F",
-                }}
-              >
-                <option>Deposit Comfortable For</option>
-                <option value="3">3 months</option>
-                <option value="6">6 months</option>
-                <option value="anything">Anything would be okay</option>
-              </select>
+         
+              <input
+                    type="number"
+                    id="numberOfMonth"
+                    value={formData.numberOfMonth}
+                    onChange={handleChange}
+                    name="numberOfMonth"
+                    placeholder="-number only*-"
+                    style={{
+                      backgroundColor: "white",
+                      padding: "10px",
+                      borderRadius: "5px",
+                      border: "1px solid #52796F",
+                      width: "350px",
+                      boxShadow:
+                        "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
+                      marginTop: "-10px",
+                    }}
+                  />
 
               <label
                 for="houseConfiguration"
@@ -353,17 +358,18 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="gated_apartment">Select from Drop Down</option>
+                <option value="gated_apartment" disabled selected>Select from Drop Down</option>
                 {/* <option value="Studio">
                 Studio
               </option> */}
                 {/* <option value="1BHK">1BHK</option> */}
-                <option value="2BHK">2BHK</option>
-                <option value="0">2.5BHK</option>
-                <option value="3BHK">3BHK</option>
-                <option value="1">3.5BHK</option>
-                <option value="4BHK">4BHK</option>
-                <option value="2">4.5BHK+</option>
+               
+                <option value="Studio">Studio</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                <option value="3 BHK">3 BHK</option>
+                <option value="4 BHK">4 BHK</option>
+               
               </select>
               <br></br>
 
@@ -391,10 +397,13 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="Type of Furnishing">Type of Furnishing</option>
-                <option value="Full-Furnished">Full-Furnished</option>
-                <option value="Semi-Furnished">Semi-Furnished</option>
-                <option value="Unfurnished">UnFurnished</option>
+
+
+                 <option value="" disabled selected>Select from drop down</option>
+               
+                <option value="Full-furnished">Full-Furnished</option>
+                <option value="Semi-furnished">Semi-Furnished</option>
+                <option value="Un-furnished">UnFurnished</option>
               </select>
 
               <label
@@ -407,6 +416,7 @@ function AddTenant() {
                   float: "left",
                 }}
               >
+                {/* houseType" must be one of [Flat (in Gated Society…r Floor, Standalone Individual House, 0, 1, 2, 3] */}
                 What is the House type?
               </label>
               <select
@@ -421,18 +431,13 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="Selectfromdropdown">
+                {/* "houseType" must be one of [Flat (in Gated Society…r Floor, Standalone Individual House, 0, 1, 2, 3] */}
+                <option value="" disabled selected>
                   Select from Drop Down
                 </option>
-                <option value="Gated Society">Flat(in Gated Society)</option>
-                <option value="Individual House"> Individual House</option>
-                <option value="Indvidualhouse">
-                  {" "}
-                  Individual House(in Gated Society)
-                </option>
-                <option value="standalonehouse">
-                  Standalone Individual House
-                </option>
+                <option value="Flat (in Gated Society…r Floor">Flat(in Gated Society)</option>
+                <option value="Standalone Individual House">Standalone Individual House</option>
+                
               </select>
               <label
                 for="preferredLocation"
@@ -924,13 +929,13 @@ function AddTenant() {
                         Attached Bathroom
                       </h5>
                       <ReactSwitch
-                        checked={formData.bathoroom}
+                        checked={formData.tenantData.bathroom}
                         onChange={() =>
                           setFormData((prevState) => ({
                             ...prevState,
                             tenantData: {
                               ...prevState.tenantData,
-                              ["bathoroom"]: !formData.tenantData.bathoroom,
+                              ["bathroom"]: !formData.tenantData.bathroom,
                             },
                           }))
                         }

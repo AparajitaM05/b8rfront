@@ -32,8 +32,6 @@ function AllProperty()
 
 
   const handlePageAvailable = () => {
-    // Custom search handling logic
-   
     if(archiveData){
       setArchiveData(false);
 
@@ -42,22 +40,11 @@ function AllProperty()
       setActivebgColor("#52796F");
       setBorderColor("#DAF0EE");
     }
-      // setActivebgColor("#52796F");
-      // setBorderColor("#DAF0EE");
-      // activeColor("")
-    
- 
-    // Perform search operations here
   };
   
   
   const handlePage = () => {
-    // Custom search handling logic
     setArchiveData(true);
-    // setActivebgColor("#52796F");
-    // setBorderColor("#DAF0EE");
-
-    // Perform search operations here
   };
 
     return(

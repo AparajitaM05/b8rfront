@@ -24,33 +24,91 @@ import Deactivateimg from "../Assets/Deactivate.png";
 
 function DeactivateTenant(){
 
+  const queryParameters = new URLSearchParams(window.location.search);
+  const idTenant = queryParameters.get("tenantId");
+  const name = queryParameters.get("name");
+  
   const [stateRender, setStateRender] = useState("rent");
+  const [loading, setLoading] = useState(false);
+
+  const [isActive1, setIsActive1] = useState(true);
+  const [isActive2, setIsActive2] = useState(false);
+  const [isActive3, setIsActive3] = useState(false);
+  const [isActive4, setIsActive4] = useState(false);
+
+const handleButtonClick = (buttonNumber) => {
+  // Reset the active state for all buttons
+  setIsActive1(false);
+  setIsActive2(false);
+  setIsActive3(false);
+  setIsActive4(false);
+
+  // Set the active state for the clicked button
+  switch (buttonNumber) {
+    case 1:
+      setIsActive1(true);
+      break;
+    case 2:
+      setIsActive2(true);
+      break;
+    case 3:
+      setIsActive3(true);
+      break;
+    case 4:
+      setIsActive4(true);
+      break;
+    default:
+      break;
+  }
+
+  // Additional logic for each button if needed
+  // ...
+};
 
 
     const token = localStorage.getItem("token");
     console.log(token);
-    
-    const handleSubmit = event => {
-	event.preventDefault();
-       localStorage.removeItem("token");
-			alert("You have been logged out.");
-	  };
 
+    // const [deactivateStatus, setDeactivateStatus] = useState("Rented From B8R");
+    const [deactivateStatus, setDeactivateStatus] = useState({
+      deactivateStatus: "Rented From B8R",
+    });
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Basic ${token}`,
+      },
+    };
     
+    const handleSubmit = async (event) => {
+      event.preventDefault();
+      console.log("Received from Final In state:", deactivateStatus);
+        console.log(JSON.stringify(deactivateStatus));
+  
+      try {
+        const response = await axios.put(
+          `https://b8rliving.com/tenant/deactivate/${idTenant}`,
+          deactivateStatus,
+          axiosConfig
+        );
+  
+      
+  
+        // Log the updated state
+        console.log(response);
+        alert("Tenant Deactivated sucessfully!");
+        window.location.href = "/Dashboard";
 
-  const handlePageAvailable = (value) => {
-    // Custom search handling logic
-    // e.preventDefault();
-   console.log(value);
-   console.log("hit hai");
-   setStateRender(value);
-      // setActivebgColor("#52796F");
-      // setBorderColor("#DAF0EE");
-      // activeColor("")
-    
- 
-    // Perform search operations here
-  };
+      } catch (error) {
+        // Handle any errors that occur during the API request
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+    };
+  
+
   
 
 
@@ -58,7 +116,7 @@ function DeactivateTenant(){
         <>
 
         <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundImage: `url(${PVbackground})`, backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%'}}>
-            <CommonHeader title="Change Status/ Edit Property" color="#52796F" />
+            <CommonHeader title="Deactivate Tenant" color="#52796F" />
             
 
         {/* -----------------------------------------------2nd div----------------------------------------------------- */}
@@ -68,37 +126,37 @@ function DeactivateTenant(){
                     <h4><b>Are you deactivating the customer?</b></h4>
                     <div>
                     <CommonTopButton
-                    bgColor= "#52796F"
+                    bgColor={isActive1 ? "#52796F" : "#D2D7D6"}
                     borderColor= "#DAF0EE"
-                    color="#FFFFFF"
+                    color={isActive1 ? "#FFFFFF" : "#77A8A4"}
                     text="Rented From B8R"
-                    onclicked={() => handlePageAvailable("rent")}
+                    onclicked={() => {setDeactivateStatus("Rented From B8R");  handleButtonClick(1); } }
                     />
                     </div>
                     <div style={{marginTop:"20px"}}>
                      <CommonTopButton
-                    bgColor= "#D2D7D6"
-                    borderColor= "#DAF0EE"
-                    color="#77A8A4"
+                    bgColor={isActive2 ? "#52796F" : "#D2D7D6"}
+                    borderColor="#DAF0EE"
+                    color={isActive2 ? "#FFFFFF" : "#77A8A4"}
                     text="Rented Externally"
-                    onclicked={() => handlePageAvailable("delist")}
+                    onclicked={() => {setDeactivateStatus("Rented Externally"); handleButtonClick(2); }}
                     />
                     </div>
                     <div style={{marginTop:"20px"}}>
                      <CommonTopButton
-                    bgColor= "#D2D7D6"
-                    borderColor= "#DAF0EE"
-                    color="#77A8A4"
+                     bgColor={isActive3 ? "#52796F" : "#D2D7D6"}
+                     borderColor="#DAF0EE"
+                     color={isActive3 ? "#FFFFFF" : "#77A8A4"}
                     text="Does not need anymore"
-                    onclicked={() => handlePageAvailable("rented")}
+                    onclicked={() => {setDeactivateStatus("Does not need anymore"); handleButtonClick(3); }}
                     /></div>
                     <div style={{marginTop:"20px"}}>
                      <CommonTopButton
-                    bgColor= "#D2D7D6"
-                    borderColor= "#DAF0EE"
-                    color="#77A8A4"
+                      bgColor={isActive4 ? "#52796F" : "#D2D7D6"}
+                      borderColor="#DAF0EE"
+                      color={isActive4 ? "#FFFFFF" : "#77A8A4"}
                     text="Not responding"
-                    onclicked={() => handlePageAvailable("rented")}
+                    onclicked={() => {setDeactivateStatus("Not responding"); handleButtonClick(4); }}
                     /></div>
 
                 {/* </div> */}
@@ -112,7 +170,7 @@ function DeactivateTenant(){
 
 
          <div style={{display:"flex", flexDirection:"row" }}>
-            <img src={Deactivateimg} style={{marginLeft:"130px"}}/>
+            <img src={Deactivateimg} style={{marginLeft:"130px"}} onClick={handleSubmit}/>
             
             </div>
 

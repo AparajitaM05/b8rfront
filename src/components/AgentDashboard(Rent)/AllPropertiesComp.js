@@ -29,16 +29,7 @@ const AllPropertiesComp = () => {
             <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
             <text style={{fontSize:"12px",color:"#5D6560",fontWeight:"bold"}}>Email</text>
                 
-            </div>
-               
-
-               
-               
-       
-        
-               
-
-               
+            </div>        
          </div>      
         </>
   );

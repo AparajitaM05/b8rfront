@@ -1,26 +1,24 @@
-
-import React, { Component, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
-import CommonTopButton from '../CommonTopButton';
+import CommonTopButton from "../CommonTopButton";
 import Footer from "../Footer";
 
 import { Link } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
 import oneBg from "../Assets/Images/AgentDashboard/oneBg.png";
 import searchImg from "../Assets/Search.png";
 import SearchBar from "../SearchBar";
 import AvailablePropertiesRentalI from "../Assets/Images/AgentDashboard/AvailablePropertyRentalsI.png";
-import AvailablePropertiesRentalI2 from "../Assets/Images/AgentDashboard/AvailablePropertyRentalsI2.png"
+import AvailablePropertiesRentalI2 from "../Assets/Images/AgentDashboard/AvailablePropertyRentalsI2.png";
 import AvailablePropertyComp from "./AvailablePropertyComp";
 
-function AvailablePropertyrental()
-{
-
-
+function AvailablePropertyrental() {
   const [loading, setLoading] = useState(false);
-  const [responsePendingProperties, setresponsePendingProperties] = useState([]);
+  const [responsePendingProperties, setresponsePendingProperties] = useState(
+    []
+  );
 
   const token = localStorage.getItem("token");
 
@@ -32,7 +30,6 @@ function AvailablePropertyrental()
     },
   };
 
-
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -41,14 +38,13 @@ function AvailablePropertyrental()
           "https://b8rliving.com/property",
           axiosConfig
         );
-  
-           // Sort the response data by the 'imagesApproved' property in descending order
-      const sortedProperties = response.data.data.properties.sort((a, b) => {
-        return a.imagesApproved - b.imagesApproved;
-      });
+
+        // Sort the response data by the 'imagesApproved' property in descending order
+        const sortedProperties = response.data.data.properties.sort((a, b) => {
+          return a.imagesApproved - b.imagesApproved;
+        });
 
         setresponsePendingProperties(sortedProperties);
-
       } catch (error) {
         console.log(error);
         // Handle the error here if needed
@@ -56,16 +52,16 @@ function AvailablePropertyrental()
         setLoading(false);
       }
     };
-  
+
     fetchPosts();
   }, []);
 
   const username = localStorage.getItem("username");
-  const name = username.substring(0, username.indexOf(' ')); 
+  const name = username.substring(0, username.indexOf(" "));
 
-    return(
-        <>
-         <div
+  return (
+    <>
+      <div
         className="form"
         style={{
           borderRadius: "16px",
@@ -77,18 +73,12 @@ function AvailablePropertyrental()
         }}
       >
         <CommonHeader title="Available Properties Rentals" color="#52796F" />
-      
 
-       
-        <AvailablePropertyComp props={responsePendingProperties} name={name}/>
-        <Footer/>
-        </div>
-        </>
-        
-    );
-
-
-
+        <AvailablePropertyComp props={responsePendingProperties} name={name} />
+        <Footer />
+      </div>
+    </>
+  );
 }
 
 export default AvailablePropertyrental;

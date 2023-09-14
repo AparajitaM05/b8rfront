@@ -6,8 +6,9 @@ import PendingVerification from "../Assets/Images/AgentDashboard/PendingVerifica
 import seen from "../Assets/Images/Seen.png";
 import Like from "../Assets/Images/AgentDashboard/Like.png";
 
-const TenantComp = ({ props, name }) => {
-  const [filteredData, setfilteredData] = useState(props);
+const TenantComp = ({ props, name }) => { 
+  console.log(props);
+  const [filteredData, setfilteredData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
   const handleSearch = (searchTerm) => {
@@ -28,6 +29,7 @@ const TenantComp = ({ props, name }) => {
   useEffect(() => {
     // Initialize filteredData with all properties when the component loads
     setfilteredData(props);
+    console.log(filteredData)
   }, [props]);
 
   return (
@@ -158,7 +160,32 @@ const TenantComp = ({ props, name }) => {
                   marginLeft: "85px",
                 }}
               >
-                <Link to={`/ViewBoard?tenantId=${values._id}&name=${values.tenantDetails.name} `} >
+                
+                {values.isOnBoard && values.status == "Shortlisted" ? 
+               <Link to={`/PropertyViewBoard?tenantId=${values._id}&name=${values.tenantDetails.name} `} >
+               <img
+                 src={checkP}
+                 style={{
+                   height: "27px",
+                   marginTop: "20px",
+                   marginBottom: "-8px",
+                 }}
+               />
+               <text
+                 style={{
+                   fontSize: "12px",
+                   color: "#5D6560",
+                   fontWeight: "bold",
+                 }}
+               >
+                  Take Action
+               </text>
+             </Link>
+                : "" }
+
+          {values.isOnBoard ? 
+
+                <Link to={`/createboard?tenantId=${values._id}&name=${values.tenantDetails.name} `} >
                   <img
                     src={checkP}
                     style={{
@@ -174,9 +201,32 @@ const TenantComp = ({ props, name }) => {
                       fontWeight: "bold",
                     }}
                   >
-                    Take Action
+                     Take Action
                   </text>
                 </Link>
+
+               : 
+               <Link to={`/ViewBoard?tenantId=${values._id}&name=${values.tenantDetails.name}`} >
+                 <img
+                   src={checkP}
+                   style={{
+                     height: "27px",
+                     marginTop: "20px",
+                     marginBottom: "-8px",
+                   }}
+                 />
+                 <text
+                   style={{
+                     fontSize: "12px",
+                     color: "#5D6560",
+                     fontWeight: "bold",
+                   }}
+                 >
+                    Take Action
+                 </text>
+               </Link>
+                }
+                
               </div>
             </div>
           </div>

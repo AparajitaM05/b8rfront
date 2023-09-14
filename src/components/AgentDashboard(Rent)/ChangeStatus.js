@@ -22,8 +22,13 @@ import CommonTopButton from '../CommonTopButton';
 import BackButton from "../CommonButtonBack";
 
 function ChangeStatus(){
+  const queryParameters = new URLSearchParams(window.location.search);
+  const idProperty = queryParameters.get("propertyId");
+  console.log("id" + idProperty);
 
   const [stateRender, setStateRender] = useState("rent");
+  const [propertyDetails, setPropertyDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
 
 
     const token = localStorage.getItem("token");
@@ -35,7 +40,35 @@ function ChangeStatus(){
 			alert("You have been logged out.");
 	  };
 
-    
+    let axiosConfig = {
+      headers: {
+        "Content-Type": "application/json;charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
+        Authorization: `Basic ${token}`,
+      },
+    };
+    useEffect(() => {
+      const fetchpropertyDetails = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `https://b8rliving.com/property/${idProperty}`,
+            axiosConfig
+          );
+  
+          const responseData = response.data.data.property;
+          setPropertyDetails(responseData);
+        } catch (error) {
+          // Handle any errors that occur during the API request
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false); // Set loading to false when the request is complete
+        }
+      };
+  
+      fetchpropertyDetails(); // Call the fetch function
+    }, [idProperty]); // Make sure to include idProperty in the dependency array if it's dynamic.
+
 
   const handlePageAvailable = (value) => {
     // Custom search handling logic
@@ -67,8 +100,8 @@ function ChangeStatus(){
                 {/* for title and text */}
                 
                 <div style={{marginTop:"-5px",margintLeft:"10px",marginBottom:"-5px"}}>
-                <h5 style={{marginLeft:"10px"}} >Hexxx_1, Tower Y </h5><br/>
-                <h5 style={{marginTop:"-40px"}}>Society ZZZZZZ</h5>
+                <h5 style={{marginLeft:"10px"}} > { propertyDetails.houseName} </h5><br/>
+                <h5 style={{marginTop:"-40px"}}>{propertyDetails.societyName}</h5>
 
                 </div>
             </div>

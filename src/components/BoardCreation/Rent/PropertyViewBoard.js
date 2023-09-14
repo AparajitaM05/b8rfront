@@ -11,14 +11,17 @@ import deactivateImg from "../../Assets/Deactivate.png";
 import CreateB from "../../Assets/Images/BoardCreation/CreateB.png";
 import loadingGif from "../../Assets/Images/loading.gif";
 import PropertyComp from "./PropertyComp";
+import ViewBoardComp from "./ViewBoardComp";
 
 
-function ViewBoard() {
+function PropertyViewBoard() {
   const queryParameters = new URLSearchParams(window.location.search);
   const name = queryParameters.get("name");
-  const tenantId = queryParameters.get("tenantId");
+  const boardId = queryParameters.get("boardId");
+  console.log(boardId);
 
-  const [responseDataTenantData, setResponseDataTenantData] = useState([]);
+  const [responseDataBoard, setResponseDataBoard] = useState([]);
+  const [responseDataProperty, setResponseDataProperty] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
 
@@ -30,21 +33,25 @@ function ViewBoard() {
       Authorization: `Basic ${token}`,
     },
   };
+  
   useEffect(() => {
-    const fetchTenantDetails = async () => {
+    const fetchBoardDetails = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://b8rliving.com/tenant/${tenantId}`,
+          `https://b8rliving.com/board/${boardId}`,
           axiosConfig
         );
 
         // const responseData = response.data.data.tenant.tenantDetails;
-        const responseDataTenant = response.data.data.tenant;
+        const responseDataBoardData = response.data.data.board;
+        const responseDataPropertiesData = response.data.data.board.propertyId;
+        console.log(responseDataBoardData);
+        console.log(responseDataPropertiesData);
 
         // Update the formData state with the response data
-        // setResponseDataTenant(responseData);
-        setResponseDataTenantData(responseDataTenant);
+        setResponseDataBoard(responseDataBoardData);
+        setResponseDataProperty(responseDataPropertiesData);
         
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -52,8 +59,8 @@ function ViewBoard() {
         setLoading(false); // Set loading to false when the request is complete
       }
     }
-      fetchTenantDetails(); // Call the fetch function
-    }, [tenantId]); 
+    fetchBoardDetails(); // Call the fetch function
+    }, [boardId]); 
 
   return (
     <>
@@ -77,25 +84,21 @@ function ViewBoard() {
             </h2>
           </div>
 
-{responseDataTenantData.isOnBoard ?           
-"TRUE"
- :  
 
-        <div>
-            <h3>No Properties Shared Yet</h3>
-          <Link to={`/CreateBoard?tenantId=${tenantId}&name=${name} `}>
-            <img src={CreateB} height={400} />
-          </Link>
-      </div>
-      }
+          <ViewBoardComp props={responseDataProperty} loading={loading} Id={boardId} responseDataTenantData={responseDataBoard} />
+            
 
+        <div style={{display:"flex",marginTop:"10%"}}>
+        <CommonBtn title="Add More" margin="90px" />
+        <CommonBtn title="Share Board" marginRight="-5px"/>
+        </div>
+       
 
-
-          <Link to={`/DeactivateTenant?tenantId=${tenantId}&name=${name} `} ><img src={deactivateImg} style={{ marginTop: "100px" }} /></Link>
+          <Link to={`/DeactivateTenant?tenantId=${boardId}&name=${name} `} ><img src={deactivateImg} style={{ marginTop: "100px" }} /></Link>
         </div>
         <Footer />
       </div>
     </>
   );
 }
-export default ViewBoard;
+export default PropertyViewBoard;

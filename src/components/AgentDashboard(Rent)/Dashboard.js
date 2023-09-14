@@ -196,7 +196,7 @@ function Dashboard() {
                 <div style={{ marginTop: "5px" }}></div>
                <Link to="/My_propertyPV" className="leftlink" > <DashComponent img={PendingVerification} title="Pending Verification" number={CountProperties.Pending}/></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/AllProperty" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number={CountProperties.New} /></Link>
+                <Link to="/AllActiveProperties" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number={CountProperties.New} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
                 <Link to="/My_PropertyYTS" className="leftlink" ><DashComponent img={yetToShare} title="Yet To Share" number={CountProperties.YetToShare} /></Link>
                 <div style={{ marginTop: "5px" }}></div>

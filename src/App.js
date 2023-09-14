@@ -81,6 +81,7 @@ import EditPropertyInfo from "./components/PropertyCreate/EditPropertyInfo";
 import CreateBoard from "./components/BoardCreation/Rent/CreateBoard";
 import ViewBoard from "./components/BoardCreation/Rent/ViewBoard";
 import BoardCreated from "./components/BoardCreation/Rent/BoardCreated";
+import PropertyViewBoard from "./components/BoardCreation/Rent/PropertyViewBoard";
 
 //Board Creation Sale
 import CreateBoardS from "./components/BoardCreation/Sale/CreateBoardS";
@@ -228,6 +229,7 @@ function App(props) {
               <Route exact path="BoardCreated" element={<BoardCreated />} />
 
               <Route exact path="CreateBoardS" element={<CreateBoardS />} />
+              <Route exact path="PropertyViewBoard" element={<PropertyViewBoard/>}/>
               <Route exact path="ViewBoardS" element={<ViewBoardS />} />
               <Route exact path="BoardCreatedS" element={<BoardCreatedS />} />
 

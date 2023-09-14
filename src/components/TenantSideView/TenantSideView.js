@@ -94,6 +94,8 @@ function TenantSideView() {
         
         <TenantSideViewComp boards={responseBoards} />
           
+          <h3 style={{fontFamily:"GlidaDisplay"}}>That’s All for the Day!<br/>
+        Hope you love the properties shared.</h3>
         </div>
         <Footer />
       </div>

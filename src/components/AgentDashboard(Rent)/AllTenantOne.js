@@ -19,14 +19,18 @@ function AllTenantOne()
 {
   
   const [archiveData, setArchiveData] = useState(false);
+  
   const [ActivebgColor, setActivebgColor] = useState("#D2D7D6");
   const [ActiveBorderColor, setBorderColor] = useState("#A9C0BA");
   const [activeColor, setColor] = useState("#77A8A4");
 	const [loading, setLoading] = useState(false);
 
 
-  const [responseTenat, setresponseTenat] = useState();
+  const [responseTenat, setresponseTenat] = useState([]);
+
+
   const [responseTenatWaitingForProperty, setresponseTenatWaitingForProperty] = useState();
+  const [WaitingFroPropertyCondition, setWaitingFroPropertyCondition] = useState(false);
   
   
   const token = localStorage.getItem("token");
@@ -41,19 +45,15 @@ function AllTenantOne()
 		},
 	  };
   useEffect(() => {
-		// event.preventDefault();
 		const fetchPosts = async () => {
 		  setLoading(true);
 		  axios
 			.get("https://b8rliving.com/tenant", axiosConfig)
 			.then((response) => {
-			  console.log(response.data.data.tenants);
+			  // console.log(response.data.data.tenants);
         // var myArrayPropertyCount = response.data.data.properties;
-        setresponseTenat(response.data.data);
-			  // console.log(myArrayPropertyCount.length);
-
-        if(response.data.data.properties.propertyInfo.purposeRent==true){
-        }
+        setresponseTenat(response.data.data.tenants);
+			  console.log(responseTenat);
 
 			  // alert("Your data has been submitted");
 			  // do something with the response
@@ -86,7 +86,7 @@ function AllTenantOne()
 		  axios
 			.get("https://b8rliving.com/tenant?filter=WaitingForProperty", axiosConfig)
 			.then((response) => {
-			  console.log(response.data.data.tenants);
+			  // console.log(response.data.data.tenants);
         // var myArrayPropertyCount = response.data.data.properties;
         setresponseTenatWaitingForProperty(response.data.data);
 			  // console.log(myArrayPropertyCount.length);
@@ -156,30 +156,32 @@ function AllTenantOne()
         <div style={{ display: "flex", justifyContent: "space-between" , marginBottom:"20px"}}>
           <div style={{ marginRight: "8px" }}>
               
-              {archiveData ? 
-              (
-              <CommonTopButton
-              bgColor= "#D2D7D6"
-              borderColor= "#DAF0EE"
-              color="#77A8A4"
-               text="Wating For Property"
-               onclicked={handlePageAvailable}
-            />
-              )
-              : 
+              {WaitingFroPropertyCondition ? 
               (
               <CommonTopButton
               bgColor= "#52796F"
               borderColor= "#DAF0EE"
               color="#DAF0EE"
               text="Waiting For Property"
-              onclicked={handlePageAvailable}
+              onclicked = {() => setWaitingFroPropertyCondition(true)}
+              />
+              )
+              : 
+              (
+              <CommonTopButton
+              bgColor= "#D2D7D6"
+              borderColor= "#DAF0EE"
+              color="#77A8A4"
+               text="Wating For Property"
+               onclicked = {() => setWaitingFroPropertyCondition(false)}
             />
+            
 
               )}
           
 
           </div>
+
           <div >
           {archiveData ? 
               (
@@ -338,7 +340,7 @@ function AllTenantOne()
        </p>
           ) } 
 
-          <TenantComp/>
+          <TenantComp props={responseTenat} name={name} />
         
         <Footer/>
         </div>

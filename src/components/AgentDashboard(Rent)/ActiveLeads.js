@@ -44,8 +44,12 @@ function ActiveLeads()
       // });
 
       console.log(response.data.data.tenants);
+       // Filter the response data to exclude tenants with status "deactive"
+       const filteredTenants = response.data.data.tenants.filter(
+        (tenant) => tenant.status !== "Deactivate"
+      );
 
-      setresponsePendingTenants(response.data.data.tenants);
+      setresponsePendingTenants(filteredTenants);
 
       } catch (error) {
         console.log(error);

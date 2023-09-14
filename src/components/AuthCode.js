@@ -13,6 +13,8 @@ function AuthCode() {
   const [formData, setFormData] = useState({
     entity: "",
     code: "",
+    codeType: "",
+    startTime: ""
   });
   const [data, setData] = useState(null);
 
@@ -112,6 +114,32 @@ function AuthCode() {
               value={formData.code}
               onChange={handleChange}
               name="code"
+              className="input-field"
+              required
+            ></input>
+
+<label htmlFor="code" className="label-password">
+              Code Type
+            </label>
+            <input
+              type="text"
+              id="codeType"
+              value={formData.codeType}
+              onChange={handleChange}
+              name="codeType"
+              className="input-field"
+              required
+            ></input>
+
+<label htmlFor="code" className="label-password">
+              Start Time
+            </label>
+            <input
+              type="date"
+              id="startTime"
+              value={formData.startTime}
+              onChange={handleChange}
+              name="startTime"
               className="input-field"
               required
             ></input>

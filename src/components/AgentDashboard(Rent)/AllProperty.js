@@ -12,23 +12,57 @@ import { BsSearchHeart } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import searchImg from "../Assets/Search.png";
 import propertyComp from "./propertyComp";
+import AvailablePropertyComp from "./AvailablePropertyComp";
 
 function AllProperty()
 {
-  
+  const [loading, setLoading] = useState(false);
   const [archiveData, setArchiveData] = useState(false);
   const [ActivebgColor, setActivebgColor] = useState("#D2D7D6");
   const [ActiveBorderColor, setBorderColor] = useState("#A9C0BA");
   const [activeColor, setColor] = useState("#77A8A4");
+  const [responsePendingProperties, setresponsePendingProperties] = useState([]);
 
+  const token = localStorage.getItem("token");
 
-
-  const handleSearch = (searchValue) => {
-    // Custom search handling logic
-    console.log("Searching for:", searchValue);
-
-    // Perform search operations here
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
   };
+useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          "https://b8rliving.com/property",
+          axiosConfig
+        );
+  
+      //Filter Data
+      const filterData = response.data.data.properties ;
+
+
+      // Sort the response data by the 'imagesApproved' property in descending order
+      const sortedProperties = filterData.sort((a, b) => {
+        return a.imagesApproved - b.imagesApproved;
+      });
+
+        setresponsePendingProperties(sortedProperties);
+
+      } catch (error) {
+        console.log(error);
+        // Handle the error here if needed
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    fetchPosts();
+  }, []);
+
 
 
   const handlePageAvailable = () => {
@@ -46,6 +80,8 @@ function AllProperty()
   const handlePage = () => {
     setArchiveData(true);
   };
+  const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(' ')); 
 
     return(
         <>
@@ -127,7 +163,7 @@ function AllProperty()
         </div>
 
 
-        <SearchBar onSearch={handleSearch} placeholder="Search by Property name"/>
+        {/* <SearchBar onSearch={handleSearch} placeholder="Search by Property name"/> */}
        
        {archiveData ? 
           (
@@ -165,27 +201,20 @@ function AllProperty()
             margin="0px 0px 0px 0px"
 
             />
-          
+
             </div>
-          
-          <p style={{textAlign:"left"}}>Hey Yash, <br/>
-
-         
-
-Here are all the properties which are either rented on b8r, rented Outside or have delisted owner.</p>
-  
-
         </>
           ) : (
                     
-
-        <p style={{textAlign:"left"}}>Hey Yash, <br/>
-
-        Here are all the <b>rent</b> properties that are available for renting out</p>
+            <AvailablePropertyComp props={responsePendingProperties} name={name}/>
+        
           ) } 
+
+          {/* {archiveData ? "" : <AvailablePropertyComp props={responsePendingProperties} name={name}/>} */}
         
            
 
+       
 
 
   

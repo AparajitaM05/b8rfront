@@ -11,7 +11,7 @@ import Group from "../../Assets/Images/BoardCreation/Group.png";
 import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
 
-const PropertyComp = ({ props, loading , Id, responseDataTenantData }) => {
+const PropertyComp = ({ props, loading , Id, responseDataTenantData, boardId }) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const PropertyComp = ({ props, loading , Id, responseDataTenantData }) => {
   const [addedProperty, setAddedProperty] = useState(false);
   console.log(props);
 
-    const boardId = responseDataTenantData.boardId
+    // const boardId = responseDataTenantData.boardId
 
   let axiosConfig = {
     headers: {
@@ -48,18 +48,20 @@ const PropertyComp = ({ props, loading , Id, responseDataTenantData }) => {
 
     try {
       const response = await axios.put(
-        `https://b8rliving.com/board/property/${boardId}`,
-        { propertyId : pId},
+        `https://b8rliving.com/board/property/${boardId}`, { propertyId : pId },
         axiosConfig
       );
       console.log(response);
       setAddedProperty(true)
       console.log(addedProperty)
-      // alert(response);
+      // alert(response.data.message)
+
       // console.log(JSON.stringify(formData));
     } catch (error) {
       // Handle any errors that occur during the API request
-      console.error("Error fetching data:", error);
+      // console.error("Error fetching data:", error);
+      alert(error.message)
+
     } finally {
       // setLoading(false); // Set loading to false when the request is complete
     }

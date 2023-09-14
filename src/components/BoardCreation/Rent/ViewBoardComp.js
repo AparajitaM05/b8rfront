@@ -11,7 +11,7 @@ import Group from "../../Assets/Images/BoardCreation/Group.png";
 import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
 
-const ViewBoardComp = ({ props, loading , Id, responseDataTenantData }) => {
+const ViewBoardComp = ({ props, loading , Id, responseDataBoard }) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const ViewBoardComp = ({ props, loading , Id, responseDataTenantData }) => {
   const [addedProperty, setAddedProperty] = useState(false);
   console.log(props);
 
-    const boardId = responseDataTenantData.boardId
+    const boardId = responseDataBoard.boardId
 
   let axiosConfig = {
     headers: {
@@ -75,7 +75,8 @@ const ViewBoardComp = ({ props, loading , Id, responseDataTenantData }) => {
         ""
       ) : (
         <div>
-          {props.slice(0, visibleItems).map((values, index) => (
+          {/* {responseDataBoard.key} */}
+          {props.map((values, index) => (
             <div key={index}>
               <div
                 style={{

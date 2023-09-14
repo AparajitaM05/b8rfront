@@ -47,7 +47,7 @@ function PropertyViewBoard() {
         const responseDataBoardData = response.data.data.board;
         const responseDataPropertiesData = response.data.data.board.propertyId;
         console.log(responseDataBoardData);
-        console.log(responseDataPropertiesData);
+        console.log(responseDataPropertiesData._id);
 
         // Update the formData state with the response data
         setResponseDataBoard(responseDataBoardData);
@@ -85,7 +85,7 @@ function PropertyViewBoard() {
           </div>
 
 
-          <ViewBoardComp props={responseDataProperty} loading={loading} Id={boardId} responseDataTenantData={responseDataBoard} />
+          <ViewBoardComp props={responseDataProperty} loading={loading} Id={boardId} responseDataBoard={responseDataBoard} />
             
 
         <div style={{display:"flex",marginTop:"10%"}}>

@@ -21,6 +21,30 @@ function ViewBoard() {
   const [responseDataTenantData, setResponseDataTenantData] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
+  const createNewBoard = async () =>
+  {
+    try {
+      const response = await axios.post(
+        `https://b8rliving.com/board`, {tenantId: tenantId},
+        axiosConfig
+      );
+
+      // const responseData = response.data.data.tenant.tenantDetails;
+      const responseDataBoard = response.data.data.board.tenantId.boardId;
+      console.log(responseDataBoard)
+
+      // Update the formData state with the response data
+      // setResponseDataTenant(responseData);
+      // setResponseDataTenantData(responseDataTenant); 
+      window.location.href= `/CreateBoard?tenantId=${tenantId}&name=${name}&boardId=${responseDataBoard}`
+      
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
+
+  }
 
 
   let axiosConfig = {
@@ -30,6 +54,7 @@ function ViewBoard() {
       Authorization: `Basic ${token}`,
     },
   };
+
   useEffect(() => {
     const fetchTenantDetails = async () => {
       setLoading(true);
@@ -54,6 +79,8 @@ function ViewBoard() {
     }
       fetchTenantDetails(); // Call the fetch function
     }, [tenantId]); 
+
+    
 
   return (
     <>
@@ -83,9 +110,9 @@ function ViewBoard() {
 
         <div>
             <h3>No Properties Shared Yet</h3>
-          <Link to={`/CreateBoard?tenantId=${tenantId}&name=${name} `}>
-            <img src={CreateB} height={400} />
-          </Link>
+         
+            <img src={CreateB} height={400} onClick={createNewBoard} />
+         
       </div>
       }
 

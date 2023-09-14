@@ -136,16 +136,7 @@ function SignUp() {
     console.log(formData["phoneNumber"]);
     const phone = formData["phoneNumber"];
 
-    axios
-      .post("https://b8rliving.com/agent/signup", formData)
-      .then((response) => {
-        console.log(response.data);
-        // do something with the response
-        const token = response.data.token;
-        const username = response.data.name;
-        //set JWT token to local
-        localStorage.setItem("token", token);
-        localStorage.setItem("username", username);
+   
 
         // Get OTP
           axios
@@ -155,7 +146,16 @@ function SignUp() {
               // do something with the response
               // const token = response.data.token;
             
-
+              axios
+              .post("https://b8rliving.com/agent/signup", formData)
+              .then((response) => {
+                console.log(response.data);
+                // do something with the response
+                const token = response.data.token;
+                const username = response.data.name;
+                //set JWT token to local
+                localStorage.setItem("token", token);
+                localStorage.setItem("username", username);
               const OTP_SESSION = response.data.Details;
       
               // //set JWT token to local

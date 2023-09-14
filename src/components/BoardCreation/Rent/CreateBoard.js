@@ -41,6 +41,7 @@ function CreateBoard() {
   const queryParameters = new URLSearchParams(window.location.search);
   const name = queryParameters.get("name");
   const tenantId = queryParameters.get("tenantId");
+  const boardId = queryParameters.get("boardId");
 
   const [searchValue, setSearchValue] = useState("");
   const [responseDataTenant, setResponseDataTenant] = useState([]);
@@ -367,7 +368,7 @@ function CreateBoard() {
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search by property Name"
           />
-          <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} />
+          <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} boardId={boardId} />
           <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" /></Link>
           </div>
 

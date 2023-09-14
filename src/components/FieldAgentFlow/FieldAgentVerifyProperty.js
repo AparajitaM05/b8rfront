@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import ReactSwitch from 'react-switch';
 
-import { Link } from "react-router-dom";
+import { Link, redirect } from "react-router-dom";
 import axios from "axios";
 import UserLoginDetails from "../UserLoginDetails";
 import homeDown from "../Assets/Images/FieldAgent/homeDown.png";
@@ -41,7 +41,7 @@ function FieldAgentVerifyProperty() {
 
   const queryParameters = new URLSearchParams(window.location.search);
   const idProperty = queryParameters.get("propertyId");
-  console.log("id" + idProperty);
+  // console.log("id" + idProperty);
 
   const [checkedStateOne, setCheckedStateOne] = useState(true);
   const [checkedStateTwo, setCheckedStateTwo] = useState(false);
@@ -53,22 +53,11 @@ function FieldAgentVerifyProperty() {
   const token = localStorage.getItem("token");
   //   console.log(token);
 
-  
-  // const [formDataNew, setFormDataNew] = useState([]);
-
   const [formData, setFormData] = useState({
-    // success: true,
-    // data: {
-    // property: {
-    _id: "",
     houseName: "",
     societyName: "",
     pinCode: "",
-    status: "Pending",
-    fieldAgentStatus: "Pending",
-
     propertyDetails: {
-      _id: "",
       propertyInfo: {
         houseType: "",
         houseConfig: "",
@@ -76,7 +65,6 @@ function FieldAgentVerifyProperty() {
         mapLocation: "",
         purposeRent: false,
         purposeSale: false,
-        rented: false,
       },
       ownerInfo: {
         name: {
@@ -122,27 +110,7 @@ function FieldAgentVerifyProperty() {
         saleMaintenance: 0,
         moveInFrom: 0,
       },
-      approveInfo: null,
-      version: 1,
-      agentId: "",
-      createdAt: "",
-      updatedAt: "",
-      __v: 0,
     },
-    images: [],
-    imagesApproved: false,
-    closeListingDetails: null,
-    reactivateDetails: null,
-    sharedProperty: [],
-    sharedBuyerProperty: [],
-    createdAt: "",
-    updatedAt: "",
-    __v: 0,
-    // },
-    // },
-    // message: "Property found successfully.",
-    // meta: {},
-    // errors: [],
   });
 
   let axiosConfig = {
@@ -161,37 +129,62 @@ function FieldAgentVerifyProperty() {
           `https://b8rliving.com/property/${idProperty}`,
           axiosConfig
         );
-
-        // setformData(response.data.data.property);
-        // Assuming you have your response data stored in a variable called 'response'
+  
         const responseData = response.data.data.property;
+        // Create a copy of the existing formData
+        const updatedFormData = { ...formData };
+              // // Iterate over the keys in responseData
+              // for (const key in responseData) {
+              //   // Check if the key exists in updatedFormData
+              //   if (updatedFormData.hasOwnProperty(key)) {
+              //     // Update the corresponding field in updatedFormData
+              //     updatedFormData[key] = responseData[key];
+              //   }
+              // }
 
-        // Update the formData state with the response data
-        setFormData(responseData);
-        // setFormDataNew(response.data.data.property);
+        
+        // Check if propertyDetails exists in responseData
+        if (responseData.hasOwnProperty("propertyDetails")) {
+          // Create a copy of the existing propertyDetails
+          const updatedPropertyDetails = { ...updatedFormData.propertyDetails };
+        
+          // Iterate over the keys in responseData.propertyDetails
+          for (const key in responseData.propertyDetails) {
+            // Check if the key exists in updatedPropertyDetails
+            if (updatedPropertyDetails.hasOwnProperty(key)) {
+              // Update the corresponding field in updatedPropertyDetails
+              updatedPropertyDetails[key] = responseData.propertyDetails[key];
+            }
+          }
+        // Update top-level fields (houseName, societyName, pinCode)
+            updatedFormData.houseName = responseData.houseName;
+            updatedFormData.societyName = responseData.societyName;
+            updatedFormData.pinCode = responseData.pinCode;
 
-        // Log the updated state
-        // console.log(formDataNew);
-        // console.log(JSON.stringify(formData));
+          // Update propertyDetails in updatedFormData
+          updatedFormData.propertyDetails = updatedPropertyDetails;
+        }
+        
+              // Update the state with the updatedFormData
+              setFormData(updatedFormData);
+                // console.log(JSON.stringify(formData));
+    // Now, formData will contain the updated data
+  
+        setLoading(false);
       } catch (error) {
-        // Handle any errors that occur during the API request
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Set loading to false when the request is complete
+        console.error('Error fetching property data:', error);
+        setLoading(false);
       }
     };
-
-    fetchPropertyData(); // Call the fetch function
-  }, [idProperty]); // Make sure to include idProperty in the dependency array if it's dynamic.
-
-  useEffect(() => {
-    console.log("Changed Widgets: ", formData);
-  }, [formData]);
+  
+    fetchPropertyData();
+  }, [idProperty]); // Add idProperty and formData as dependencies if
+  
 
   // // This useEffect will log the updated state after it has been set.
-  // useEffect(() => {
-  //   console.log(formData);
-  // }, [formData]);
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
 
   //PUT
   const [isCheckRent, setisCheckRent] = useState(Boolean);
@@ -362,6 +355,8 @@ function FieldAgentVerifyProperty() {
 
       // Log the updated state
       console.log(response);
+      alert(response.data.message);
+      window.location.href = "/fieldAgentHomeN";
       // console.log(JSON.stringify(formData));
     } catch (error) {
       // Handle any errors that occur during the API request
@@ -1244,7 +1239,7 @@ function FieldAgentVerifyProperty() {
                               textAlign: "center",
                               backgroundColor: "red",
                             }}
-                            value="Coveredroof"
+                            value="Covered Roof"
                           >
                             Covered Roof
                           </option>
@@ -1287,9 +1282,9 @@ function FieldAgentVerifyProperty() {
                       </label>
                       <br />
                       <select
-                        id="broom"
-                        name="broom"
-                        value={formData.broom}
+                        id="houseHelpRoom"
+                        name="houseHelpRoom"
+                        value={formData.houseHelpRoom}
                         onChange={handleChange}
                         style={{
                           backgroundColor: "white",
@@ -1309,11 +1304,12 @@ function FieldAgentVerifyProperty() {
                             textAlign: "center",
                             backgroundColor: "red",
                           }}
-                          value="1_Room"
+                          value="1 Room"
                         >
                           1 Room
                         </option>
-                        <option value="1Room+Bathroom">
+                        
+                        <option value=" 1 Room + Bathroom">
                           1 Room + Bathroom
                         </option>
                         <option value="None">None</option>
@@ -1339,8 +1335,8 @@ function FieldAgentVerifyProperty() {
                       <h5>Number of Bathrooms</h5>
                       <select
                         id="numofbath"
-                        name="numofbath"
-                        value={formData.numofbath}
+                        name="bathrooms"
+                        value={formData.bathrooms}
                         onChange={handleChange}
                         style={{
                           backgroundColor: "white",

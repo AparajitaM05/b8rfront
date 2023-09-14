@@ -97,7 +97,7 @@ function PendingComp({ properties }){
     <>
       <h5 style={{ fontSize: "10px", textAlign: "left" }}>Address:</h5>
       <h6 style={{ fontSize: "12px", marginTop: "-18px", textAlign: "left" }}>
-        {/* {property.propertyId.propertyDetails[0].propertyInfo.area} */}
+        {property.propertyId.propertyDetails[0].propertyInfo.area},  {property.propertyId.propertyDetails[0].propertyInfo.mapLocation}, {property.propertyId.pinCode}
       </h6>
     </>
   )}
@@ -108,7 +108,7 @@ function PendingComp({ properties }){
         {/* down extention */}
             <div style={{width:"262px",height:"40px",background:"#DAF0EE",marginTop:"-20px",marginLeft:"22px",borderBottomLeftRadius:"25px",borderBottomRightRadius:"25px"}}>
                 <h6 style={{marginTop:"25px"}}>Assigned on:</h6>
-                <h6 style={{marginTop:"-22px"}}>{dateUpdated} , {daysGone} days have gone by since {startDate}</h6>
+                <h6 style={{marginTop:"-22px"}}>{property.propertyId.createdAt} , {daysGone} days have gone by since {startDate}</h6>
             </div>
 
         </div>

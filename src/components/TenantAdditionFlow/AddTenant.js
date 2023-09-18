@@ -435,7 +435,7 @@ function AddTenant() {
                 <option value="" disabled selected>
                   Select from Drop Down
                 </option>
-                <option value="Flat (in Gated Society…r Floor">Flat(in Gated Society)</option>
+                <option value="Flat (in Gated Society)">Flat(in Gated Society)</option>
                 <option value="Standalone Individual House">Standalone Individual House</option>
                 
               </select>

@@ -9,12 +9,22 @@ import TenantSideViewComp from './TenantSideViewComp';
 
 
 function TenantSideView() {
-  const Name= "Prashant"
-  const [loading, setLoading] = useState(false);
-  const [responseBoards, setresponseBoards] = useState([]);
+  const queryParameters = new URLSearchParams(window.location.search);
+  const boardId = queryParameters.get("boardId");
+  console.log(boardId);
 
+  const [responseDataBoard, setResponseDataBoard] = useState([]);
+  const [responseDataTenant, setResponseDataTenant] = useState([]);
+  const [responseDataTenantName, setResponseDataTenantName] = useState("");
+  const [responseDataTotalProperties, setResponseDataTotalProperties] = useState("");
+  const [responseDataProperty, setResponseDataProperty] = useState([]);
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
-//   console.log(token);
+
+  
+  
+ 
+
 
   let axiosConfig = {
     headers: {
@@ -23,32 +33,44 @@ function TenantSideView() {
       Authorization: `Basic ${token}`,
     },
   };
+  
 
   useEffect(() => {
-    const fetchPosts = async () => {
+    const fetchBoardDetails = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          "https://b8rliving.com/board/64e8afdb9609518e5beb7c9a",
+          `https://b8rliving.com/board/${boardId}`,
           axiosConfig
         );
-  
-        setresponseBoards(response.data.data.board.propertyId);
+
+        // const responseData = response.data.data.tenant.tenantDetails;
+        const responseDataBoardData = response.data.data.board;
+        const responseDataTenantData = response.data.data.board.tenantId;
+        setResponseDataTenantName(response.data.data.board.tenantId.tenantDetails[0]);
+        const responseDataPropertiesData = response.data.data.board.propertyId;
+         // Count the number of properties
+         setResponseDataTotalProperties(responseDataPropertiesData.length);
+
+
+        console.log(responseDataTenantData);
+
+
+
+        // Update the formData state with the response data
+        setResponseDataBoard(responseDataBoardData);
+        setResponseDataProperty(responseDataPropertiesData);
+        setResponseDataTenant(responseDataTenantData);
+
+
       } catch (error) {
-        console.log(error);
-        // Handle the error here if needed
+        console.error("Error fetching data:", error);
       } finally {
-        setLoading(false);
+        setLoading(false); // Set loading to false when the request is complete
       }
-    };
-  
-    fetchPosts();
-  }, []);
-  
-  // This useEffect will log the updated state after it has been set.
-  useEffect(() => {
-    console.log(responseBoards);
-  }, [responseBoards]);
+    }
+    fetchBoardDetails(); // Call the fetch function
+    }, [boardId]); 
 
   return (
     <>
@@ -68,7 +90,7 @@ function TenantSideView() {
         <Link to="/dashboard"><img  src={logo} height={40} alt="fireSpot"/></Link>
       </div>
         <h2 style={{ color: '#52796F' }}>Welcome</h2>
-        <h3 style={{ textAlign: 'left' }}>Hey, {Name}</h3>
+        <h3 style={{ textAlign: 'left' }}>Hey,</h3>
         <h5 style={{ textAlign: 'left' }}>
           Your agent, Mr. Rohit, has shared 4 awesome properties with you!
           <br />
@@ -92,7 +114,7 @@ function TenantSideView() {
         
        
         
-        <TenantSideViewComp boards={responseBoards} />
+        {/* <TenantSideViewComp boards={responseBoards} /> */}
           
           <h3 style={{fontFamily:"GlidaDisplay"}}>That’s All for the Day!<br/>
         Hope you love the properties shared.</h3>

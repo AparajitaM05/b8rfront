@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect,useState} from "react";
 
 import backgroundImg from "../../Assets/Images/BoardCreation/BackgroundBoard.png";
 import CommonHeader from "../../CommonHeader";
@@ -10,6 +10,81 @@ import axios from 'axios';
 
 function BoardCreated()
 {
+  const queryParameters = new URLSearchParams(window.location.search);
+  const boardId = queryParameters.get("boardId");
+  const path = queryParameters.get("path");
+  console.log(boardId);
+
+  const [responseDataBoard, setResponseDataBoard] = useState([]);
+  const [responseDataTenant, setResponseDataTenant] = useState([]);
+  const [responseDataTenantName, setResponseDataTenantName] = useState("");
+  const [responseDataTotalProperties, setResponseDataTotalProperties] = useState("");
+  const [responseDataProperty, setResponseDataProperty] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
+
+  const handleClick = () => {
+    console.log("Handle")
+    const linkToCopy = path; // The link you want to copy
+
+    // Create a temporary input element to copy the link to the clipboard
+    const input = document.createElement('input');
+    input.setAttribute('value', linkToCopy);
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+
+    // Optionally, you can provide some user feedback (e.g., a notification)
+    alert(`Link copied to clipboard: ${linkToCopy}`);
+  };
+
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+  
+  useEffect(() => {
+    const fetchBoardDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://b8rliving.com/board/${boardId}`,
+          axiosConfig
+        );
+
+        // const responseData = response.data.data.tenant.tenantDetails;
+        const responseDataBoardData = response.data.data.board;
+        const responseDataTenantData = response.data.data.board.tenantId;
+        setResponseDataTenantName(response.data.data.board.tenantId.tenantDetails[0].name);
+        const responseDataPropertiesData = response.data.data.board.propertyId;
+         // Count the number of properties
+         setResponseDataTotalProperties(responseDataPropertiesData.length);
+
+
+        console.log(responseDataTenantData);
+
+
+
+        // Update the formData state with the response data
+        setResponseDataBoard(responseDataBoardData);
+        setResponseDataProperty(responseDataPropertiesData);
+        setResponseDataTenant(responseDataTenantData);
+
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+    }
+    fetchBoardDetails(); // Call the fetch function
+    }, [boardId]); 
+
     return(
         <>
          <div
@@ -21,12 +96,12 @@ function BoardCreated()
          
         }}
       >
-        <CommonHeader title="Board Created"/>
+        <CommonHeader title="Board Created" color="#52796F"/>
         <div >
           <div>
-            <p>Added to the Board</p>
-            <p>Tenant Name</p>
-            <p>Log-in Mobile Number</p>
+            <p>Added to the Board : {responseDataTotalProperties} properties </p>
+            <p>Tenant Name : {responseDataTenantName} </p>
+            <p>Log-in Mobile Number :  {responseDataTenant.phoneNumber}</p>
           </div>
         <CommonBtn title="Preview Board" margin="90px"/>
 
@@ -34,7 +109,7 @@ function BoardCreated()
        <div style={{marginTop:"70px"}}>
 
        
-        <Link to="/OTPscreen"><CommonBtn title="Share Link with" margin="90px"/></Link>
+        <p onClick={handleClick} ><CommonBtn title = {`Share Link with ${responseDataTenantName}`} margin="90px"/></p>
         </div>
 
         <div style={{marginTop:"460px"}}>

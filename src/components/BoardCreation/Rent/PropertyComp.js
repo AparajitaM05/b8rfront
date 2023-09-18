@@ -1,7 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
 
-
 import imgOne from "../../Assets/Images/AgentDashboard/imgOne.png";
 import Add from "../../Assets/Images/BoardCreation/Add.png";
 import loadingGif from "../../Assets/Images/loading.gif";
@@ -11,17 +10,19 @@ import Group from "../../Assets/Images/BoardCreation/Group.png";
 import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
 
-const PropertyComp = ({ props, loading , Id, responseDataTenantData, boardId }) => {
+const PropertyComp = ({
+  props,
+  Id,
+  responseDataTenantData,
+  responseDataTenantBoard,
+}) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
-  const [formData, setFormData] = useState({
-    propertyId : "",
-  });
+  const [loading, setLoading] = useState(false);
+
   const [addedProperty, setAddedProperty] = useState(false);
-  console.log(props);
 
-    // const boardId = responseDataTenantData.boardId
-
+ console.log(responseDataTenantBoard);
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -30,42 +31,28 @@ const PropertyComp = ({ props, loading , Id, responseDataTenantData, boardId }) 
     },
   };
 
-
-  
   const addToBoard = async (pId) => {
-    // const { name, value } = event.target;
-   
-   console.log(pId);
-  //   setFormData(pId);
-  //   // setFormData((prevState) => {
-  //   //   return {
-  //   //     ...prevState,
-  //   //     [name]: value,
-  //   //   };
-  //   // })
-
-  //   console.log(formData);
+    console.log(pId);
+    setLoading(true);
 
     try {
       const response = await axios.put(
-        `https://b8rliving.com/board/property/${boardId}`, { propertyId : pId },
+        `https://b8rliving.com/board/property/${responseDataTenantBoard}`,
+        { propertyId: pId },
         axiosConfig
       );
       console.log(response);
-      setAddedProperty(true)
-      console.log(addedProperty)
+      setAddedProperty(true);
+      console.log(addedProperty);
       // alert(response.data.message)
-
-      // console.log(JSON.stringify(formData));
     } catch (error) {
       // Handle any errors that occur during the API request
-      // console.error("Error fetching data:", error);
-      alert(error.message)
-
+      console.error("Error fetching data:", error);
+      // alert(error.message)
     } finally {
-      // setLoading(false); // Set loading to false when the request is complete
+      setLoading(false); // Set loading to false when the request is complete
     }
-  }
+  };
 
   const handleLoadMore = () => {
     setVisibleItems(visibleItems + 3);
@@ -77,8 +64,8 @@ const PropertyComp = ({ props, loading , Id, responseDataTenantData, boardId }) 
         ""
       ) : (
         <div>
-          {props.slice(0, visibleItems).map((values, index) => (
-            <div key={index}>
+          {props.slice(0, visibleItems).map((values, key) => (
+            <div key={key}>
               <div
                 style={{
                   display: "flex",
@@ -172,40 +159,41 @@ const PropertyComp = ({ props, loading , Id, responseDataTenantData, boardId }) 
                     </div>
                   </div>
                 </div>
-             
-                  
 
-                    {/* {values._id} */}
-                  {addedProperty ? 
-                  <p style={{color:"#52796F", fontWeight: "bolder"}}>Added</p> :  
+                {/* {values._id} */}
+                {addedProperty ? (
+                  <p style={{ color: "#52796F", fontWeight: "bolder" }}>
+                    Added
+                  </p>
+                ) : (
                   <>
-                     <div 
-                  style={{
-                    height: "75px",
-                    width: "52px",
-                    background: "#E8E7E7",
-                    borderRadius: "10px",
-                    marginLeft: "10px",
-                  }}
-                >
-                  <img
-                    src={Add}
-                    alt="Add"
-                    style={{
-                      height: "27px",
-                      marginTop: "20px",
-                      marginBottom: "-8px",
-                    }}
-                  />
-                  
-                  <text style={{ fontSize: "12px", color: "#5D6560" }}>
-                    <b onClick={() => addToBoard(values._id)}>Add to Board</b>
-                  </text>
-              </div>
-                  
+                    <div
+                      style={{
+                        height: "75px",
+                        width: "52px",
+                        background: "#E8E7E7",
+                        borderRadius: "10px",
+                        marginLeft: "10px",
+                      }}
+                    >
+                      <img
+                        src={Add}
+                        alt="Add"
+                        style={{
+                          height: "27px",
+                          marginTop: "20px",
+                          marginBottom: "-8px",
+                        }}
+                      />
+
+                      <text style={{ fontSize: "12px", color: "#5D6560" }}>
+                        <b onClick={() => addToBoard(values._id)}>
+                          Add to Board
+                        </b>
+                      </text>
+                    </div>
                   </>
-                  }
-                 
+                )}
               </div>
             </div>
           ))}

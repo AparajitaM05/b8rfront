@@ -1,4 +1,4 @@
-import React, {useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 
 import backgroundImg from "../../Assets/Images/BoardCreation/BackgroundBoard.png";
 import CommonHeader from "../../CommonHeader";
@@ -13,7 +13,6 @@ import loadingGif from "../../Assets/Images/loading.gif";
 import PropertyComp from "./PropertyComp";
 import ViewBoardComp from "./ViewBoardComp";
 
-
 function PropertyViewBoard() {
   const queryParameters = new URLSearchParams(window.location.search);
   const name = queryParameters.get("name");
@@ -25,6 +24,7 @@ function PropertyViewBoard() {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
 
+  // console.log( window.location.origin);
 
   let axiosConfig = {
     headers: {
@@ -33,7 +33,7 @@ function PropertyViewBoard() {
       Authorization: `Basic ${token}`,
     },
   };
-  
+
   useEffect(() => {
     const fetchBoardDetails = async () => {
       setLoading(true);
@@ -47,20 +47,48 @@ function PropertyViewBoard() {
         const responseDataBoardData = response.data.data.board;
         const responseDataPropertiesData = response.data.data.board.propertyId;
         console.log(responseDataBoardData);
-        console.log(responseDataPropertiesData._id);
 
         // Update the formData state with the response data
         setResponseDataBoard(responseDataBoardData);
         setResponseDataProperty(responseDataPropertiesData);
-        
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
         setLoading(false); // Set loading to false when the request is complete
       }
-    }
+    };
     fetchBoardDetails(); // Call the fetch function
-    }, [boardId]); 
+  }, [boardId]);
+
+  const finalizeBoard =  () => {
+
+    console.log("Finalize");
+
+    if (typeof window !== "undefined") {
+      var path = window.location.origin + "/TenantSideView?boardId=" + boardId + "&sharing=true";
+      console.log(path);
+
+      try {
+        const response = axios.put(
+          `https://b8rliving.com/board/finalize/${boardId}`,
+          { shareBoardLink: path },
+          axiosConfig
+        );
+        console.log(response);
+
+        // LOCATION
+        window.location.href = `boardCreated?boardId=${boardId}&path=${path}`;
+      } catch (error) {
+        // Handle any errors that occur during the API request
+        // console.error("Error fetching data:", error);
+        alert(error.message);
+      } finally {
+        // setLoading(false); // Set loading to false when the request is complete
+      }
+    } else {
+      console.log("Some Error in generating URL");
+    }
+  };
 
   return (
     <>
@@ -84,17 +112,26 @@ function PropertyViewBoard() {
             </h2>
           </div>
 
+          <ViewBoardComp
+            props={responseDataProperty}
+            loading={loading}
+            Id={boardId}
+            responseDataBoard={responseDataBoard}
+          />
 
-          <ViewBoardComp props={responseDataProperty} loading={loading} Id={boardId} responseDataBoard={responseDataBoard} />
-            
+          <div style={{ display: "flex", marginTop: "10%" }}>
+            <CommonBtn title="Add More" margin="90px" marginRight="90px" />
+          <p onClick={finalizeBoard} > <CommonBtn
+              onClick={finalizeBoard}
+              title="Finalize Board"
+              marginRight="-5px"
+            />
+          </p>
+          </div>
 
-        <div style={{display:"flex",marginTop:"10%"}}>
-        <CommonBtn title="Add More" margin="90px" />
-        <CommonBtn title="Share Board" marginRight="-5px"/>
-        </div>
-       
-
-          <Link to={`/DeactivateTenant?tenantId=${boardId}&name=${name} `} ><img src={deactivateImg} style={{ marginTop: "100px" }} /></Link>
+          <Link to={`/DeactivateTenant?tenantId=${boardId}&name=${name} `}>
+            <img src={deactivateImg} style={{ marginTop: "100px" }} />
+          </Link>
         </div>
         <Footer />
       </div>

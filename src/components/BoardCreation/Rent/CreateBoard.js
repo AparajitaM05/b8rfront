@@ -44,6 +44,7 @@ function CreateBoard() {
   const boardId = queryParameters.get("boardId");
 
   const [searchValue, setSearchValue] = useState("");
+  const [responseDataTenantBoard, setResponseDataTenantBoard] = useState("");
   const [responseDataTenant, setResponseDataTenant] = useState([]);
   const [responseDataTenantData, setResponseDataTenantData] = useState([]);
   const [responseDataProperty, setResponseDataProperty] = useState([]);
@@ -74,7 +75,9 @@ function CreateBoard() {
 
         const responseData = response.data.data.tenant.tenantDetails;
         const responseDataTenant = response.data.data.tenant;
-
+        const responseDataTenantBoardId = response.data.data.tenant.boardId;
+        
+        setResponseDataTenantBoard(responseDataTenantBoardId);
         // Update the formData state with the response data
         setResponseDataTenant(responseData);
         setResponseDataTenantData(responseDataTenant);
@@ -130,6 +133,9 @@ function CreateBoard() {
 
     fetchTenantDetails(); // Call the fetch function
   }, [tenantId]);
+
+
+  console.log(responseDataTenantBoard);
 
   // console.log(responseDataTenantData);
 
@@ -368,7 +374,7 @@ function CreateBoard() {
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search by property Name"
           />
-          <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} boardId={boardId} />
+          <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} responseDataTenantBoard={responseDataTenantBoard} />
           <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" /></Link>
           </div>
 

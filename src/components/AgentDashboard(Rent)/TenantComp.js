@@ -7,7 +7,7 @@ import seen from "../Assets/Images/Seen.png";
 import Like from "../Assets/Images/AgentDashboard/Like.png";
 
 const TenantComp = ({ props, name }) => { 
-  console.log(props);
+  // console.log(props);
   const [filteredData, setfilteredData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 

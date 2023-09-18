@@ -1869,7 +1869,7 @@ function PropertyInfo() {
                       >
                         <img src={security_deposit} alt="Icon description" />
                         <h5 style={{ marginTop: "10px" }}>
-                          Total Money Deposit
+                          Token Money Deposit
                         </h5>
                         <h6 style={{ marginTop: "-20px" }}>(Refundable)</h6>
                         <input

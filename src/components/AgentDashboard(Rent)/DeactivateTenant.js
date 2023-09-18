@@ -89,7 +89,7 @@ const handleButtonClick = (buttonNumber) => {
       try {
         const response = await axios.put(
           `https://b8rliving.com/tenant/deactivate/${idTenant}`,
-          deactivateStatus,
+          {deactivateStatus : deactivateStatus},
           axiosConfig
         );
   
@@ -102,7 +102,7 @@ const handleButtonClick = (buttonNumber) => {
 
       } catch (error) {
         // Handle any errors that occur during the API request
-        console.error("Error fetching data:", error);
+        alert(error);
       } finally {
         setLoading(false); // Set loading to false when the request is complete
       }

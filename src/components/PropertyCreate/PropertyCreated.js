@@ -111,7 +111,7 @@ function PropertyCreated() {
           <h2 style={{ color: "#52796F",marginTop:"-10px" }}>{rentAmount} /month</h2>
           <h4>({rentDeposit} INR Deposit)</h4>
 
-          {saleDeposit > 1 ? (
+          {saleDeposit > 0 ? (
             <>
               <u>
                 <h4>Budget Details</h4>

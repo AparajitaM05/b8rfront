@@ -119,19 +119,22 @@ function PropertyViewBoard() {
             responseDataBoard={responseDataBoard}
           />
 
-          <div style={{ display: "flex", marginTop: "10%" }}>
-            <CommonBtn title="Add More" margin="90px" marginRight="90px" />
+          <div style={{ display: "flex", marginTop: "10%", padding:"1%" }}>
+
+          <p><CommonBtn title="Add More" margin="0px" marginRight="0px" width="120px" /></p>
           <p onClick={finalizeBoard} > <CommonBtn
               onClick={finalizeBoard}
               title="Finalize Board"
-              marginRight="-5px"
+              margin="160px"
             />
           </p>
           </div>
 
+
           <Link to={`/DeactivateTenant?tenantId=${boardId}&name=${name} `}>
             <img src={deactivateImg} style={{ marginTop: "100px" }} />
           </Link>
+          
         </div>
         <Footer />
       </div>

@@ -10,8 +10,8 @@ import TenantSideViewComp from './TenantSideViewComp';
 
 function TenantSideView() {
   const queryParameters = new URLSearchParams(window.location.search);
-  const boardId = queryParameters.get("boardId");
-  console.log(boardId);
+  const tenantId = queryParameters.get("tenantId");
+  console.log(tenantId);
 
   const [responseDataBoard, setResponseDataBoard] = useState([]);
   const [responseDataTenant, setResponseDataTenant] = useState([]);
@@ -40,17 +40,17 @@ function TenantSideView() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://b8rliving.com/board/${boardId}`,
+          `https://b8rliving.com/tenant/${tenantId}`,
           axiosConfig
         );
 
         // const responseData = response.data.data.tenant.tenantDetails;
-        const responseDataBoardData = response.data.data.board;
-        const responseDataTenantData = response.data.data.board.tenantId;
-        setResponseDataTenantName(response.data.data.board.tenantId.tenantDetails[0]);
-        const responseDataPropertiesData = response.data.data.board.propertyId;
+        // const responseDataBoardData = response.data.data.board;
+        const responseDataTenantData = response.data.data.tenant;
+        // setResponseDataTenantName(response.data.data.board.tenantId.tenantDetails[0]);
+        // const responseDataPropertiesData = response.data.data.board.propertyId;
          // Count the number of properties
-         setResponseDataTotalProperties(responseDataPropertiesData.length);
+        //  setResponseDataTotalProperties(responseDataPropertiesData.length);
 
 
         console.log(responseDataTenantData);
@@ -58,8 +58,8 @@ function TenantSideView() {
 
 
         // Update the formData state with the response data
-        setResponseDataBoard(responseDataBoardData);
-        setResponseDataProperty(responseDataPropertiesData);
+        // setResponseDataBoard(responseDataBoardData);
+        // setResponseDataProperty(responseDataPropertiesData);
         setResponseDataTenant(responseDataTenantData);
 
 
@@ -70,7 +70,10 @@ function TenantSideView() {
       }
     }
     fetchBoardDetails(); // Call the fetch function
-    }, [boardId]); 
+    }, [tenantId]); 
+
+console.log(responseDataTenant);
+
 
   return (
     <>

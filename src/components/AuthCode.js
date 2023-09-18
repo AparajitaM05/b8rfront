@@ -49,7 +49,7 @@ function AuthCode() {
 
         alert("New Invitation Code Has Been Created");
         //redirect user to Dashboard
-        window.location.href = "/SignUp";
+        // window.location.href = "/SignUp";
       })
       .catch((error) => {
         console.log(error);

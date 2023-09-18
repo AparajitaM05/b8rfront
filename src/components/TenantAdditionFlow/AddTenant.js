@@ -298,7 +298,7 @@ function AddTenant() {
                 <option value="0-3">0-3 months</option>
                 <option value="3-6">3-6 months</option>
                 <option value="6-11">6-11 months</option>
-                <option value="30+">More than 30 months</option>
+                <option value="30+">More than 11 months</option>
               </select>
 
               <label
@@ -437,6 +437,9 @@ function AddTenant() {
                 </option>
                 <option value="Flat (in Gated Society)">Flat(in Gated Society)</option>
                 <option value="Standalone Individual House">Standalone Individual House</option>
+                <option value="Individual House(in Gated Society)"> Individual House(in Gated Society)</option>
+                <option value="Individual Builder Floor">Individual Builder Floor</option>
+
                 
               </select>
               <label

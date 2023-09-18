@@ -82,7 +82,7 @@ function ActiveLeads()
 
         {/* <SearchBar onSearch={handleSearch} placeholder="Search by Tenant Name"/> */}
 
-        <p style={{textAlign:"left"}}>Hey,{name} <br/>
+        <p style={{textAlign:"left"}}>Hey,<b>{name}</b> <br/>
 
         Here are all the tenants that you have onboarded </p>
         

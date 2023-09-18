@@ -90,7 +90,7 @@ function PropertyInfo() {
         saleAmount: 0,
         saleDeposit: 0,
         saleMaintenance: 0,
-        moveInFrom: 0,
+        moveInFrom: "",
         floors: {
           total: "",
           your: "",
@@ -650,7 +650,7 @@ function PropertyInfo() {
                   float: "left",
                 }}
               >
-                Landlord First Name*{" "}
+                Landlord First Name{" "}
               </label>
               <input
                 type="text"
@@ -673,7 +673,7 @@ function PropertyInfo() {
                   float: "left",
                 }}
               >
-                Landlord Last Name*{" "}
+                Landlord Last Name{" "}
               </label>
               <input
                 type="text"
@@ -696,7 +696,7 @@ function PropertyInfo() {
                   float: "left",
                 }}
               >
-                Contact Number*
+                Contact Number
               </label>
               <input
                 type="tel"
@@ -742,7 +742,7 @@ function PropertyInfo() {
                   float: "left",
                 }}
               >
-                Country of residence of Landlord*
+                Country of residence of Landlord
               </label>
               <input
                 type="text"
@@ -764,7 +764,7 @@ function PropertyInfo() {
                   float: "left",
                 }}
               >
-                City of residence of Landlord*
+                City of residence of Landlord
               </label>
               <input
                 type="text"
@@ -1378,11 +1378,7 @@ function PropertyInfo() {
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
+                      
                     </select>
                   </div>
                   <div
@@ -1423,11 +1419,7 @@ function PropertyInfo() {
                       <option value="3">3</option>
                       <option value="4">4</option>
                       <option value="5">5</option>
-                      <option value="6">6</option>
-                      <option value="7">7</option>
-                      <option value="8">8</option>
-                      <option value="9">9</option>
-                      <option value="10">10</option>
+                    
                     </select>
                   </div>
                 </div>
@@ -1954,8 +1946,9 @@ function PropertyInfo() {
                         <img src={Movein} alt="Icon description" />
                         <h5 style={{ marginTop: "7px" }}>Preffered Move-in</h5>
                         <input
-                          type="number"
+                          type="date"
                           id="moveInFrom"
+                          pattern="\d{2}-\d{2}-\d{4}"
                           value={formData.propertyData.featureInfo.moveInFrom}
                           onChange={handleChange}
                           name="moveInFrom"

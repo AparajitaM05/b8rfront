@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, {useEffect,useState} from "react";
+
 import TenantSideBack from "../Assets/Images/TenantSideView/TenantSideBack.png";
 import bgm from "../Assets/Images/TenantSideView/TenantSideImg.png";
 import Footer from "../Footer";
 import axios from "axios";
 import CommonBtn from "../CommonButton";
 import style from "./OtpScreen.css";
+import loadingGif from "../Assets/Images/loading.gif";
+
 
 function OTPscreen() {
+
+  const queryParameters = new URLSearchParams(window.location.search);
+  const boardId = queryParameters.get("boardId");
+  // const path = queryParameters.get("path");
+  console.log(boardId);
+
   
   const [formData, setFormData] = useState({
-    enter_otp: "",
     phone: "",
   });
 
@@ -18,12 +26,64 @@ function OTPscreen() {
   const [OtpSession, setOtpSession] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
-  const [FormDisable, setFormDisable] = useState(false);
+  const [FormDisable, setFormDisable] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [responseDataBoard, setResponseDataBoard] = useState([]);
+  const [responseDataTenant, setResponseDataTenant] = useState([]);
+  const [responseDataTenantNumber, setResponseDataTenantNunber] = useState("");
+  const token = localStorage.getItem("token");
+  // const [responseDataTotalProperties, setResponseDataTotalProperties] = useState("");
+  const [responseDataPropertyId, setResponseDataTenantPropertyId] = useState("");
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+
+  useEffect(() => {
+    const fetchBoardDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://b8rliving.com/board/details/${boardId}`,
+          axiosConfig
+        );
+
+        // const responseData = response.data.data.tenant.tenantDetails;
+        const responseDataBoardData = response.data.data.board;
+        const responseDataTenantData = response.data.data.board.tenantId;
+        setResponseDataTenantNunber(response.data.data.board.tenantId.phoneNumber);
+        setResponseDataTenantPropertyId(response.data.data.board.propertyId);
+
+        
+        // const responseDataPropertiesData = response.data.data.board.propertyId;
+         // Count the number of properties
+        //  setResponseDataTotalProperties(responseDataPropertiesData.length);
 
 
-  // const handleMobileNumberChange = (event) => {
-  //   setMobileNumber(event.target.value);
-  // };
+        console.log(responseDataTenantData);
+
+
+
+        // Update the formData state with the response data
+        setResponseDataBoard(responseDataBoardData);
+        // setResponseDataProperty(responseDataPropertiesData);
+        setResponseDataTenant(responseDataTenantData);
+
+
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+    }
+    fetchBoardDetails(); // Call the fetch function
+    }, [boardId]); 
+
+
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -38,29 +98,34 @@ function OTPscreen() {
     event.preventDefault();
     console.log(formData["phone"]);
     const phone = formData["phone"];
-    // console.log(`https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/+91.${phone}/AUTOGEN`);
-    try {
-    axios
-      .get(`https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/+91.${phone}/AUTOGEN`, formData)
-      .then((response) => {
-        console.log(response.data);
-        // do something with the response
-        // const token = response.data.token;
-      
-        const OTP_SESSION = response.data.Details;
-        setOtpSession(OTP_SESSION);
-
-        alert("OTP has been send!");
-        //redirect user to Dashboard
-        // window.location.href = `/EnterOTP?sessionId=${OTP_SESSION}&phone=${phone}`;
-      })
-      .catch((error) => {
-        console.log(error);
-        // handle the error
-      });
-    } catch (error) {
-      console.log("ASYNC ERROR:". error);
+    if(responseDataTenantNumber == phone){
+      try {
+        axios
+          .get(`https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/+91.${phone}/AUTOGEN`, formData)
+          .then((response) => {
+            console.log(response.data);
+            // do something with the response
+            // const token = response.data.token;
+          
+            const OTP_SESSION = response.data.Details;
+            setOtpSession(OTP_SESSION);
+            setFormDisable(false);
+            alert("OTP has been send!");
+            //redirect user to Dashboard
+            // window.location.href = `/EnterOTP?sessionId=${OTP_SESSION}&phone=${phone}`;
+          })
+          .catch((error) => {
+            console.log(error);
+            // handle the error
+          });
+        } catch (error) {
+          console.log("ASYNC ERROR:". error);
+        }
+    } else {
+        alert("Please login with Registered Mobile Number")
     }
+    // console.log(`https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/+91.${phone}/AUTOGEN`);
+  
   };
 
 console.log(OtpSession);
@@ -69,10 +134,10 @@ console.log(OtpSession);
 
     console.log(formData["enter_otp"]);
     const enter_otp = formData["enter_otp"];
-
+    // 599325
     console.log(
       `https://2factor.in/API/V1/c68dfb13-f09f-11ed-addf-0200cd936042/SMS/VERIFY/${OtpSession}/${enter_otp}`
-    );
+    ); 
     try {
       axios
         .get(
@@ -99,17 +164,17 @@ console.log(OtpSession);
               // const name = response.data.data.agent.name;
               const phone = response.data.data.tenant.phoneNumber;
               // const tenantDetails = response.data.data.tenant.tenantDetails;
-              // console.log(inviteCode.substring(0, 2));
+              console.log(response.data.data.tenant._id);
       
               //set JWT token to local
               // if (typeof localStorage !== 'undefined') {
                 // localStorage is available
                 // Your code using localStorage goes here
                 localStorage.setItem("token", token);
-                // localStorage.setItem("username", name);
+                localStorage.removeItem( "name");
                 localStorage.setItem("phone", phone);
 
-              window.location.href = "/TenantSideView";
+              window.location.href = `/TenantSideView?tenantId=${response.data.data.tenant._id}`;
               // alert("Your Password has been Updated!");
             })
             .catch((error) => {
@@ -132,7 +197,16 @@ console.log(OtpSession);
   };
 
   return (
-    <div className="startPage">
+    <>
+    { loading ? (
+      <div>
+        <img
+          src={loadingGif}
+          height={180}
+        />
+      </div>
+    ) : (
+      <div className="startPage">
       <div
         className="form"
         style={{
@@ -154,8 +228,8 @@ console.log(OtpSession);
             </p>
             <br />
             <p style={{textAlign:"left",marginLeft:"10px",marginRight:"10px"}}>
-              Your agent has shared 4 awesome properties. <br />
-              Log in using xxxxx 25921, mobile number to view details
+              Your agent has shared {responseDataPropertyId} awesome properties. <br />
+              Log in using {responseDataTenantNumber}, mobile number to view details
             </p>
           </div>
 
@@ -185,7 +259,7 @@ console.log(OtpSession);
             className="InputF" 
             type="number" 
             name="enter_otp"
-
+            disabled={FormDisable}
             id="enter_otp" 
             value={formData.enter_otp} 
             onChange={handleChange} 
@@ -199,6 +273,9 @@ console.log(OtpSession);
         <br />
       </div>
     </div>
+    
+    )}
+    </>
   );
 }
 

@@ -1466,12 +1466,13 @@ function FieldAgentVerifyProperty() {
                             textAlign: "center",
                             backgroundColor: "red",
                           }}
+                         
                           value="Un-furnished"
                         >
                           Un-furnished
                         </option>
-                        <option value="Semi-Furnished">Semi-Furnished</option>
-                        <option value="Full-Furnished">Full-Furnished</option>
+                        <option value="Semi-furnished">Semi-Furnished</option>
+                        <option value="Full-furnished">Full-Furnished</option>
                       </select>
                     </div>
                   </div>

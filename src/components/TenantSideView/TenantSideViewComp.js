@@ -14,6 +14,7 @@ import Parking2 from "../Assets/Images/TenantSide/Parking2.png";
 function TenantSideViewComp({ boards }) {
   // const { img, rent, area, houseConfig, FurnishingType, parking } = props;
   const [isClick, setClick] = useState(false);
+console.log(boards);
 
   return (
     <>

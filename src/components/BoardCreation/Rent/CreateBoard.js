@@ -135,7 +135,7 @@ function CreateBoard() {
   }, [tenantId]);
 
 
-  console.log(responseDataTenantBoard);
+  console.log(responseDataProperty);
 
   // console.log(responseDataTenantData);
 

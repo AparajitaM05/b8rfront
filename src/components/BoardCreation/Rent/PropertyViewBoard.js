@@ -121,7 +121,8 @@ function PropertyViewBoard() {
 
           <div style={{ display: "flex", marginTop: "10%", padding:"1%" }}>
 
-          <p><CommonBtn title="Add More" margin="0px" marginRight="0px" width="120px" /></p>
+         <p><CommonBtn title="Add More" margin="0px" marginRight="0px" width="120px" /></p>
+          
           <p onClick={finalizeBoard} > <CommonBtn
               onClick={finalizeBoard}
               title="Finalize Board"

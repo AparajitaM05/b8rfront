@@ -11,6 +11,7 @@ import TenantSideViewComp from './TenantSideViewComp';
 function TenantSideView() {
   const queryParameters = new URLSearchParams(window.location.search);
   const tenantId = queryParameters.get("tenantId");
+  const boardId = queryParameters.get("boardId");
   console.log(tenantId);
 
   const [responseDataBoard, setResponseDataBoard] = useState([]);
@@ -40,28 +41,27 @@ function TenantSideView() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://b8rliving.com/tenant/${tenantId}`,
+          `https://b8rliving.com/board/${boardId}`,
           axiosConfig
         );
 
         // const responseData = response.data.data.tenant.tenantDetails;
         // const responseDataBoardData = response.data.data.board;
-        const responseDataTenantData = response.data.data.tenant;
+        const responseDataBoardtData = response.data.data.board;
         // setResponseDataTenantName(response.data.data.board.tenantId.tenantDetails[0]);
-        // const responseDataPropertiesData = response.data.data.board.propertyId;
-         // Count the number of properties
-        //  setResponseDataTotalProperties(responseDataPropertiesData.length);
+        const responseDataPropertiesData = response.data.data.board.propertyId;
 
 
-        console.log(responseDataTenantData);
+        console.log(responseDataBoardtData);
 
 
 
         // Update the formData state with the response data
-        // setResponseDataBoard(responseDataBoardData);
-        // setResponseDataProperty(responseDataPropertiesData);
-        setResponseDataTenant(responseDataTenantData);
+        setResponseDataBoard(responseDataBoardtData);
+        setResponseDataProperty(responseDataPropertiesData);
 
+         // Count the number of properties
+        setResponseDataTotalProperties(responseDataPropertiesData.length);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -70,9 +70,48 @@ function TenantSideView() {
       }
     }
     fetchBoardDetails(); // Call the fetch function
-    }, [tenantId]); 
+    }, []); 
 
-console.log(responseDataTenant);
+
+    //TENANT
+    useEffect(() => {
+      const fetchBoardDetails = async () => {
+        setLoading(true);
+        try {
+          const response = await axios.get(
+            `https://b8rliving.com/tenant/${tenantId}`,
+            axiosConfig
+          );
+  
+          // const responseData = response.data.data.tenant.tenantDetails;
+          // const responseDataBoardData = response.data.data.board;
+          const responseDataTenantData = response.data.data.tenant;
+          setResponseDataTenantName(response.data.data.tenant.tenantDetails[0].name);
+          // const responseDataPropertiesData = response.data.data.board.propertyId;
+           // Count the number of properties
+          //  setResponseDataTotalProperties(responseDataPropertiesData.length);
+  
+  
+          console.log(responseDataTenantData);
+  
+  
+  
+          // Update the formData state with the response data
+          // setResponseDataBoard(responseDataBoardData);
+          // setResponseDataProperty(responseDataPropertiesData);
+          setResponseDataTenant(responseDataTenantData);
+  
+  
+        } catch (error) {
+          console.error("Error fetching data:", error);
+        } finally {
+          setLoading(false); // Set loading to false when the request is complete
+        }
+      }
+      fetchBoardDetails(); // Call the fetch function
+      }, [tenantId]); 
+
+// console.log(responseDataTotalProperties);
 
 
   return (
@@ -93,9 +132,9 @@ console.log(responseDataTenant);
         <Link to="/dashboard"><img  src={logo} height={40} alt="fireSpot"/></Link>
       </div>
         <h2 style={{ color: '#52796F' }}>Welcome</h2>
-        <h3 style={{ textAlign: 'left' }}>Hey,</h3>
+        <h3 style={{ textAlign: 'left' }}>Hey {responseDataTenantName}, </h3>
         <h5 style={{ textAlign: 'left' }}>
-          Your agent, Mr. Rohit, has shared 4 awesome properties with you!
+          Your agent has shared {responseDataTotalProperties} awesome properties with you!
           <br />
           Check them out and pick which you like.
         </h5>
@@ -117,7 +156,7 @@ console.log(responseDataTenant);
         
        
         
-        {/* <TenantSideViewComp boards={responseBoards} /> */}
+        <TenantSideViewComp boards={responseDataProperty} />
           
           <h3 style={{fontFamily:"GlidaDisplay"}}>That’s All for the Day!<br/>
         Hope you love the properties shared.</h3>

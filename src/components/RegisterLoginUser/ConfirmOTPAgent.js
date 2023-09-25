@@ -18,10 +18,9 @@ function ConfirmOTPAgent(props) {
 
   const [formData, setFormData] = useState({
     enter_otp: "",
-    // password: "",
-    // c_password: "",
-    // phone: phone,
   });
+
+  
 
   const handleChange = (event) => {
     const { name, value } = event.target;

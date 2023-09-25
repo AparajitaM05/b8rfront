@@ -173,8 +173,7 @@ console.log(OtpSession);
                 localStorage.setItem("token", token);
                 localStorage.removeItem( "name");
                 localStorage.setItem("phone", phone);
-
-              window.location.href = `/TenantSideView?tenantId=${response.data.data.tenant._id}`;
+              window.location.href = `/TenantSideView?tenantId=${response.data.data.tenant._id}&boardId=${boardId}`;
               // alert("Your Password has been Updated!");
             })
             .catch((error) => {

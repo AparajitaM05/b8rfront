@@ -56,7 +56,7 @@ function FieldAgentHomeN(){
               setPendingCount(PendingCount);
 
               console.log(response.data.data.verified);
-              var VerifiedCount = response.data.data.verified;
+              var VerifiedCount = response.data.data.completed;
               setVerifiedCount(VerifiedCount);
 			  // console.log(myArrayPropertyCount.length);
 

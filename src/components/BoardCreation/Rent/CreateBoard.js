@@ -375,7 +375,6 @@ function CreateBoard() {
             placeholder="Search by property Name"
           />
           <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} responseDataTenantBoard={responseDataTenantBoard} />
-          <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" /></Link>
           </div>
 
           <Footer />

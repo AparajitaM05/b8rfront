@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 import imgOne from "../../Assets/Images/AgentDashboard/imgOne.png";
 import Add from "../../Assets/Images/BoardCreation/Add.png";
@@ -9,6 +10,8 @@ import area from "../../Assets/Images/BoardCreation/area.png";
 import Group from "../../Assets/Images/BoardCreation/Group.png";
 import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
+import CommonBtn from "../../CommonButton";
+
 
 const PropertyComp = ({
   props,
@@ -20,7 +23,7 @@ const PropertyComp = ({
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(false);
 
-  const [addedProperty, setAddedProperty] = useState(false);
+  const [addedItems, setAddedItems] = useState([]);
 
  console.log(responseDataTenantBoard);
   let axiosConfig = {
@@ -35,6 +38,17 @@ const PropertyComp = ({
     console.log(pId);
     setLoading(true);
 
+    if (addedItems.includes(pId)) {
+      // If it's already added, remove it
+      setAddedItems(addedItems.filter(item => item !== pId));
+    } else {
+      // If it's not added, add it
+      setAddedItems([...addedItems, pId]);
+    }
+};
+
+  const viewToBoard = async (pId) => {
+
     try {
       const response = await axios.put(
         `https://b8rliving.com/board/property/${responseDataTenantBoard}`,
@@ -42,8 +56,8 @@ const PropertyComp = ({
         axiosConfig
       );
       console.log(response);
-      setAddedProperty(true);
-      console.log(addedProperty);
+      // setAddedProperty(true);
+      // console.log(addedProperty);
       // alert(response.data.message)
     } catch (error) {
       // Handle any errors that occur during the API request
@@ -52,8 +66,8 @@ const PropertyComp = ({
     } finally {
       setLoading(false); // Set loading to false when the request is complete
     }
-  };
 
+  }
   const handleLoadMore = () => {
     setVisibleItems(visibleItems + 3);
   };
@@ -161,40 +175,52 @@ const PropertyComp = ({
                 </div>
 
                 {/* {values._id} */}
-                {addedProperty ? (
+                {/* {addedProperty ? (
                   <p style={{ color: "#52796F", fontWeight: "bolder" }}>
                     Added
                   </p>
                 ) : (
-                  <>
-                    <div
-                      style={{
-                        height: "75px",
-                        width: "52px",
-                        background: "#E8E7E7",
-                        borderRadius: "10px",
-                        marginLeft: "10px",
-                      }}
-                    >
-                      <img
-                        src={Add}
-                        alt="Add"
-                        style={{
-                          height: "27px",
-                          marginTop: "20px",
-                          marginBottom: "-8px",
-                        }}
-                      />
+                  <> */}
+                  
 
                       <text style={{ fontSize: "12px", color: "#5D6560" }}>
-                        <b onClick={() => addToBoard(values._id)}>
+                        {/* <b onClick={() => addToBoard(values._id)}>
                           Add to Board
-                        </b>
+                        </b> */}
+                        <b key={values._id} onClick={() => addToBoard(values._id)}>
+                           {addedItems.includes(values._id) ?  <p style={{ color: "#52796F", fontWeight: "bolder" }}> Added </p> : 
+                            
+                             <div
+                             style={{
+                               height: "75px",
+                               width: "52px",
+                               background: "#E8E7E7",
+                               borderRadius: "10px",
+                               marginLeft: "10px",
+                             }}
+                           >
+                             <img
+                               src={Add}
+                               alt="Add"
+                               style={{
+                                 height: "27px",
+                                 marginTop: "20px",
+                                 marginBottom: "-8px",
+                               }}
+                             />
+                             <br></br>
+                             <br></br>
+                              Add to Board
+                              </div>
+                              
+                             
+                             }
+                     </b>
                       </text>
                     </div>
-                  </>
-                )}
-              </div>
+                  {/* </>
+                )} */}
+              {/* </div> */}
             </div>
           ))}
           {visibleItems < props.length && (
@@ -204,6 +230,10 @@ const PropertyComp = ({
           )}
         </div>
       )}
+          <div onClick={() => viewToBoard()} >
+           <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" /></Link>
+          </div>
+
     </>
   );
 };

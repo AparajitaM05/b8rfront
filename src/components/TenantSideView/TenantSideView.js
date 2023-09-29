@@ -133,11 +133,11 @@ function TenantSideView() {
       </div>
         <h2 style={{ color: '#52796F' }}>Welcome</h2>
         <h3 style={{ textAlign: 'left' }}>Hey {responseDataTenantName}, </h3>
-        <h5 style={{ textAlign: 'left' }}>
+        <p style={{ textAlign: 'left'  }}>
           Your agent has shared {responseDataTotalProperties} awesome properties with you!
           <br />
           Check them out and pick which you like.
-        </h5>
+        </p>
 
         <div
           // className="containered form"
@@ -156,7 +156,7 @@ function TenantSideView() {
         
        
         
-        {/* <TenantSideViewComp boards={responseDataProperty} /> */}
+        <TenantSideViewComp boards={responseDataProperty} />
           
           <h3 style={{fontFamily:"GlidaDisplay"}}>That’s All for the Day!<br/>
         Hope you love the properties shared.</h3>

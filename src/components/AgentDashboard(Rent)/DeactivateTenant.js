@@ -26,7 +26,7 @@ function DeactivateTenant(){
 
   const queryParameters = new URLSearchParams(window.location.search);
   const idTenant = queryParameters.get("tenantId");
-  const name = queryParameters.get("name");
+  // const name = queryParameters.get("name");
   
   const [stateRender, setStateRender] = useState("rent");
   const [loading, setLoading] = useState(false);

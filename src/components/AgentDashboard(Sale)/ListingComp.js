@@ -63,6 +63,7 @@ function ListingComp(props) {
 
             ) : (
                 <div class="left-info-box-await">
+                  <p>Pending Photos from Field Agent</p>
               <text class="left-info-text-await">Awaiting Photos</text>
             </div>
 
@@ -79,7 +80,7 @@ function ListingComp(props) {
         {/* <!-- right side --> */}
         <div class="right-container">
           <img src={checkP} class="right-image" />
-          <text class="right-text">Detail</text>
+          <text class="right-text">Email</text>
         </div>
       </div>
 

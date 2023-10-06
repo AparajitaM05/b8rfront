@@ -2,7 +2,6 @@ import React, { Component, useState, useEffect } from "react";
 // import Signp from "./SignUp.css";
 import { Link } from "react-router-dom";
 import axios from "axios";
-// import vector from "../Assets/Images/RegisterLoginUser/vector.png";
 import bgm from "../Assets/Images/BuyerAdditionFlow/BuyerBg.png";
 import key_1 from "../PropertyAdditionPageIcons/key_1/24.png";
 import "./BuyerDesign.css";
@@ -16,12 +15,12 @@ function AddBuyer() {
   const [checkedStateOne, setCheckedStateOne] = useState(true);
 
   const [formData, setFormData] = useState({
-    name: "",
-    status: "Verified",
+
+    phoneNumber: "",
     buyerData: {
+      name: "",
       email: "",
       panNumber: "",
-      phoneNumber: "",
       houseConfiguration: "",
       houseType: "",
       furnishingType: "",
@@ -42,10 +41,9 @@ function AddBuyer() {
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-
     console.log(name, value);
-
-    if (name === "name" || name === "status") {
+    
+    if (name === "phoneNumber") {
       setFormData((prevState) => ({
         ...prevState,
         [name]: value,
@@ -93,7 +91,7 @@ function AddBuyer() {
       .then((response) => {
         alert("Your Buyer details has been submitted");
         //redirect user to Dashboard
-        window.location.href = `/BuyerCreated?name=${formData.name}&budget=${formData.buyerData.budget}`;
+        window.location.href = `/BuyerCreated?name=${formData.buyerData.name}&budget=${formData.buyerData.budget}`;
         // do something with the response
       })
       .catch((error) => {
@@ -133,7 +131,7 @@ function AddBuyer() {
                   className={"fieldInput-add"}
                   type="text"
                   id="name"
-                  value={formData.name}
+                  value={formData.buyerData.name}
                   onChange={handleChange}
                   name="name"
                   required
@@ -161,7 +159,7 @@ function AddBuyer() {
                   type="tel"
                   id="phoneNumber"
                   name="phoneNumber"
-                  value={formData.buyerData.phoneNumber}
+                  value={formData.phoneNumber}
                   onChange={handleChange}
                   required
                 />
@@ -237,15 +235,16 @@ function AddBuyer() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="gated_apartment">Select from Drop Down</option>
+                [Studio, 1 BHK, 2 BHK, 3 BHK, 4 BHK, 0, 1, 2, 3, 4]
+                <option value=" ">Select from Drop Down</option>
                 <option value="Studio">Studio</option>
-                <option value="1BHK">1BHK</option>
-                <option value="2BHK">2BHK</option>
-                <option value="2.5BHK">2.5BHK</option>
-                <option value="3BHK">3BHK</option>
-                <option value="3.BHK">3.5BHK</option>
-                <option value="4BHK">4BHK</option>
-                <option value="4.5BHK">4.5BHK+</option>
+                <option value="1 BHK">1 BHK</option>
+                <option value="2 BHK">2 BHK</option>
+                
+                <option value="3 BHK">3 BHK</option>
+                
+                <option value="4 BHK">4 BHK</option>
+               
               </select>
 
               <label
@@ -272,10 +271,11 @@ function AddBuyer() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="full">Type of Furnishing</option>
-                <option value="full">Full-Furnished</option>
-                <option value="semi">Semi-Furnished</option>
-                <option value="Unfurnished">UnFurnished</option>
+                
+                <option value=" ">Type of Furnishing</option>
+                <option value="Full-furnished">Full-Furnished</option>
+                <option value="Semi-furnished">Semi-Furnished</option>
+                <option value="Un-furnished">UnFurnished</option>
               </select>
 
               <label
@@ -305,12 +305,13 @@ function AddBuyer() {
                 <option value="Selectfromdropdown">
                   Select from Drop Down
                 </option>
+                houseType" must be one of [Flat (in Gated Society…r Floor, Standalone Individual House, 0, 1, 2, 3]
                 <option value="Gated Society)">Flat(in Gated Society)</option>
-                <option value="Individual"> Individual Builder Floor</option>
+                {/* <option value="Individual"> Individual Builder Floor</option>
                 <option value="Individual House">
                   Individual House(in Gated Society)
-                </option>
-                <option value="standalonehouse">
+                </option> */}
+                <option value="Standalone Individual House">
                   Standalone Individual House
                 </option>
               </select>

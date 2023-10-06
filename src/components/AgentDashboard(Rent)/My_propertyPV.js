@@ -21,15 +21,17 @@ import AllPropertiesComp from "./AllPropertiesComp";
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
+import ListingComp2 from "../AgentDashboard(Rent)/ListingComp";
 
 function My_propertyPV() {
   const [loading, setLoading] = useState(false);
-  const [responseTenat, setresponseTenat] = useState();
+  const [responseNoImageProperty, setresponseNoImageProperty] = useState([]);
+  const [responseProperty, setresponseProperty] = useState([]);
   const [fieldAgentStatus, setFieldAgentStatus] = useState("Pending"); // Default status
   const [imagesApproved, setimagesApproved] = useState("Pending"); // Default status
 
   const token = localStorage.getItem("token");
-//   console.log(token);
+  //   console.log(token);
 
   let axiosConfig = {
     headers: {
@@ -39,25 +41,29 @@ function My_propertyPV() {
     },
   };
   useEffect(() => {
-    // event.preventDefault();
     const fetchPosts = async () => {
       setLoading(true);
       axios
-        .get(
-          `https://b8rliving.com/property?fieldAgentStatus=${fieldAgentStatus}&imagesApproved=${imagesApproved}`,
-          axiosConfig
-        )
+        .get(`https://b8rliving.com/property`, axiosConfig)
         .then((response) => {
           console.log(response.data.data);
+          var propertiesData = response.data.data.properties;
+          // Filter out properties where propertyDetails.purposeSale is true
+          const noImageProperties = propertiesData.filter((property) => {
+            return (
+              property.images.length == 0
+            );
+          });
+
+          // Filter out properties where propertyDetails.purposeSale is true
+          const underReviewProperties = propertiesData.filter((property) => {
+            return property.fieldAgentStatus === "Completed" && property.status === "Pending";
+          });
+
           // var myArrayPropertyCount = response.data.data.properties;
-          setresponseTenat(response.data.data);
-          // console.log(myArrayPropertyCount.length);
+          setresponseNoImageProperty(noImageProperties);
+          setresponseProperty(underReviewProperties);
 
-          // if(response.data.data.properties.propertyInfo.purposeRent==true){
-          // }
-
-          // alert("Your data has been submitted");
-          // do something with the response
         })
         .catch((error) => {
           console.log(error);
@@ -68,24 +74,16 @@ function My_propertyPV() {
 
     fetchPosts();
   }, []);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    localStorage.removeItem("token");
-    alert("You have been logged out.");
-  };
+  console.log(responseProperty);
 
   const username = localStorage.getItem("username");
   const name = username.substring(0, username.indexOf(" "));
-
 
   // Function to update both fieldAgentStatus and imagesApproved
   const updateFilterConditions = (newStatus, newImagesApproved) => {
     setFieldAgentStatus(newStatus);
     setimagesApproved(newImagesApproved);
   };
-
-
 
   return (
     <>
@@ -110,7 +108,7 @@ function My_propertyPV() {
             borderColor="#DAF0EE"
             color="#DAF0EE"
             text="Pending Verification"
-            onClick={() => updateFilterConditions('Pending', false)}
+            onClick={() => updateFilterConditions("Pending", false)}
             //        onclicked={handlePageAvailable}
           />
           <Link to="/My_PropertyYTS">
@@ -119,7 +117,7 @@ function My_propertyPV() {
               borderColor="#DAF0EE"
               color="#77A8A4"
               text="Yet to Share "
-              onClick={() => updateFilterConditions('Completed', true)}
+              onClick={() => updateFilterConditions("Completed", true)}
             />
           </Link>
         </div>
@@ -130,7 +128,7 @@ function My_propertyPV() {
               borderColor="#DAF0EE"
               color="#77A8A4"
               text="Shortlisted"
-            //   onClick={() => updateFieldAgentStatus('verified')}
+              //   onClick={() => updateFieldAgentStatus('verified')}
             />
           </Link>
           <Link to="/My_PropertySNA">
@@ -139,7 +137,7 @@ function My_propertyPV() {
               borderColor="#DAF0EE"
               color="#77A8A4"
               text="Shared, No Action "
-            //   onClick={() => updateFieldAgentStatus('verified')}
+              //   onClick={() => updateFieldAgentStatus('verified')}
             />
           </Link>
         </div>
@@ -154,7 +152,11 @@ function My_propertyPV() {
           </text>
         </div>
         {/* --------------------------------------first tab-------------------------------------------- */}
-        <AllPropertiesComp  />
+        <ListingComp2
+          responseNoImageProperty={responseNoImageProperty}
+          responseProperty={responseProperty}
+        />
+
         {/* --------------------------------------Second tab-------------------------------------------- */}
 
         <Footer />

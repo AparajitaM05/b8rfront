@@ -39,7 +39,6 @@ function BuyerDetails(){
     house_type:'',
     movein_from:'',
     location: ''
-    
 	  });
 
     

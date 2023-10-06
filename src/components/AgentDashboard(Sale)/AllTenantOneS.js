@@ -10,7 +10,7 @@ import SearchBar from "../SearchBar";
 import { BsSearchHeart } from "react-icons/bs";
 import { IoSearch } from "react-icons/io5";
 import searchImg from "../Assets/Search.png";
-import propertyComp from "./propertyComp";
+import TenantComp from "./TenantComp";
 
 function AllTenantOneS() {
   const [waitingProperyData, setwaitingPropery] = useState(false);
@@ -21,6 +21,18 @@ function AllTenantOneS() {
   const [ActivebgColor, setActivebgColor] = useState("#D2D7D6");
   const [ActiveBorderColor, setBorderColor] = useState("#A9C0BA");
   const [activeColor, setColor] = useState("#77A8A4");
+  const [loading, setLoading] = useState(false);
+
+  
+  const [responseBuyer, setresponseBuyer] = useState([]);
+
+  // const [responseTenatWaitingForProperty, setresponseTenatWaitingForProperty] =
+  //   useState();
+  // const [WaitingFroPropertyCondition, setWaitingFroPropertyCondition] =
+  //   useState(false);
+  const token = localStorage.getItem("token");
+  console.log(token);
+
 
   const handleSearch = (searchValue) => {
     // Custom search handling logic
@@ -28,6 +40,37 @@ function AllTenantOneS() {
 
     // Perform search operations here
   };
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+  useEffect(() => {
+    const fetchPosts = async () => {
+      setLoading(true);
+      axios
+        .get("https://b8rliving.com/buyer", axiosConfig)
+        .then((response) => {
+          console.log(response.data.data.buyers);
+          // var myArrayPropertyCount = response.data.data.properties;
+          setresponseBuyer(response.data.data.buyers);
+          // console.log(responseBuyer);
+
+          // alert("Your data has been submitted");
+          // do something with the response
+        })
+        .catch((error) => {
+          console.log(error);
+          // handle the error
+        });
+      setLoading(false);
+    };
+
+    fetchPosts();
+  }, []);
 
   const handlePageAvailable = () => {
     // Custom search handling logic
@@ -40,6 +83,10 @@ function AllTenantOneS() {
     }
   };
 
+  console.log(responseBuyer)
+
+  const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(" "));
 
   return (
     <>
@@ -100,8 +147,6 @@ function AllTenantOneS() {
                 onclicked={() => setshortListed((current) => !current)}
               />
             )}
-
-
           </div>
           {/* Listing */}
         </div>
@@ -152,13 +197,14 @@ function AllTenantOneS() {
                 onclicked={handlePageAvailable}
               />
             )}
-
-    
           </div>
           {/* Listing */}
         </div>
 
-        <SearchBar onSearch={handleSearch} placeholder="Search by Buyer name" />
+        {/* <SearchBar
+          onSearch={handleSearch}
+          placeholder="Search by Buyers' name"
+        /> */}
 
         {archiveData ? (
           <>
@@ -173,19 +219,19 @@ function AllTenantOneS() {
             >
               <div style={{ marginRight: "8px" }}>
                 <CommonTopButton
-                  text="Sold On B8R"
-                  bgColor="#F5F5F5"
-                  borderColor="#B3A8C8"
-                  color="#B3A8C8"
+                  text="Rented On B8R"
+                  bgColor="#D2D7D6"
+                  borderColor="#A9C0BA"
+                  color="#77A8A4"
                 />
               </div>
 
               <div>
                 <CommonTopButton
-                  text="Sold Outside"
-                  bgColor="#F5F5F5"
-                  borderColor="#B3A8C8"
-                  color="#B3A8C8"
+                  text="Rented Outside"
+                  bgColor="#D2D7D6"
+                  borderColor="#A9C0BA"
+                  color="#77A8A4"
                   // margin="0px 0px 0px 1px"
                 />
               </div>
@@ -195,26 +241,27 @@ function AllTenantOneS() {
             >
               <CommonTopButton
                 text="Others"
-                bgColor="#F5F5F5"
-                borderColor="#B3A8C8"
-                color="#B3A8C8"
+                bgColor="#D2D7D6"
+                borderColor="#A9C0BA"
+                color="#77A8A4"
                 margin="0px 0px 0px 0px"
               />
             </div>
 
             <p style={{ textAlign: "left" }}>
               {" "}
-              Hey Yash,
-              <br />
-              Here are all the buyers that you have onboarded
+              Hey <b>{name}</b>,<br />
+              Here are all the Buyer that you have onboarded
             </p>
           </>
         ) : (
           <p style={{ textAlign: "left" }}>
-            Hey Yash, <br />
-            Here are all the buyers that you have onboarded
+            Hey <b>{name}</b>, <br />
+            Here are all the Buyer that you have onboarded
           </p>
         )}
+
+        <TenantComp props={responseBuyer} name="test" />
 
         <Footer />
       </div>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from 'axios';
 import backgroundSecond from "../Assets/Images/other_bg.png";
 import PropertyClosedimg from "../Assets/Images/PropertyClosed/PropertyImg.png";
+
 function PropertyClosed()
 {
     return(

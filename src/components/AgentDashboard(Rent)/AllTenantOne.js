@@ -23,7 +23,9 @@ function AllTenantOne() {
   const [activeColor, setColor] = useState("#77A8A4");
   const [loading, setLoading] = useState(false);
 
-  const [responseTenat, setresponseTenat] = useState([]);
+  const [responseTenat, setResponseTenat] = useState([]);
+  const [filteredTenants, setFilteredTenants] = useState([]);
+  const [activeCondition, setActiveCondition] = useState("all");
 
   const [responseTenatWaitingForProperty, setresponseTenatWaitingForProperty] =
     useState();
@@ -41,6 +43,8 @@ function AllTenantOne() {
     },
   };
   useEffect(() => {
+  console.log(activeCondition)
+
     const fetchPosts = async () => {
       setLoading(true);
       axios
@@ -48,9 +52,9 @@ function AllTenantOne() {
         .then((response) => {
           // console.log(response.data.data.tenants);
           // var myArrayPropertyCount = response.data.data.properties;
-          setresponseTenat(response.data.data.tenants);
-          console.log(responseTenat);
-
+          setResponseTenat(response.data.data.tenants);
+          
+          filterTenants();
           // alert("Your data has been submitted");
           // do something with the response
         })
@@ -62,7 +66,55 @@ function AllTenantOne() {
     };
 
     fetchPosts();
-  }, []);
+
+  }, [activeCondition]);
+
+  console.log(responseTenat);
+
+  // Function to handle button clicks and trigger filtering
+  const handlePageAvailable = (condition) => {
+    setActiveCondition(condition);
+    filterTenants(); // Trigger the filtering
+  };
+
+
+  // Filter function to filter tenants based on the active condition
+  const filterTenants = () => {
+
+    switch (activeCondition) {
+      case "waitingForProperty":
+        setFilteredTenants(
+          responseTenat.filter(
+            (tenant) => tenant.status === "Waiting For Property"
+          )
+        );
+        break;
+      case "currentlyViewing":
+        setFilteredTenants(
+          responseTenat.filter(
+            (tenant) => tenant.status === "Currently Viewing"
+          )
+        );
+        break;
+      case "shortlisted":
+        setFilteredTenants(
+          responseTenat.filter((tenant) => tenant.status === "Shortlisted")
+        );
+        break;
+      case "archived":
+        setFilteredTenants(
+          responseTenat.filter((tenant) => tenant.status === "Archived")
+        );
+        break;
+      default:
+        setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
+        break;
+    }
+  };
+  console.log(activeCondition)
+
+  const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(" "));
 
   const handleSearch = (searchValue) => {
     // Custom search handling logic
@@ -71,66 +123,37 @@ function AllTenantOne() {
     // Perform search operations here
   };
 
-  // Perform search operations here
-
-  const WaitingForProperty = (query) => {
-    // Custom search handling logic
-    console.log("WaitingForProperty:", query);
-    const fetchPosts = async () => {
-      setLoading(true);
-      axios
-        .get(
-          "https://b8rliving.com/tenant?filter=WaitingForProperty",
-          axiosConfig
-        )
-        .then((response) => {
-          // console.log(response.data.data.tenants);
-          // var myArrayPropertyCount = response.data.data.properties;
-          setresponseTenatWaitingForProperty(response.data.data);
-          // console.log(myArrayPropertyCount.length);
-
-          if (response.data.data.properties.propertyInfo.purposeRent == true) {
-          }
-
-          // alert("Your data has been submitted");
-          // do something with the response
-        })
-        .catch((error) => {
-          console.log(error);
-          // handle the error
-        });
-      setLoading(false);
-    };
-  };
-
-  const handlePageAvailable = () => {
-    // Custom search handling logic
-
-    if (archiveData) {
-      setArchiveData(false);
-    } else {
-      setArchiveData(true);
-      setActivebgColor("#52796F");
-      setBorderColor("#DAF0EE");
-    }
-    // setActivebgColor("#52796F");
-    // setBorderColor("#DAF0EE");
-    // activeColor("")
-
     // Perform search operations here
-  };
-
-  const handlePage = () => {
-    // Custom search handling logic
-    setArchiveData(true);
-    // setActivebgColor("#52796F");
-    // setBorderColor("#DAF0EE");
-
-    // Perform search operations here
-  };
-  const username = localStorage.getItem("username");
-  const name = username.substring(0, username.indexOf(" "));
-
+    // const WaitingForProperty = (query) => {
+    //   // Custom search handling logic
+    //   console.log("WaitingForProperty:", query);
+    //   const fetchPosts = async () => {
+    //     setLoading(true);
+    //     axios
+    //       .get(
+    //         "https://b8rliving.com/tenant?filter=WaitingForProperty",
+    //         axiosConfig
+    //       )
+    //       .then((response) => {
+    //         // console.log(response.data.data.tenants);
+    //         // var myArrayPropertyCount = response.data.data.properties;
+    //         setresponseTenatWaitingForProperty(response.data.data);
+    //         // console.log(myArrayPropertyCount.length);
+  
+    //         if (response.data.data.properties.propertyInfo.purposeRent == true) {
+    //         }
+  
+    //         // alert("Your data has been submitted");
+    //         // do something with the response
+    //       })
+    //       .catch((error) => {
+    //         console.log(error);
+    //         // handle the error
+    //       });
+    //     setLoading(false);
+    //   };
+    // };
+  
   return (
     <>
       <div
@@ -153,113 +176,59 @@ function AllTenantOne() {
             marginBottom: "20px",
           }}
         >
-          <div style={{ marginRight: "8px" }}>
-            {WaitingFroPropertyCondition ? (
-              <CommonTopButton
-                bgColor="#52796F"
-                borderColor="#DAF0EE"
-                color="#DAF0EE"
-                text="Waiting For Property"
-                onclicked={() => setWaitingFroPropertyCondition(true)}
-              />
-            ) : (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Wating For Property"
-                onclicked={() => setWaitingFroPropertyCondition(false)}
-              />
-            )}
-          </div>
-
           <div>
-            {archiveData ? (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Shortlisted"
-                onclicked={handlePageAvailable}
-              />
-            ) : (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Shortlisted"
-                onclicked={handlePageAvailable}
-              />
-            )}
-
-            {/* <CommonTopButton
-              text="Archived Properties"
-              bgColor= {setActivebgColor}
-              borderColor= {setBorderColor}
-              color={activeColor}
-              onclicked={handlePage}
-
-            /> */}
-          </div>
-          {/* Listing */}
-        </div>
-
-        {/* -------------------------------------------------------------------------------- */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            marginBottom: "20px",
-            marginTop: "-10px",
-          }}
-        >
-          <div style={{ marginRight: "8px" }}>
-            {archiveData ? (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Currently Viewing"
-                onclicked={handlePageAvailable}
-              />
-            ) : (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Currently Viewing"
-                onclicked={handlePageAvailable}
-              />
-            )}
+            <CommonTopButton
+              bgColor="#D2D7D6"
+              borderColor="#DAF0EE"
+              color="#77A8A4"
+              text="Waiting For Property"
+              onClick={() => handlePageAvailable("waitingForProperty")}
+              // Waiting For Property, Shortlisted, Currently Viewing, Archived
+            />
+            <CommonTopButton
+              bgColor="#D2D7D6"
+              borderColor="#DAF0EE"
+              color="#77A8A4"
+              text="Currently Viewing"
+              //        onclicked={handlePageAvailable}
+            />
           </div>
           <div>
-            {archiveData ? (
-              <CommonTopButton
-                bgColor="#52796F"
-                borderColor="#DAF0EE"
-                color="#DAF0EE"
-                text="Archived"
-                onclicked={handlePageAvailable}
-              />
-            ) : (
-              <CommonTopButton
-                bgColor="#D2D7D6"
-                borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Archived"
-                onclicked={handlePageAvailable}
-              />
-            )}
-
-            {/* <CommonTopButton
-              text="Archived Properties"
-              bgColor= {setActivebgColor}
-              borderColor= {setBorderColor}
-              color={activeColor}
-              onclicked={handlePage}
-
-            /> */}
+            <CommonTopButton
+              bgColor="#D2D7D6"
+              borderColor="#DAF0EE"
+              color="#77A8A4"
+              text="Shortlisted"
+              //        onclicked={handlePageAvailable}
+            />
+            {/* <Link to="/My_PropertySNA"><CommonTopButton
+   bgColor= "#52796F"
+   borderColor= "#DAF0EE"
+   color="#DAF0EE"
+   text="Archived"
+    //        onclicked={handlePageAvailable}
+    /></Link> */}
+            <div>
+              {archiveData ? (
+                <CommonTopButton
+                  bgColor="#52796F"
+                  borderColor="#DAF0EE"
+                  color="#DAF0EE"
+                  text="Archived"
+                  onclicked={handlePageAvailable}
+                />
+              ) : (
+                <CommonTopButton
+                  bgColor="#D2D7D6"
+                  borderColor="#DAF0EE"
+                  color="#77A8A4"
+                  text="Archived"
+                  onclicked={handlePageAvailable}
+                />
+              )}
+            </div>
           </div>
+
           {/* Listing */}
         </div>
 
@@ -323,7 +292,7 @@ function AllTenantOne() {
           </p>
         )}
 
-        <TenantComp props={responseTenat} name={name} />
+        <TenantComp props={filteredTenants} name={name} />
 
         <Footer />
       </div>

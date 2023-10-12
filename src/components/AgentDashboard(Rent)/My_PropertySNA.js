@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useEffect, useState }  from 'react';
 import Dashboardcss from '../Dashboard.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -21,6 +21,7 @@ import sharedImg from "../Assets/Images/AgentDashboard/sharedImg.png"
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
+import SharedNoactcomp from './SharedNoactcomp';
 
 
 function My_PropertySNA(){
@@ -28,6 +29,51 @@ function My_PropertySNA(){
 
     const token = localStorage.getItem("token");
     console.log(token);
+
+    const [loading, setLoading] = useState(false);
+  const [responseProperty, setresponseProperty] = useState([]);
+
+    let axiosConfig = {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Basic ${token}`,
+        },
+      };
+      useEffect(() => {
+        const fetchPosts = async () => {
+          setLoading(true);
+          axios
+            .get(`https://b8rliving.com/property`, axiosConfig)
+            .then((response) => {
+              console.log(response.data.data);
+              var propertiesData = response.data.data.properties;
+              // Filter out properties where propertyDetails.purposeSale is true
+    
+              // Filter out properties where propertyDetails.purposeSale is true
+              const yetToShareProperties = propertiesData.filter((property) => {
+                return (
+                  property.sharedProperty.length > 0 &&
+                  property.status == "Verified"
+                );
+              });
+    
+              // var myArrayPropertyCount = response.data.data.properties;
+              //   setresponseNoImageProperty(noImageProperties);
+    
+              setresponseProperty(yetToShareProperties);
+            })
+            .catch((error) => {
+              console.log(error);
+              // handle the error
+            });
+          setLoading(false);
+        };
+    
+        fetchPosts();
+      }, []);
+    
+      console.log(responseProperty);
     
     const handleSubmit = event => {
 	event.preventDefault();
@@ -35,7 +81,8 @@ function My_PropertySNA(){
 			alert("You have been logged out.");
 	  };
 
-
+      const username = localStorage.getItem("username");
+      const name = username.substring(0, username.indexOf(" "));
     return(
         <>
 
@@ -88,40 +135,12 @@ function My_PropertySNA(){
        
          {/* BODY */}
          <div style={{textAlign:"left",marginTop:"40px"}}>
-            <p>Hey Yash, <br/>
+            <p>Hey {name}, <br/>
 
             Properties here are active & shared <b>but none of the Tenants have shortlisted them</b></p>
          </div>
          {/* --------------------------------------first tab-------------------------------------------- */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
-                {/* left side */}
-            <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
-                    {/* img */}
-                    <div>
-                            <img src={imgOne} alt="imgOne" style={{marginLeft:"10px", marginTop:"10px"}}/>
-                    </div>
-                    <div style={{marginTop:"5px"}}>
-                        <div style={{textAlign:"left",marginLeft:"10px"}}>
-                            <text style={{fontSize:"9px",textAlign:"left"}}>1018, Tower 1,<br/> <text style={{maringTop:"-15px"}}>Prestige Shantiniketan</text></text>
-                        </div>
-                            <div style={{width:"150px",height:"25px",background:"#FFFFFF",borderRadius:"10px",marginTop:"5px",marginLeft:"10px"}}>
-                                    <text style={{fontSize:"12px",color:"#000000",marginLeft:"-50px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}><img src={sharedImg}/>4 Tenants</text>
-                            </div>
-
-                    </div>
-            </div>
-            {/* right side */}
-            <div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
-
-            <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
-            <text style={{fontSize:"12px",color:"#5D6560",fontWeight:"bold"}}>Detail</text>
-                
-            </div>
-               
-
-               
-               
-        </div>
+        <SharedNoactcomp responseProperty={responseProperty}/>
         {/* --------------------------------------first tab-------------------------------------------- */}
         
         <div style={{marginTop:"310px"}}></div>

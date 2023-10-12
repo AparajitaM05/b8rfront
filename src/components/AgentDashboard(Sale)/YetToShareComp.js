@@ -92,7 +92,7 @@ const YetToShareComp = ({ responseProperty }) => {
             style={{
               height: "30px",
               width: "250px",
-              background: "#DAF0EE",
+              background: "#FEF6FF",
               marginTop: "-19px",
               marginLeft: "50px",
               borderRadius: "0px 0px 10px 10px",

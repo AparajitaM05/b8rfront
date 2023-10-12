@@ -1,23 +1,18 @@
 import React from "react";
-import "./DashboardS.css";
-import "./ListingComp.css";
 import like from "../Assets/Images/AgentDashboard/Like.png";
-
 import imgOne from "../Assets/Images/AgentDashboard/imgOne.png";
 import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
-import noImg from "../Assets/Images/AgentDashboard/noImg.png";
-import heartIcon from "../Assets/Images/AgentDashboard/Liked.png";
 
-function ListingComp2({responseProperty}) {
-  
+const MyPropertyComp = ({ responseProperty }) =>{
+    return (
+        <>
 
-  return (
-    <>
-      {responseProperty.map((values, index) => (
+         {responseProperty.map((values, index) => (
 
-      <div key={index}>
-    
-    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
+        <div key={index}>
+
+
+         <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
                 {/* left side */}
             <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
                     {/* img */}
@@ -46,10 +41,10 @@ function ListingComp2({responseProperty}) {
                
                
         </div>
-    </div>
+        </div>
         ))}
-    </>
-  );
-}
+        </>
+    )
 
-export default ListingComp2;
+};
+export default MyPropertyComp;

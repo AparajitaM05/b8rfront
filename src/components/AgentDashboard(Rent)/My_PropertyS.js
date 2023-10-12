@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useState, useEffect }  from 'react';
 import Dashboardcss from '../Dashboard.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -20,6 +20,7 @@ import like from "../Assets/Images/AgentDashboard/Like.png";
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
+import MyPropertyComp from './MyPropertyComp';
 
 
 function My_PropertyS(){
@@ -27,6 +28,51 @@ function My_PropertyS(){
 
     const token = localStorage.getItem("token");
     console.log(token);
+
+    const [loading, setLoading] = useState(false);
+    const [responseProperty, setresponseProperty] = useState([]);
+
+    let axiosConfig = {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Basic ${token}`,
+        },
+      };
+      useEffect(() => {
+        const fetchPosts = async () => {
+          setLoading(true);
+          axios
+            .get(`https://b8rliving.com/property`, axiosConfig)
+            .then((response) => {
+              console.log(response.data.data);
+              var propertiesData = response.data.data.properties;
+              // Filter out properties where propertyDetails.purposeSale is true
+    
+              // Filter out properties where propertyDetails.purposeSale is true
+              const yetToShareProperties = propertiesData.filter((property) => {
+                return (
+                  
+                  property.status === "Shortlisted"
+                );
+              });
+    
+              // var myArrayPropertyCount = response.data.data.properties;
+              //   setresponseNoImageProperty(noImageProperties);
+    
+              setresponseProperty(yetToShareProperties);
+            })
+            .catch((error) => {
+              console.log(error);
+              // handle the error
+            });
+          setLoading(false);
+        };
+    
+        fetchPosts();
+      }, []);
+    
+      console.log(responseProperty);
     
     const handleSubmit = event => {
 	event.preventDefault();
@@ -34,6 +80,8 @@ function My_PropertyS(){
 			alert("You have been logged out.");
 	  };
 
+      const username = localStorage.getItem("username");
+  const name = username.substring(0, username.indexOf(" "));
 
     return(
         <>
@@ -48,7 +96,7 @@ function My_PropertyS(){
             <div>
 
            
-                <Link to="My_PropertyPV"><CommonTopButton
+                <Link to="/My_PropertyPV"><CommonTopButton
                     
                     bgColor= "#D2D7D6"
                         borderColor= "#DAF0EE"
@@ -56,7 +104,7 @@ function My_PropertyS(){
                         text="Pending Verification"
                     //        onclicked={handlePageAvailable}
                     /></Link>
-                        <Link to="My_PropertyYTS"><CommonTopButton
+                        <Link to="/My_PropertyYTS"><CommonTopButton
                         bgColor= "#D2D7D6"
                         borderColor= "#DAF0EE"
                         color="#77A8A4"
@@ -65,7 +113,7 @@ function My_PropertyS(){
                         /></Link>
                         </div>
                         <div style={{marginTop:"10px"}}>
-                        <Link to="My_PropertyYTS"><CommonTopButton
+                        <Link to="/My_PropertyYTS"><CommonTopButton
                         bgColor= "#52796F"
                         borderColor= "#DAF0EE"
                         color="#DAF0EE"
@@ -87,41 +135,13 @@ function My_PropertyS(){
          {/* BODY */}
          <div style={{textAlign:"left",marginTop:"40px"}}>
             <text>
-                Hey Yash,<br/>Awesome news, <b>1 Properties are shortlisted by Tenant</b>.
+                Hey {name},<br/>Awesome news, <b>1 Properties are shortlisted by Tenant</b>.
             </text>
          </div>
 
 
          {/* --------------------------------------first tab-------------------------------------------- */}
-        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
-                {/* left side */}
-            <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
-                    {/* img */}
-                    <div>
-                            <img src={imgOne} alt="imgOne" style={{marginLeft:"10px", marginTop:"10px"}}/>
-                    </div>
-                    <div style={{marginTop:"5px"}}>
-                        <div style={{textAlign:"left",marginLeft:"10px"}}>
-                            <text style={{fontSize:"9px",textAlign:"left"}}>1018, Tower 1,<br/> <text style={{maringTop:"-15px"}}>Prestige Shantiniketan</text></text>
-                        </div>
-                            <div style={{width:"150px",height:"25px",background:"#FFFFFF",borderRadius:"10px",marginTop:"5px",marginLeft:"10px"}}>
-                                    <text style={{fontSize:"12px",color:"#000000",marginLeft:"-50px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}><img src={like}/>4 Tenants</text>
-                            </div>
-
-                    </div>
-            </div>
-            {/* right side */}
-            <div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
-
-            <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
-            <text style={{fontSize:"12px",color:"#5D6560",fontWeight:"bold"}}>Detail</text>
-                
-            </div>
-               
-
-               
-               
-        </div>
+        <MyPropertyComp responseProperty={responseProperty}/>
         {/* --------------------------------------first tab-------------------------------------------- */}
         
         

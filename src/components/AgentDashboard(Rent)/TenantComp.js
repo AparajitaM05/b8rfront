@@ -11,6 +11,8 @@ const TenantComp = ({ props, name }) => {
   const [filteredData, setfilteredData] = useState([]);
   const [searchValue, setSearchValue] = useState("");
 
+  console.log(props);
+
   const handleSearch = (searchTerm) => {
     setSearchValue(searchTerm);
 

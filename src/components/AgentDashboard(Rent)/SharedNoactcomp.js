@@ -1,23 +1,21 @@
 import React from "react";
-import "./DashboardS.css";
-import "./ListingComp.css";
-import like from "../Assets/Images/AgentDashboard/Like.png";
-
 import imgOne from "../Assets/Images/AgentDashboard/imgOne.png";
 import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
-import noImg from "../Assets/Images/AgentDashboard/noImg.png";
-import heartIcon from "../Assets/Images/AgentDashboard/Liked.png";
 
-function ListingComp2({responseProperty}) {
-  
+import sharedImg from "../Assets/Images/AgentDashboard/sharedImg.png"
 
-  return (
-    <>
-      {responseProperty.map((values, index) => (
 
-      <div key={index}>
-    
-    <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
+
+const SharedNoactcomp = ({responseProperty})=>
+{
+    return(
+        <>
+
+        {responseProperty.map((values, index) => (
+
+        <div key={index}>
+
+        <div style={{ display: "flex", flexDirection: "row", alignItems: "center" ,marginTop:"10px"}}>
                 {/* left side */}
             <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
                     {/* img */}
@@ -26,10 +24,10 @@ function ListingComp2({responseProperty}) {
                     </div>
                     <div style={{marginTop:"5px"}}>
                         <div style={{textAlign:"left",marginLeft:"10px"}}>
-                            <text style={{fontSize:"9px",textAlign:"left"}}>{values.houseName},{values.societyName}<br/></text>
+                            <text style={{fontSize:"9px",textAlign:"left"}}>{values.houseName}, {values.societyName}<br/></text>
                         </div>
                             <div style={{width:"150px",height:"25px",background:"#FFFFFF",borderRadius:"10px",marginTop:"5px",marginLeft:"10px"}}>
-                                    <text style={{fontSize:"12px",color:"#000000",marginLeft:"-50px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}><img src={like}/>4 Tenants</text>
+                                    <text style={{fontSize:"12px",color:"#000000",marginLeft:"-50px",fontFamily:"Inter",fontStyle:"normal",fontWeight:"bold"}}><img src={sharedImg}/>{values.sharedProperty.length} Tenants</text>
                             </div>
 
                     </div>
@@ -46,10 +44,12 @@ function ListingComp2({responseProperty}) {
                
                
         </div>
-    </div>
+        </div>
         ))}
     </>
-  );
-}
 
-export default ListingComp2;
+    );
+    
+
+};
+export default SharedNoactcomp;

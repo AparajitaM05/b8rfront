@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useState, useEffect }  from 'react';
 import './DashboardS.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -28,12 +28,58 @@ function My_PropertySS(){
 
     const token = localStorage.getItem("token");
     console.log(token);
+
+    const [loading, setLoading] = useState(false);
+    const [responseProperty, setresponseProperty] = useState([]);
+
+    let axiosConfig = {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Basic ${token}`,
+        },
+      };
+
+      useEffect(() => {
+        const fetchPosts = async () => {
+          setLoading(true);
+          axios
+            .get(`https://b8rliving.com/property`, axiosConfig)
+            .then((response) => {
+              console.log(response.data.data);
+              var propertiesData = response.data.data.properties;
+              // Filter out properties where propertyDetails.purposeSale is true
+    
+              // Filter out properties where propertyDetails.purposeSale is true
+              const yetToShareProperties = propertiesData.filter((property) => {
+                return (
+                  property.propertyDetails.featureInfo.saleAmount > 0 &&
+                  property.status === "Shortlisted" 
+                );
+              });
+
+              setresponseProperty(yetToShareProperties);
+            })
+            .catch((error) => {
+              console.log(error);
+              // handle the error
+            });
+          setLoading(false);
+        };
+    
+        fetchPosts();
+      }, []);
+
+      console.log(responseProperty);
     
     const handleSubmit = event => {
 	event.preventDefault();
        localStorage.removeItem("token");
 			alert("You have been logged out.");
 	  };
+
+      const username = localStorage.getItem("username");
+      const name = username.substring(0, username.indexOf(" "));
 
 
     return(
@@ -86,14 +132,14 @@ function My_PropertySS(){
          {/* BODY */}
          <div style={{textAlign:"left",marginTop:"40px"}}>
             <text>
-                Hey Yash,<br/>Awesome news, <b>1 Properties are shortlisted by Tenant</b>.
+                Hey {name},<br/>Awesome news, <b>1 Properties are shortlisted by Tenant</b>.
             </text>
          </div>
 
 
          {/* --------------------------------------first tab-------------------------------------------- */}
-         <ListingComp2 img={imgOne} title="1018, Tower 1,Prestige Shantiniketan" number="4"/>
-         <ListingComp2 img={imgOne} title="1018, Tower 1,Prestige Shantiniketan" number="2"/>
+         <ListingComp2 responseProperty={responseProperty}/>
+         
       
             
                

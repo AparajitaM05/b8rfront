@@ -1,4 +1,4 @@
-import React, { Component }  from 'react';
+import React, { Component, useState, useEffect }  from 'react';
 import  './DashboardS.css';
 import { Link } from "react-router-dom";
 import axios from 'axios';
@@ -13,14 +13,16 @@ import sharedOut from "../Assets/Images/AgentDashboard/sharedOut.png";
 import shortListed from "../Assets/Images/AgentDashboard/shortListed.png";
 import yetShared from "../Assets/Images/AgentDashboard/yetShared.png";
 import PVbackground from "../Assets/Images/Sale/AllPropertyBg.png";
+
 import imgOne from "../Assets/Images/AgentDashboard/imgOne.png";
 import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
 import noImg from "../Assets/Images/AgentDashboard/noImg.png";
+import like from "../Assets/Images/AgentDashboard/Like.png";
+import sharedImg from "../Assets/Images/AgentDashboard/sharedImg.png"
 import CommonHeader from "../CommonHeader";
 import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
-import Listing3 from "./ListingComp3";
-import ListingComp from './ListingComp';
+import SharedNoactcompS from './ShareNoactcompS';
 
 
 function MyPropSNAS(){
@@ -28,6 +30,52 @@ function MyPropSNAS(){
 
     const token = localStorage.getItem("token");
     console.log(token);
+
+    const [loading, setLoading] = useState(false);
+    const [responseProperty, setresponseProperty] = useState([]);
+
+    let axiosConfig = {
+        headers: {
+          "Content-Type": "application/json;charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+          Authorization: `Basic ${token}`,
+        },
+      };
+
+      useEffect(() => {
+        const fetchPosts = async () => {
+          setLoading(true);
+          axios
+            .get(`https://b8rliving.com/property`, axiosConfig)
+            .then((response) => {
+              console.log(response.data.data);
+              var propertiesData = response.data.data.properties;
+              // Filter out properties where propertyDetails.purposeSale is true
+    
+              // Filter out properties where propertyDetails.purposeSale is true
+              const yetToShareProperties = propertiesData.filter((property) => {
+                return (
+                  property.sharedProperty.length > 0 &&
+                  property.status == "Verified"
+                );
+              });
+    
+              // var myArrayPropertyCount = response.data.data.properties;
+              //   setresponseNoImageProperty(noImageProperties);
+    
+              setresponseProperty(yetToShareProperties);
+            })
+            .catch((error) => {
+              console.log(error);
+              // handle the error
+            });
+          setLoading(false);
+        };
+    
+        fetchPosts();
+      }, []);
+    
+      console.log(responseProperty);
     
     const handleSubmit = event => {
 	event.preventDefault();
@@ -35,21 +83,21 @@ function MyPropSNAS(){
 			alert("You have been logged out.");
 	  };
 
+      const username = localStorage.getItem("username");
+      const name = username.substring(0, username.indexOf(" "));
 
     return(
         <>
 
-        <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundImage: `url(${PVbackground})`, backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%'}}>
-            {/* <h2 style={{color:"#52796F"}}>My Properties</h2> */}
-            <CommonHeader  title="Sale Properties" color= "#1E0058" />
-        
+        <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundImage: `url(${PVbackground})`, backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%',height:"750px"}}>
+          <CommonHeader title="Sale Properties" color= "#1E0058" />        
 
             
-            {/* -------------------------------button---------------------------------------------- */}
-            <div>
+        {/* -------------------------------button---------------------------------------------- */}
+        <div>
 
            
-            <Link to="/My_PropertyPVS"><CommonTopButton
+        <Link to="/My_PropertyPVS"><CommonTopButton
   bgColor= "#F5F5F5"
   borderColor= "#B3A8C8"
   color="#B3A8C8"
@@ -82,29 +130,21 @@ function MyPropSNAS(){
 
  </div>
 
+       
+
         {/* -------------------------------button---------------------------------------------- */}
        
          {/* BODY */}
          <div style={{textAlign:"left",marginTop:"40px"}}>
-            <p>Hey Yash, <br/>
+            <p>Hey {name}, <br/>
 
-                Properties shown here are ready to be <b>rented out</b> & but are not yet shared with any tenant </p>
+            Properties here are active & shared <b>but none of the Tenants have shortlisted them</b></p>
          </div>
+         {/* --------------------------------------first tab-------------------------------------------- */}
+        <SharedNoactcompS responseProperty={responseProperty}/>
+        {/* --------------------------------------first tab-------------------------------------------- */}
         
-        
-         
-       
-       
-            
-         <ListingComp  img={imgOne} title="xxx_1, Tower Y Society ZZZZZZ" snum="2" vnum="4" />
-
-         
-               
-              
-               
-        
-         
-        
+        <div style={{marginTop:"310px"}}></div>
 
             <Footer/>
         </div>

@@ -162,7 +162,7 @@ const TenantComp = ({ props, name }) => {
               >
                 
                 {values.isOnBoard && values.status == "Shortlisted" ? 
-               <Link to={`/PropertyViewBoard?buyerId=${values._id}&name=${values.buyerDetails.name} `} >
+               <Link to={`/PropertyViewBoardS?buyerId=${values._id}&name=${values.buyerDetails.name} `} >
                <img
                  src={checkP}
                  style={{
@@ -185,7 +185,7 @@ const TenantComp = ({ props, name }) => {
 
           {values.isOnBoard ? 
 
-                <Link to={`/createboard?buyerId=${values._id}&name=${values.buyerDetails.name} `} >
+                <Link to={`/createboardS?buyerId=${values._id}&name=${values.buyerDetails.name} `} >
                   <img
                     src={checkP}
                     style={{
@@ -206,7 +206,7 @@ const TenantComp = ({ props, name }) => {
                 </Link>
 
                : 
-               <Link to={`/ViewBoard?buyerId=${values._id}&name=${values.buyerDetails.name}`} >
+               <Link to={`/ViewBoardS?buyerId=${values._id}&name=${values.buyerDetails.name}`} >
                  <img
                    src={checkP}
                    style={{

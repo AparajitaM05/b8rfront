@@ -150,10 +150,10 @@ function DetailView() {
           </Carousel>
         </div>
 
-        <div id="container" style={{ marginTop:"-98px", marginLeft:"3%"}}>
+        <Link to={property.tourLink3D}><div id="container" style={{ marginTop:"-98px", marginLeft:"3%"}}>
           <img id="someimg" src={property.images[0]} height={25} width={10} />
           <div id="overlay" style={{color:"white", fontSize:"15px", fontWeight:"bold"}}><p>3D Virtual Tour</p></div>
-        </div>
+        </div></Link>
 
         {/* <div className="legend"  style={{ marginLeft:"-65%",marginTop:"-95px"}}>
           <Link to={property.tourLink3D}>

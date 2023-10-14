@@ -11,15 +11,13 @@ import deactivateImg from "../../Assets/Deactivate.png";
 import CreateB from "../../Assets/Images/BoardCreation/CreateB.png";
 import loadingGif from "../../Assets/Images/loading.gif";
 import PropertyComp from "./PropertyComp";
-import ViewBoardComp from "./ViewBoardComp";
+import ViewBoardComp from "./ViewBoardCompS";
 
-function PropertyViewBoard() {
+function PropertyViewBoardS() {
   const queryParameters = new URLSearchParams(window.location.search);
   const name = queryParameters.get("name");
   const boardId = queryParameters.get("boardId");
-  const tenantId = queryParameters.get("tenantId");
   console.log(boardId);
-  console.log(tenantId);
 
   const [responseDataBoard, setResponseDataBoard] = useState([]);
   const [responseDataProperty, setResponseDataProperty] = useState([]);
@@ -48,20 +46,11 @@ function PropertyViewBoard() {
         // const responseData = response.data.data.tenant.tenantDetails;
         const responseDataBoardData = response.data.data.board;
         const responseDataPropertiesData = response.data.data.board.propertyId;
-
-        if (responseDataPropertiesData) {
-          // Filter properties where 'imagesApproved' is true
-          const filteredProperties = responseDataPropertiesData.filter(
-            (property) => property.status == "Verified" && property.closeListingDetails == null
-          );
-        setResponseDataProperty(filteredProperties); // Set All properties added to board
-
-        }
-
         console.log(responseDataBoardData);
 
         // Update the formData state with the response data
         setResponseDataBoard(responseDataBoardData);
+        setResponseDataProperty(responseDataPropertiesData);
       } catch (error) {
         console.error("Error fetching data:", error);
       } finally {
@@ -132,7 +121,7 @@ function PropertyViewBoard() {
 
           <div style={{ display: "flex", marginTop: "10%", padding:"1%" }}>
 
-         <Link to={`/CreateBoard?tenantId=${tenantId}&name=${name}&boardId=${boardId}`}><p><CommonBtn title="Add More" margin="0px" marginRight="0px" width="120px" /></p></Link>
+         <p><CommonBtn title="Add More" margin="0px" marginRight="0px" width="120px" /></p>
           
           <p onClick={finalizeBoard} > <CommonBtn
               onClick={finalizeBoard}
@@ -153,4 +142,4 @@ function PropertyViewBoard() {
     </>
   );
 }
-export default PropertyViewBoard;
+export default PropertyViewBoardS;

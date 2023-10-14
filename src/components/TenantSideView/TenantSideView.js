@@ -156,7 +156,7 @@ function TenantSideView() {
         
        
         
-        <TenantSideViewComp boards={responseDataProperty} />
+        <TenantSideViewComp boards={responseDataProperty} boardId={boardId} />
           
           <h3 style={{fontFamily:"GlidaDisplay"}}>That’s All for the Day!<br/>
         Hope you love the properties shared.</h3>

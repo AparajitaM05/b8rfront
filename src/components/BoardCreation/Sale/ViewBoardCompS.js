@@ -1,32 +1,27 @@
 import React, { Component, useEffect, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+
 
 import imgOne from "../../Assets/Images/AgentDashboard/imgOne.png";
-import Add from "../../Assets/Images/BoardCreation/Add.png";
+import checkP from "../../Assets/Images/CheckP.png";
 import loadingGif from "../../Assets/Images/loading.gif";
 
 import area from "../../Assets/Images/BoardCreation/area.png";
 import Group from "../../Assets/Images/BoardCreation/Group.png";
 import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
-import CommonBtn from "../../CommonButton";
 
-
-const PropertyComp = ({
-  props,
-  Id,
-  responseDataTenantData,
-  responseDataTenantBoard,
-}) => {
+const ViewBoardComp = ({ props, loading , Id, responseDataBoard }) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
-  const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    propertyId : "",
+  });
+  const [addedProperty, setAddedProperty] = useState(false);
+  console.log(props);
 
-  const [addedItems, setAddedItems] = useState([]);
+    const boardId = responseDataBoard.boardId
 
- console.log(responseDataTenantData);
- 
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -35,40 +30,41 @@ const PropertyComp = ({
     },
   };
 
+
+  
   const addToBoard = async (pId) => {
-    console.log(pId);
-    setLoading(true);
+    // const { name, value } = event.target;
+   
+   console.log(pId);
+  //   setFormData(pId);
+  //   // setFormData((prevState) => {
+  //   //   return {
+  //   //     ...prevState,
+  //   //     [name]: value,
+  //   //   };
+  //   // })
 
-    if (addedItems.includes(pId)) {
-      // If it's already added, remove it
-      setAddedItems(addedItems.filter(item => item !== pId));
-    } else {
-      // If it's not added, add it
-      setAddedItems([...addedItems, pId]);
-    }
-};
-
-  const viewToBoard = async (pId) => {
+  //   console.log(formData);
 
     try {
       const response = await axios.put(
-        `https://b8rliving.com/board/property/${responseDataTenantBoard}`,
-        { propertyId: pId },
+        `https://b8rliving.com/board/property/${boardId}`,
+        { propertyId : pId},
         axiosConfig
       );
       console.log(response);
-      // setAddedProperty(true);
-      // console.log(addedProperty);
-      // alert(response.data.message)
+      setAddedProperty(true)
+      console.log(addedProperty)
+      // alert(response);
+      // console.log(JSON.stringify(formData));
     } catch (error) {
       // Handle any errors that occur during the API request
       console.error("Error fetching data:", error);
-      // alert(error.message)
     } finally {
-      setLoading(false); // Set loading to false when the request is complete
+      // setLoading(false); // Set loading to false when the request is complete
     }
-
   }
+
   const handleLoadMore = () => {
     setVisibleItems(visibleItems + 3);
   };
@@ -79,8 +75,9 @@ const PropertyComp = ({
         ""
       ) : (
         <div>
-          {props.slice(0, visibleItems).map((values, key) => (
-            <div key={key}>
+          {/* {responseDataBoard.key} */}
+          {props.map((values, index) => (
+            <div key={index}>
               <div
                 style={{
                   display: "flex",
@@ -174,54 +171,41 @@ const PropertyComp = ({
                     </div>
                   </div>
                 </div>
-
-                {/* {values._id} */}
-                {/* {addedProperty ? (
-                  <p style={{ color: "#52796F", fontWeight: "bolder" }}>
-                    Added
-                  </p>
-                ) : (
-                  <> */}
+             
                   
 
-                      <text style={{ fontSize: "12px", color: "#5D6560" }}>
-                        {/* <b onClick={() => addToBoard(values._id)}>
-                          Add to Board
-                        </b> */}
-                        <b key={values._id} onClick={() => addToBoard(values._id)}>
-                           {addedItems.includes(values._id) ?  <p style={{ color: "#52796F", fontWeight: "bolder" }}> Added </p> : 
-                            
-                             <div
-                             style={{
-                               height: "75px",
-                               width: "52px",
-                               background: "#E8E7E7",
-                               borderRadius: "10px",
-                               marginLeft: "10px",
-                             }}
-                           >
-                             <img
-                               src={Add}
-                               alt="Add"
-                               style={{
-                                 height: "27px",
-                                 marginTop: "20px",
-                                 marginBottom: "-8px",
-                               }}
-                             />
-                             <br></br>
-                             <br></br>
-                              Add to Board
-                              </div>
-                              
-                             
-                             }
-                     </b>
-                      </text>
-                    </div>
-                  {/* </>
-                )} */}
-              {/* </div> */}
+                    {/* {values._id} */}
+                  {addedProperty ? 
+                  <p style={{color:"#52796F", fontWeight: "bolder"}}>Added</p> :  
+                  <>
+                     <div 
+                  style={{
+                    height: "75px",
+                    width: "52px",
+                    background: "#E8E7E7",
+                    borderRadius: "10px",
+                    marginLeft: "10px",
+                  }}
+                >
+                  <img
+                    src={checkP}
+                    alt="Add"
+                    style={{
+                      height: "27px",
+                      marginTop: "20px",
+                      marginBottom: "-8px",
+                    }}
+                  />
+                  
+                  <text style={{ fontSize: "12px", color: "#5D6560" }}>
+                    <b onClick={() => addToBoard(values._id)}>Change Status</b>
+                  </text>
+              </div>
+                  
+                  </>
+                  }
+                 
+              </div>
             </div>
           ))}
           {visibleItems < props.length && (
@@ -231,12 +215,8 @@ const PropertyComp = ({
           )}
         </div>
       )}
-          <div onClick={() => viewToBoard()} >
-           <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" bgolor="#3F007F"/></Link>
-          </div>
-
     </>
   );
 };
 
-export default PropertyComp;
+export default ViewBoardComp;

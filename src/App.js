@@ -117,6 +117,7 @@ import UserLoginDetails from "./components/UserLoginDetails";
 
 import PropertyCreated from "./components/PropertyCreate/PropertyCreated";
 
+
 //Field Agent
 
 //footer
@@ -282,6 +283,7 @@ function App(props) {
               {/* TennantSide View */}
               <Route exact path="OTPscreen" element={<OTPscreen />} />
               <Route exact path="DetailView" element={<DetailView />} />
+             
               <Route exact path="TenantSideView" element={<TenantSideView />} />
               <Route exact path="DetailImgView" element={<DetailImgView />} />
               {/* OTP VERIFY */}

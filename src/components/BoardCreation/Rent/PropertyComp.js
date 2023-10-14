@@ -12,20 +12,22 @@ import parking from "../../Assets/Images/BoardCreation/parking.png";
 import space from "../../Assets/Images/BoardCreation/space.png";
 import CommonBtn from "../../CommonButton";
 
-
 const PropertyComp = ({
   props,
   Id,
   responseDataTenantData,
   responseDataTenantBoard,
+  name,
+  boardId
 }) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
   const [loading, setLoading] = useState(false);
-
+  const [responseDataBoard, setResponseDataBoard] = useState([]);
+  const [responseDataProperty, setResponseDataProperty] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
 
- console.log(responseDataTenantBoard);
+  console.log(props);
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -34,31 +36,83 @@ const PropertyComp = ({
     },
   };
 
+  useEffect(() => {
+    const fetchBoardDetails = async () => {
+      setLoading(true);
+      try {
+        const response = await axios.get(
+          `https://b8rliving.com/board/${boardId}`,
+          axiosConfig
+        );
+        console.log(props.some((prop) => prop._id === responseDataPropertiesData._id));
+        console.log("props:", props);
+        console.log("responseDataPropertiesData:", responseDataPropertiesData);
+              
+        // const responseData = response.data.data.tenant.tenantDetails;
+        // const responseDataBoardData = response.data.data.board;
+        const responseDataPropertiesData = response.data.data.board.propertyId;
+        // if (responseDataPropertiesData) {
+        //   const filteredProperties = responseDataPropertiesData.filter((property) =>
+        //   props.some((prop) => prop._id === property._id.toString())
+        //   );
+          
+        //   console.log("filteredProperties:", filteredProperties);
+        // setResponseDataProperty(responseDataPropertiesData); // Set All properties added to board
+
+        if (responseDataPropertiesData) {
+          // Create a set of unique _id values from responseDataPropertiesData
+          const responseDataPropertyIds = new Set(responseDataPropertiesData.map(property => property._id));
+  
+          // Filter props based on matching _id values
+          const filteredProps = props.filter(prop => responseDataPropertyIds.has(prop._id));
+  
+          setResponseDataProperty(filteredProps); // Set all properties added to the board
+          // setAddedItems(filteredProps); // Set matching items from props
+          // setFilteredProps(filteredProps); // Set the filtered props to a new state
+  
+          console.log("filteredProps:", filteredProps);
+        }
+        // console.log(responseDataBoardData);
+
+        // Update the formData state with the response data
+        // setResponseDataBoard(responseDataBoardData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+    };
+    fetchBoardDetails(); // Call the fetch function
+  }, [boardId]);
+
   const addToBoard = async (pId) => {
     console.log(pId);
-    setLoading(true);
 
-    if (addedItems.includes(pId)) {
-      // If it's already added, remove it
-      setAddedItems(addedItems.filter(item => item !== pId));
-    } else {
-      // If it's not added, add it
+    if (!addedItems.includes(pId)) {
+      // If it's not already added, add it to the addedItems state
       setAddedItems([...addedItems, pId]);
+    } else {
+      // If it's not added, add it to the addedItems state
+      setAddedItems(addedItems.filter((item) => item !== pId));
     }
-};
+  };
 
-  const viewToBoard = async (pId) => {
-
+  const viewToBoard = async () => {
     try {
-      const response = await axios.put(
-        `https://b8rliving.com/board/property/${responseDataTenantBoard}`,
-        { propertyId: pId },
-        axiosConfig
-      );
-      console.log(response);
-      // setAddedProperty(true);
-      // console.log(addedProperty);
-      // alert(response.data.message)
+      const propertyId = [...addedItems];
+      if (propertyId.length === 0) {
+        // Handle the case where no properties are added
+        return;
+      }
+
+      for (const pId of addedItems) {
+        const response = await axios.put(
+          `https://b8rliving.com/board/property/${responseDataTenantBoard}`,
+          { propertyId: pId },
+          axiosConfig
+        );
+        console.log(response);
+      }
     } catch (error) {
       // Handle any errors that occur during the API request
       console.error("Error fetching data:", error);
@@ -66,12 +120,12 @@ const PropertyComp = ({
     } finally {
       setLoading(false); // Set loading to false when the request is complete
     }
-
-  }
+  };
   const handleLoadMore = () => {
     setVisibleItems(visibleItems + 3);
   };
 
+  console.log(responseDataProperty)
   return (
     <>
       {loading ? (
@@ -181,44 +235,50 @@ const PropertyComp = ({
                   </p>
                 ) : (
                   <> */}
-                  
 
-                      <text style={{ fontSize: "12px", color: "#5D6560" }}>
-                        {/* <b onClick={() => addToBoard(values._id)}>
+
+                <text style={{ fontSize: "12px", color: "#5D6560" }}>
+                  {/* <b onClick={() => addToBoard(values._id)}>
                           Add to Board
                         </b> */}
-                        <b key={values._id} onClick={() => addToBoard(values._id)}>
-                           {addedItems.includes(values._id) ?  <p style={{ color: "#52796F", fontWeight: "bolder" }}> Added </p> : 
-                            
-                             <div
-                             style={{
-                               height: "75px",
-                               width: "52px",
-                               background: "#E8E7E7",
-                               borderRadius: "10px",
-                               marginLeft: "10px",
-                             }}
-                           >
-                             <img
-                               src={Add}
-                               alt="Add"
-                               style={{
-                                 height: "27px",
-                                 marginTop: "20px",
-                                 marginBottom: "-8px",
-                               }}
-                             />
-                             <br></br>
-                             <br></br>
-                              Add to Board
-                              </div>
-                              
-                             
-                             }
-                     </b>
-                      </text>
-                    </div>
-                  {/* </>
+                  <b key={values._id} onClick={() => addToBoard(values._id)}>
+                    {addedItems.includes(values._id) ? (
+                      <p
+                        key={values._id}
+                        onClick={() => addToBoard(values._id)}
+                        style={{ color: "#52796F", fontWeight: "bolder" }}
+                      >
+                        {" "}
+                        Added{" "}
+                      </p>
+                    ) : (
+                      <div
+                        style={{
+                          height: "75px",
+                          width: "52px",
+                          background: "#E8E7E7",
+                          borderRadius: "10px",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        <img
+                          src={Add}
+                          alt="Add"
+                          style={{
+                            height: "27px",
+                            marginTop: "20px",
+                            marginBottom: "-8px",
+                          }}
+                        />
+                        <br></br>
+                        <br></br>
+                        Add to Board
+                      </div>
+                    )}
+                  </b>
+                </text>
+              </div>
+              {/* </>
                 )} */}
               {/* </div> */}
             </div>
@@ -230,10 +290,13 @@ const PropertyComp = ({
           )}
         </div>
       )}
-          <div onClick={() => viewToBoard()} >
-           <Link to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}`}><CommonBtn title="View Board" margin="90px" /></Link>
-          </div>
-
+      <div onClick={() => viewToBoard()}>
+        <Link
+          to={`/PropertyViewBoard?boardId=${responseDataTenantData.boardId}&tenantId=${Id}&name=${name} `}
+        >
+          <CommonBtn title="View Board" margin="90px" />
+        </Link>
+      </div>
     </>
   );
 };

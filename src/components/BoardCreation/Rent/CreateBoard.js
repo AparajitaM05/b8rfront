@@ -99,6 +99,40 @@ function CreateBoard() {
         setLoading(false); // Set loading to false when the request is complete
       }
 
+      //Get Property from Board
+      try {
+        const response = await axios.get(
+          `https://b8rliving.com/board/${boardId}`,
+          axiosConfig
+        );
+
+        const responseData = response.data.data.tenant.tenantDetails;
+        const responseDataTenant = response.data.data.tenant;
+        const responseDataTenantBoardId = response.data.data.tenant.boardId;
+        
+        setResponseDataTenantBoard(responseDataTenantBoardId);
+        // Update the formData state with the response data
+        setResponseDataTenant(responseData);
+        setResponseDataTenantData(responseDataTenant);
+
+        // Separate boolean values and store them in booleanValues state
+        const booleanValues = [];
+        responseData.forEach((tenant) => {
+          for (const key in tenant) {
+            if (typeof tenant[key] === "boolean") {
+              booleanValues[key] = tenant[key];
+            }
+          }
+        });
+
+        setBooleanValues(booleanValues);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Set loading to false when the request is complete
+      }
+
+
       //Get All Properties
       try {
         setLoading(true);
@@ -118,7 +152,7 @@ function CreateBoard() {
         if (properties) {
           // Filter properties where 'imagesApproved' is true
           const filteredProperties = properties.filter(
-            (property) => property.status == "Verified"
+            (property) => property.status == "Verified" && property.closeListingDetails == null
           );
 
           console.log(filteredProperties);
@@ -374,7 +408,7 @@ function CreateBoard() {
             onChange={(e) => handleSearch(e.target.value)}
             placeholder="Search by property Name"
           />
-          <PropertyComp props={responseDataProperty} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} responseDataTenantBoard={responseDataTenantBoard} />
+          <PropertyComp  props={responseDataProperty} boardId={boardId} responseDataTenantData={responseDataTenantData} loading={loading} Id={tenantId} name={name} responseDataTenantBoard={responseDataTenantBoard} />
           </div>
 
           <Footer />

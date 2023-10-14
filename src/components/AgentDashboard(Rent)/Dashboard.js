@@ -123,6 +123,7 @@ function Dashboard() {
 
     var pendingCounting = 0;
     var activeCounting = 0;
+    const number = CountTenants.Total - CountTenants.Deactivate;
     responseProperties.map((element) => {
       // console.log(element.status);
         if(element.fieldAgentStatus = "Completed" && element.imagesApproved == true){
@@ -196,7 +197,7 @@ function Dashboard() {
                 <div style={{ marginTop: "5px" }}></div>
                <Link to="/My_propertyPV" className="leftlink" > <DashComponent img={PendingVerification} title="Pending Verification" number={CountProperties.Pending}/></Link>
                 <div style={{ marginTop: "5px" }}></div>
-                <Link to="/AllActiveProperties" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number={CountProperties.New} /></Link>
+                <Link to="/AllActiveProperties" className="leftlink" ><DashComponent img={ActiveListing} title="Active Listing" number={CountProperties.Verified} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
                 <Link to="/My_PropertyYTS" className="leftlink" ><DashComponent img={yetToShare} title="Yet To Share" number={CountProperties.YetToShare} /></Link>
                 <div style={{ marginTop: "5px" }}></div>
@@ -206,7 +207,7 @@ function Dashboard() {
                 
             
                 </div>
-                <label>0 Rented Out</label>
+                <label>{CountProperties.Closed} Closed</label>
                 
 
             {/* left end */}
@@ -223,7 +224,8 @@ function Dashboard() {
         
             <div className="newboxSizingr" >
             
-            <Link className="Link" to="/ActiveLeads"><DashComponent img={ActiveLeads} title="Active Leads" number={CountTenants.Total}/></Link>
+            
+            <Link className="Link" to="/ActiveLeads"><DashComponent img={ActiveLeads} title="Active Leads" number={number}/></Link>
             <div style={{ marginTop: "5px"}}></div>
             <Link className="Link" to="/AllTenantOne"><DashComponent img={PendingVerification} title="Waiting For Property" number={CountTenants.WaitingForProperty}/></Link>
             <div style={{ marginTop: "5px" }}></div>
@@ -233,7 +235,7 @@ function Dashboard() {
            
             
             </div>
-            <label>0 Rented Out</label>
+            <label>{CountTenants.Deactivate} Closed</label>
             {/* Right ENd */}
           </div>
 

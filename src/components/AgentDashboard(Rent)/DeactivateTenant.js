@@ -30,7 +30,7 @@ function DeactivateTenant() {
   const [stateRender, setStateRender] = useState("rent");
   const [loading, setLoading] = useState(false);
 
-  const [isActive1, setIsActive1] = useState(true);
+  const [isActive1, setIsActive1] = useState(false);
   const [isActive2, setIsActive2] = useState(false);
   const [isActive3, setIsActive3] = useState(false);
   const [isActive4, setIsActive4] = useState(false);
@@ -69,8 +69,10 @@ function DeactivateTenant() {
 
   // const [deactivateStatus, setDeactivateStatus] = useState("Rented From B8R");
   const [deactivateStatus, setDeactivateStatus] = useState({
-    deactivateStatus: "Rented From B8R",
+    deactivateStatus: ""
   });
+
+  console.log(deactivateStatus);
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -140,6 +142,7 @@ function DeactivateTenant() {
               <b>Are you deactivating the customer?</b>
             </h4>
             <div>
+            {/* [Rented From B8R, Rented Externally, Does not need anymore, Not responding, 0, 1, 2, 3] */}
               <CommonTopButton
                 bgColor={isActive1 ? "#52796F" : "#D2D7D6"}
                 borderColor="#DAF0EE"

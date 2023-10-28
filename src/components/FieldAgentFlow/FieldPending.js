@@ -39,7 +39,7 @@ function FieldPending() {
           "https://b8rliving.com/field-agent/pending",
           axiosConfig
         );
-  
+
         setresponsePendingProperties(response.data.data.property);
       } catch (error) {
         console.log(error);

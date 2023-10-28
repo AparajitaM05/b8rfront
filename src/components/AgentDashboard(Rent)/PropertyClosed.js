@@ -10,6 +10,11 @@ import PropertyClosedimg from "../Assets/Images/PropertyClosed/PropertyImg.png";
 
 function PropertyClosed()
 {
+  const queryParameters = new URLSearchParams(window.location.search);
+  const name = queryParameters.get("name");
+  const societyName = queryParameters.get("societyname");
+  const reason = queryParameters.get("closed");
+
     return(
         <>
          <div
@@ -22,8 +27,20 @@ function PropertyClosed()
       >
        
         <CommonHeader title="Property CLosed" color="#52796F" />
+
+        <div style={{marginTop:"70px"}}>
+            <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Name</h4>
+            <h2 style={{color:"#52796F",fontWeight:"bolder"}}>{name},{societyName}</h2>
+            </div>
+
+             {/* -----------budget details----------- */}
+             <div  style={{marginTop:"40px"}}>
+             <h4 style={{fontWeight:"lighter",textDecoration:"underline"}}>Closed Status</h4>
+             <h2 style={{color:"#52796F",fontWeight:"bolder"}}>{reason}</h2>
+             </div>
+           
         <img src={PropertyClosedimg} style={{height:"150px", borderRadius:"10px"}}/>
-        <CommonBtn title="Go to Agent Dashboard" margin="50px"/>
+        <Link to="/Dashboard"><CommonBtn title="Go to Agent Dashboard" margin="50px"/></Link>
         <Footer/>
         </div>
         </>

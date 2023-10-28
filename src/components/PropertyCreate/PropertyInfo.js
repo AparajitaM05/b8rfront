@@ -150,7 +150,7 @@ function PropertyInfo() {
       } else if (name in prevState.propertyData.featureInfo.floors) {
         return {
           ...prevState,
-          propertyData: {
+        propertyData: {
             ...prevState.propertyData,
             featureInfo: {
               ...prevState.propertyData.featureInfo,
@@ -275,8 +275,19 @@ function PropertyInfo() {
     // const Jdata =  JSON.stringify(formData, null, 2);
     // console.log("JSON VARIABLE",Jdata);
     console.log(JSON.stringify(formData));
+
+// Create a copy of the formData
+    const formDataCopy = { ...formData };
+    //Check if sale and rent data are set
+    if (formDataCopy.propertyData.featureInfo.moveInFrom === "") {
+      // If it's empty, remove the moveInFrom property
+      delete formDataCopy.propertyData.featureInfo.moveInFrom;
+    }
+
+    console.log(JSON.stringify(formDataCopy));
+
     axios
-      .post("https://b8rliving.com/property", formData, axiosConfig)
+      .post("https://b8rliving.com/property", formDataCopy, axiosConfig)
       .then((response) => {
         console.log(response.data);
         alert("Your Property details has been submitted");

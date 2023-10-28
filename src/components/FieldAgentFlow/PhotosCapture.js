@@ -31,16 +31,16 @@ function PhotosCapture(){
 
 
     const [formData, setFormData] = useState({
-	lift_lobby: true,
-	entry_door : true,
-    home_entry : true,
-    living_room : true,
-    tv_area: true,
-    kitchen : true,
-    utility_area : true,
-    backyard: '',
-    Common_Washroom: '',
-    Living_Room_bal: ''
+      liftLobby: true,
+      entryDoor : true,
+      homeEntry : true,
+      livingRoom : true,
+      tvArea: true,
+      kitchen : true,
+      utilityArea : true,
+      backyard: '',
+      commonWashroom: '',
+      livingRoomBalcony: ''
    
 
 
@@ -60,7 +60,8 @@ function PhotosCapture(){
         <>
 
         <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%'}}>
-        <h2 style={{color:"#52796F"}}>Photo Capture</h2>
+        {/* <h2 style={{color:"#52796F"}}>Photo Capture</h2> */}
+        <CommonHeader title="Photo Capture" color="#52796F"/>
         <div style={{textAlign:"left",marginLeft:"10px"}}>
             <text style={{fontFamily:"Inter",fontStyle:"normal",fontSize:"20px" }}>
             Please make sure to capture all the places inside the House as well as the <br/>Society<br/>

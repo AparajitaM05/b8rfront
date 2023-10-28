@@ -6,11 +6,13 @@ import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
 import ActiveListing from "../Assets/Images/AgentDashboard/ActiveListing.png";
 import PendingVerification from "../Assets/Images/AgentDashboard/PendingVerification.png";
 import SearchBar from "../SearchBar";
+import noImg from "../Assets/Images/AgentDashboard/noImg.png";
 
 const AvailablePropertyComp = ({ props, name, activeProperies }) => {
   const [filteredData, setfilteredData] = useState(props);
   const [searchValue, setSearchValue] = useState("");
 
+  console.log(props);
   const handleSearch = (searchTerm) => {
     setSearchValue(searchTerm);
 
@@ -78,11 +80,22 @@ const AvailablePropertyComp = ({ props, name, activeProperies }) => {
             >
               {/* img */}
               <div>
+                {values.imagesApproved?(
+                  
                 <img
+                
                   src={imgOne}
                   alt="imgOne"
                   style={{ marginLeft: "10px", marginTop: "10px" }}
                 />
+              ):(
+                <img
+                
+                src={noImg}
+                alt="imgOne"
+                style={{ marginLeft: "10px", marginTop: "10px" }}
+              />
+              )}
               </div>
               {/* <p style={{fontSize:"12px", marginLeft:"20px", width:"400%"}}>904, Central Park Homes</p> */}
               <div

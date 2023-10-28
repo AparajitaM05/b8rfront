@@ -37,24 +37,16 @@ function PhotoCaptureTwo() {
 
   const [formData, setFormData] = useState({
     // propertyid: propertyid,
-    gated_security: true,
-
-    convenience_store: true,
-    Swimming_pool: true,
-    Gym: true,
-    club_house: true,
-    car_parking: true,
-    bedroom: true,
-    bath_one: true,
-    balcony: true,
-    bedroom_two: true,
-    bath_two: true,
-    balcony_two: true,
-    bedroom_three: true,
-    bath_three: true,
-    balcony_three: true,
-    servant_room: true,
-    servant_washroom: true,
+    mainGate: true,
+    clubHouse: true,
+    groceryStore: true,
+    swimmingPool: true,
+    gym: true,
+    parking: true,
+    feature1: true,
+    feature2: true,
+    feature3: true,
+    
   });
 
   return (

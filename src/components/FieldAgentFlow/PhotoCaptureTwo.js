@@ -66,7 +66,8 @@ function PhotoCaptureTwo(){
         <>
 
         <div className="form" style={{ borderRadius: "16px", marginTop: "10%", backgroundRepeat: 'no-repeat' , backgroundRepeat: 'no-repeat' , backgroundSize : '100% 100%'}}>
-            <h2 style={{color:"#52796F"}}>Photo Capture</h2>
+        <CommonHeader title="Photo Capture" color="#52796F"/>
+           
             <div style={{textAlign:"left"}}>
             <text>
             Bedroom Photos Checklist<br/>
@@ -360,143 +361,29 @@ function PhotoCaptureTwo(){
         {/* -----------------------------society related pressure-------------------------------------- */}
 
 
-        <h3 style={{textAlign:"left",marginBottom:"10px",marginTop:"-80px"}}>Society Related Pictures</h3>
-        <div style={{height:"300px", borderRadius:"5px",background:"linear-gradient(180deg, rgba(232, 231, 231, 0.5) 0%, rgba(232, 231, 231, 0) 100%)",border:"1px solid #CFD3D2"}}>
-            
-            <div style={{display:"flex",flexDirection:"row",alignItems:"center"}}>
-            <div class="grid-container" style={{width:"300px"}}>
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={gated_sec} alt="Icon description" />
-                       <h5 style={{marginTop:"-2px",fontSize:"10px", fontFamily:"sans-serif"}}>Main Gate</h5>
-                       <h6 style={{marginTop:"-13px", fontSize:"8px"}}></h6>
-                       <ReactSwitch
-                      checked={formData.gated_security}
-                      onChange={() =>  setFormData({
-                        ...formData,
-                        gated_security: !formData.gated_security,
-                      })}
-                       onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        />
-                        </div>
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={club_house} alt="Icon description" />
-                        <h5 style={{marginTop:"-5px",marginBottom:"10px" ,fontSize:"10px"}}>
-                          Club house
-                        </h5>
-                        <ReactSwitch
-                        checked={formData.club_house}
-                        onChange={() =>  setFormData({
-                          ...formData,
-                          club_house: !formData.club_house,
-                        })}
-                        onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        />
-                        </div>
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={convenience_store} alt="Icon description" />
-                        <h5 style={{marginTop:"-5px", fontSize:"10px"}}>Grocery Store</h5>
-                        <h5 style={{marginTop:"-9px", fontSize:"8px"}}>
-                          
-                        </h5>
-                        <ReactSwitch
-                        checked={formData.convenience_store}
-                        onChange={() =>  setFormData({
-                          ...formData,
-                          convenience_store: !formData.convenience_store,
-                        })}
-                        onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-      />
-                        </div>
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={swimming_pool} alt="Icon description" />
-                        <h5 style={{marginTop:"-5px",marginBottom:"15px", fontSize:"10px"}}>Swimming Pool</h5>
-                        <ReactSwitch
-                        checked={formData.Swimming_pool}
-                        onChange={() =>  setFormData({
-                          ...formData,
-                          Swimming_pool: !formData.Swimming_pool,
-        })}
-                        onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-      />
-                        </div>
+      
+          
+                      
+                
+                     
 
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={gym_1} alt="Icon description" />
-                        <h5 style={{marginTop:"-1px",marginBottom:"20px", fontSize:"10px"}}>Gym</h5>
-                        <ReactSwitch
-                        checked={formData.Gym}
-                        onChange={() =>  setFormData({
-                          ...formData,
-                          Gym: !formData.Gym,
-        })}
-                        onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        /></div>
+                      
 
                        
 
-                        <div class="grid-item" style={{border:"none"}}>
-                        <img src={car_parking} alt="Icon description" />
-                        <h5 style={{marginTop:"-5px"}}>Parking</h5>
-                        <h5 style={{marginTop:"-13px", fontSize:"8px"}}>
-                       
-                        </h5>
-                        <ReactSwitch
-                        checked={formData.car_parking}
-                        onChange={() =>  setFormData({
-                          ...formData,
-                          car_parking: !formData.car_parking,
-                          })}
-                          onColor="#DAF0EE"
-                        onHandleColor="#fff"
-                        handleDiameter={20}
-                        uncheckedIcon={false}
-                        checkedIcon={false}
-                        boxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-                        activeBoxShadow="0 1px 2px rgba(0, 0, 0, 0.2)"
-      />
-                        </div>
+                   
             
                   
                         
-                      </div>
+                     
 
                 
                
-            </div>
+            
              
                    
             
-        </div>
+      
 
                         <div style={{marginTop:"50px"}}>
 

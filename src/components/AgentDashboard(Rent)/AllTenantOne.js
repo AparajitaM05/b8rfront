@@ -31,6 +31,11 @@ function AllTenantOne() {
     useState();
   const [WaitingFroPropertyCondition, setWaitingFroPropertyCondition] =
     useState(false);
+    
+  const [isActive1, setIsActive1] = useState(false);
+  const [isActive2, setIsActive2] = useState(false);
+  const [isActive3, setIsActive3] = useState(false);
+
 
   const token = localStorage.getItem("token");
   // console.log(token);
@@ -43,7 +48,7 @@ function AllTenantOne() {
     },
   };
   useEffect(() => {
-  console.log(activeCondition)
+  // console.log(activeCondition)
 
     const fetchPosts = async () => {
       setLoading(true);
@@ -69,49 +74,53 @@ function AllTenantOne() {
 
   }, [activeCondition]);
 
-  console.log(responseTenat);
+  // console.log(responseTenat);
 
   // Function to handle button clicks and trigger filtering
   const handlePageAvailable = (condition) => {
     setActiveCondition(condition);
-    filterTenants(); // Trigger the filtering
+    // console.log(condition);
+    filterTenants(condition); // Trigger the filtering
   };
 
 
   // Filter function to filter tenants based on the active condition
-  const filterTenants = () => {
+  const filterTenants = (condition) => {
 
-    switch (activeCondition) {
-      case "waitingForProperty":
+    switch (condition) {
+      case "WaitingForProperty":
+        setIsActive1(true);
         setFilteredTenants(
           responseTenat.filter(
-            (tenant) => tenant.status === "Waiting For Property"
+            (tenant) => tenant.status === "WaitingForProperty"
           )
         );
         break;
-      case "currentlyViewing":
+      case "CurrentlyViewing":
+        setIsActive2(true);
         setFilteredTenants(
           responseTenat.filter(
-            (tenant) => tenant.status === "Currently Viewing"
+            (tenant) => tenant.status === "CurrentlyViewing"
           )
         );
         break;
-      case "shortlisted":
+      case "Shortlisted":
+        setIsActive3(true);
         setFilteredTenants(
           responseTenat.filter((tenant) => tenant.status === "Shortlisted")
         );
         break;
-      case "archived":
+      case "Deactivate":
         setFilteredTenants(
-          responseTenat.filter((tenant) => tenant.status === "Archived")
+          responseTenat.filter((tenant) => tenant.status === "Deactivate")
         );
         break;
-      default:
-        setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
-        break;
+      // default:
+      //   setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
+      //   break;
     }
   };
-  console.log(activeCondition)
+  // console.log(filteredTenants)
 
   const username = localStorage.getItem("username");
   const name = username.substring(0, username.indexOf(" "));
@@ -178,36 +187,32 @@ function AllTenantOne() {
         >
           <div>
             <CommonTopButton
-              bgColor="#D2D7D6"
+              bgColor={isActive1 ? "#52796F" : "#D2D7D6"}
               borderColor="#DAF0EE"
-              color="#77A8A4"
+              color={isActive1 ? "#FFFFFF" : "#77A8A4"}
               text="Waiting For Property"
-              onClick={() => handlePageAvailable("waitingForProperty")}
+              onclicked={() => handlePageAvailable("WaitingForProperty")}
               // Waiting For Property, Shortlisted, Currently Viewing, Archived
             />
             <CommonTopButton
-              bgColor="#D2D7D6"
+              bgColor={isActive2 ? "#52796F" : "#D2D7D6"}
               borderColor="#DAF0EE"
-              color="#77A8A4"
+              color={isActive2 ? "#FFFFFF" : "#77A8A4"}
               text="Currently Viewing"
-              //        onclicked={handlePageAvailable}
+              onclicked={() => handlePageAvailable("WaitingForProperty")}
+
             />
           </div>
           <div>
             <CommonTopButton
-              bgColor="#D2D7D6"
+              bgColor={isActive3 ? "#52796F" : "#D2D7D6"}
               borderColor="#DAF0EE"
-              color="#77A8A4"
+              color={isActive3 ? "#FFFFFF" : "#77A8A4"}
               text="Shortlisted"
-              //        onclicked={handlePageAvailable}
+              onclicked={() => handlePageAvailable("Shortlisted")}
+
             />
-            {/* <Link to="/My_PropertySNA"><CommonTopButton
-   bgColor= "#52796F"
-   borderColor= "#DAF0EE"
-   color="#DAF0EE"
-   text="Archived"
-    //        onclicked={handlePageAvailable}
-    /></Link> */}
+
             <div>
               {archiveData ? (
                 <CommonTopButton
@@ -215,7 +220,8 @@ function AllTenantOne() {
                   borderColor="#DAF0EE"
                   color="#DAF0EE"
                   text="Archived"
-                  onclicked={handlePageAvailable}
+                  onclicked={() => handlePageAvailable("Deactivate")}
+
                 />
               ) : (
                 <CommonTopButton
@@ -223,7 +229,8 @@ function AllTenantOne() {
                   borderColor="#DAF0EE"
                   color="#77A8A4"
                   text="Archived"
-                  onclicked={handlePageAvailable}
+                  onclicked={() => handlePageAvailable("Deactivate")}
+
                 />
               )}
             </div>

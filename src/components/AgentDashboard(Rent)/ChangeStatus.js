@@ -24,27 +24,37 @@ import editButton from "../Assets/Button.png";
 
 function ChangeStatus() {
   const queryParameters = new URLSearchParams(window.location.search);
-  const idProperty = queryParameters.get("propertyId");
-  console.log("id" + idProperty);
+  const propertyId = queryParameters.get("propertyId");
+  console.log(propertyId);
 
-  const [stateRender, setStateRender] = useState("rent");
+  const [RenderRent, setRenderRent] = useState("rent");
+  const [RenderRentName, setRenderRentName] = useState("Rented of B8R");
   const [propertyDetails, setPropertyDetails] = useState([]);
   const [loading, setLoading] = useState(false);
 
   const token = localStorage.getItem("token");
-  console.log(token);
 
-  
+  const [isActive1, setIsActive1] = useState(true);
+  const [isActive2, setIsActive2] = useState(false);
+  const [isActive3, setIsActive3] = useState(false);
+
   const [formData, setFormData] = useState({
-		duration_of_stay: '',
-		deposit_comfortable_for: '',
-    house_conf:'',
-		type_of_furnishing: '',
-    house_type:'',
-    movein_from:'',
-    location: ''
-	  });
+    closeListingReason: RenderRentName,
+    closeListingDetails: {
+      tenantName: "",
+      tenancyStartDate: "",
+      rentAmount: "",
+      agreementFor: "",
+      phoneNumber: "",
+    },
+  });
 
+  const [formDataTwo, setFormDataTwo] = useState({
+    closeListingReason: "",
+    closeListingDetails: {
+      feedback: "",
+    },
+  });
 
   let axiosConfig = {
     headers: {
@@ -58,9 +68,10 @@ function ChangeStatus() {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://b8rliving.com/property/${idProperty}`,
+          `https://b8rliving.com/property/${propertyId}`,
           axiosConfig
         );
+        console.log(response);
 
         const responseData = response.data.data.property;
         setPropertyDetails(responseData);
@@ -73,43 +84,119 @@ function ChangeStatus() {
     };
 
     fetchpropertyDetails(); // Call the fetch function
-  }, [idProperty]); // Make sure to include idProperty in the dependency array if it's dynamic.
+  }, []); // Make sure to include propertyId in the dependency array if it's dynamic.
 
-  const handlePageAvailable = (value) => {
-    // Custom search handling logic
-    // e.preventDefault();
-    console.log(value);
-    console.log("hit hai");
-    setStateRender(value);
-    // setActivebgColor("#52796F");
-    // setBorderColor("#DAF0EE");
-    // activeColor("")
+  const handlePageAvailable = (condition) => {
+    switch (condition) {
+      case "rent":
+        setIsActive1(true);
+        setIsActive2(false);
+        setIsActive3(false);
+        setRenderRent(condition);
+        setRenderRentName("Rented of B8R");
+        setFormData({ closeListingReason: "Rented of B8R" });
+        break;
 
-    // Perform search operations here
+      case "delist":
+        setIsActive2(true);
+        setFormDataTwo({ closeListingReason: "Rented of B8R" });
+        setRenderRentName("Delist (Owner Denied)");
+        setRenderRent(condition);
+
+        setIsActive1(false);
+        setIsActive3(false);
+
+        break;
+
+      case "rented":
+        setIsActive3(true);
+        setRenderRentName("Rented Outside");
+        setRenderRent(condition);
+        setIsActive1(false);
+        setIsActive2(false);
+        break;
+
+      // default:
+      //   setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
+      //   break;
+    }
   };
 
-  const handleChange = event => {
-		const { name, value } = event.target;
-		setFormData(prevState => ({ ...prevState, [name]: value }));
-	  };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    // setFormData((prevState) => ({ ...prevState, [name]: value }));
 
+    setFormData((prevState) => {
+      if (name in prevState.closeListingDetails) {
+        return {
+          ...prevState,
 
-  const handleSubmit = (event) => {
+          closeListingDetails: {
+            ...prevState.closeListingDetails,
+            [name]: value,
+          },
+        };
+      } else {
+        return {
+          ...prevState,
+          [name]: value,
+        };
+      }
+    });
+  };
+
+  const handleChangeTwo = (event) => {
+    const { name, value } = event.target;
+    // setFormData((prevState) => ({ ...prevState, [name]: value }));
+
+    setFormData((prevState) => {
+      if (name in prevState.closeListingDetails) {
+        return {
+          ...prevState,
+
+          closeListingDetails: {
+            ...prevState.closeListingDetails,
+            [name]: value,
+          },
+        };
+      } else {
+        return {
+          ...prevState,
+          [name]: value,
+        };
+      }
+    });
+  };
+
+  const submitRent = async (event) => {
     event.preventDefault();
-    console.log();
-    axios
-      .post("http://127.0.0.1:5000/backend/tenantpref", formData)
-      .then((response) => {
-        console.log(response.data);
-        alert("Your tenant preferences has been submitted");
-        // do something with the response
-        window.location.href = "/tenantpref2";
-      })
-      .catch((error) => {
-        console.log(error);
-        // handle the error
-      });
+
+    //  console.log(formData);
+    console.log(JSON.stringify(formData));
+    try {
+      const response = await axios.put(
+        `https://b8rliving.com/property/close-listing/${propertyId}`,
+        formData,
+        axiosConfig
+      );
+
+      // Log the updated state
+      console.log(JSON.stringify(response));
+      var nameResponse = response.data.data.property.houseName;
+      var nameResponse2 = response.data.data.property.societyName;
+      var ClosedStatus = response.data.data.property.closeListingReason;
+
+      alert("Property Closed sucessfully!");
+      window.location.href = `/PropertyClosed?name=${nameResponse}&closed=${ClosedStatus}&societyname=${nameResponse2}`;
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      alert(error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
   };
+
+  console.log(propertyDetails);
 
   return (
     <>
@@ -190,27 +277,27 @@ function ChangeStatus() {
             <h4>Close Listing</h4>
             <div>
               <CommonTopButton
-                bgColor="#52796F"
+                bgColor={isActive1 ? "#52796F" : "#D2D7D6"}
                 borderColor="#DAF0EE"
-                color="#FFFFFF"
+                color={isActive1 ? "#FFFFFF" : "#77A8A4"}
                 text="Rented On B8R"
                 onclicked={() => handlePageAvailable("rent")}
               />
             </div>
             <div style={{ marginTop: "20px" }}>
               <CommonTopButton
-                bgColor="#D2D7D6"
+                bgColor={isActive2 ? "#52796F" : "#D2D7D6"}
                 borderColor="#DAF0EE"
-                color="#77A8A4"
-                text="Delist(Owner Denied)"
+                color={isActive2 ? "#FFFFFF" : "#77A8A4"}
+                text="Delist (Owner Denied)"
                 onclicked={() => handlePageAvailable("delist")}
               />
             </div>
             <div style={{ marginTop: "20px" }}>
               <CommonTopButton
-                bgColor="#D2D7D6"
+                bgColor={isActive3 ? "#52796F" : "#D2D7D6"}
                 borderColor="#DAF0EE"
-                color="#77A8A4"
+                color={isActive3 ? "#FFFFFF" : "#77A8A4"}
                 text="Rented Outside"
                 onclicked={() => handlePageAvailable("rented")}
               />
@@ -224,8 +311,8 @@ function ChangeStatus() {
         {/* -----------------------------------------------2nd div----------------------------------------------------- */}
 
         {/* -----------------------------------------------3rd div----------------------------------------------------- */}
-        {stateRender == "rent" ? (
-          <form className="login-form" onSubmit={handleSubmit}>
+        {RenderRent == "rent" ? (
+          <form className="login-form" onSubmit={submitRent}>
             <div
               className="containered form"
               style={{
@@ -249,7 +336,7 @@ function ChangeStatus() {
 
                 <div style={{ marginTop: "20px" }}>
                   <label
-                    for="map"
+                    for="tenantName"
                     style={{
                       textAlign: "left",
                       display: "block",
@@ -262,9 +349,9 @@ function ChangeStatus() {
                   </label>
                   <input
                     type="text"
-                    id="map"
-                    name="map"
-                    value={formData.name}
+                    id="tenantName"
+                    name="tenantName"
+                    value={formData.tenantName}
                     onChange={handleChange}
                     // placeholder="Google Maps Plug-in"
                     style={{
@@ -276,7 +363,7 @@ function ChangeStatus() {
                   />
 
                   <label
-                    for="map"
+                    for="rentAmount"
                     style={{
                       textAlign: "left",
                       display: "block",
@@ -289,10 +376,10 @@ function ChangeStatus() {
                   </label>
                   <input
                     type="text"
-                    id="map"
-                    name="map"
-                    //   value={formData.map}
-                    //   onChange={handleChange}
+                    id="rentAmount"
+                    name="rentAmount"
+                    value={formData.rentAmount}
+                    onChange={handleChange}
                     // placeholder="Google Maps Plug-in"
                     style={{
                       backgroundColor: "#F5F5F5",
@@ -303,7 +390,7 @@ function ChangeStatus() {
                   />
 
                   <label
-                    for="map"
+                    for="phoneNumber"
                     style={{
                       textAlign: "left",
                       display: "block",
@@ -316,10 +403,10 @@ function ChangeStatus() {
                   </label>
                   <input
                     type="text"
-                    id="map"
-                    name="map"
-                    //   value={formData.map}
-                    //   onChange={handleChange}
+                    id="mapphoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
                     // placeholder="Google Maps Plug-in"
                     style={{
                       backgroundColor: "#F5F5F5",
@@ -330,7 +417,7 @@ function ChangeStatus() {
                   />
 
                   <label
-                    for="map"
+                    for="tenancyStartDate"
                     style={{
                       textAlign: "left",
                       display: "block",
@@ -342,12 +429,11 @@ function ChangeStatus() {
                     Tenancy Start Date
                   </label>
                   <input
-                    type="text"
-                    id="map"
-                    name="map"
-                    //   value={formData.map}
-                    //   onChange={handleChange}
-                    // placeholder="Google Maps Plug-in"
+                    type="date"
+                    id="tenancyStartDate"
+                    name="tenancyStartDate"
+                    value={formData.tenancyStartDate}
+                    onChange={handleChange}
                     style={{
                       backgroundColor: "#F5F5F5",
                       padding: "10px",
@@ -355,8 +441,9 @@ function ChangeStatus() {
                       border: "1px solid #52796F",
                     }}
                   />
+
                   <label
-                    for="map"
+                    for="agreementFor"
                     style={{
                       textAlign: "left",
                       display: "block",
@@ -369,10 +456,10 @@ function ChangeStatus() {
                   </label>
                   <input
                     type="text"
-                    id="map"
-                    name="map"
-                    //   value={formData.map}
-                    //   onChange={handleChange}
+                    id="agreementFor"
+                    name="agreementFor"
+                    value={formData.agreementFor}
+                    onChange={handleChange}
                     // placeholder="Google Maps Plug-in"
                     style={{
                       backgroundColor: "#F5F5F5",
@@ -394,29 +481,50 @@ function ChangeStatus() {
             </div>
           </form>
         ) : null}
+
         {/* -----------------------------------------------3rd div----------------------------------------------------- */}
         {/* BODY */}
 
-        {stateRender == "delist" ? (
+        {RenderRent == "delist" ? (
           <div>
-            <p>
-              <b>Write your Feedback here</b>
-            </p>
-            <div
-              className="containered form"
-              style={{
-                height: "250px",
-                width: "320px",
-                borderRadius: "15px",
-                boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-              }}
-            >
-              <p>TEXT</p>
-            </div>
+            <form className="login-form" onSubmit={submitRent}>
+              <p>
+                <b>Write your Feedback here</b>
+              </p>
+              <div
+                className="containered form"
+                style={{
+                  height: "250px",
+                  width: "320px",
+                  borderRadius: "15px",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                }}
+              >
+                <textarea
+                  id="feedback"
+                  name="feedback"
+                  rows="4"
+                  cols="50"
+                  value={formDataTwo.feedback}
+                  onChange={handleChangeTwo}
+                >
+                  {" "}
+                  Enter Feed Back
+                </textarea>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <BackButton title="Go Back" margin="" fontweight="bolder" />
+                <CommonBtn
+                  title="Yes, close listing"
+                  margin="40%"
+                  fontweight="bolder"
+                />
+              </div>
+            </form>
           </div>
         ) : null}
         {/* ---------------------------------------------------------------------------------------------------------------- */}
-        {stateRender == "rented" ? (
+        {RenderRent == "rented" ? (
           <div
             className="containered form"
             style={{
@@ -432,121 +540,156 @@ function ChangeStatus() {
                 alignItems: "center",
               }}
             >
-              {/* for image */}
-              <div>
-                <b>Enter Details if Rented outside</b>
-              </div>
-              {/* for title and text */}
+              <form className="login-form" onSubmit={submitRent}>
+                {/* for image */}
+                <div>
+                  <b>Enter Details if Rented outside</b>
+                </div>
+                {/* for title and text */}
 
-              <div style={{ marginTop: "20px" }}>
-                <label
-                  for="map"
-                  style={{
-                    textAlign: "left",
-                    display: "block",
-                    marginBottom: "0.5rem",
-                    fontWeight: "300",
-                    float: "left",
-                  }}
-                >
-                  Select Tenant Name
-                </label>
-                <input
-                  type="text"
-                  id="map"
-                  name="map"
-                  //   value={formData.map}
-                  //   onChange={handleChange}
-                  placeholder="Google Maps Plug-in"
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    padding: "10px",
-                    borderRadius: "10pxpx",
-                    border: "1px solid #52796F",
-                  }}
-                />
+                <div style={{ marginTop: "20px" }}>
+                  <label
+                    for="tenantName"
+                    style={{
+                      textAlign: "left",
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: "300",
+                      float: "left",
+                    }}
+                  >
+                    Select Tenant Name
+                  </label>
+                  <input
+                    type="text"
+                    id="tenantName"
+                    name="tenantName"
+                    value={formData.tenantName}
+                    onChange={handleChange}
+                    // placeholder="Google Maps Plug-in"
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      padding: "10px",
+                      borderRadius: "10pxpx",
+                      border: "1px solid #52796F",
+                    }}
+                  />
 
-                <label
-                  for="map"
-                  style={{
-                    textAlign: "left",
-                    display: "block",
-                    marginBottom: "0.5rem",
-                    fontWeight: "300",
-                    float: "left",
-                  }}
-                >
-                  Select Rent Amaount (Rent + Maintenance)
-                </label>
-                <input
-                  type="text"
-                  id="map"
-                  name="map"
-                  //   value={formData.map}
-                  //   onChange={handleChange}
-                  placeholder="Google Maps Plug-in"
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    padding: "10px",
-                    borderRadius: "10pxpx",
-                    border: "1px solid #52796F",
-                  }}
-                />
+                  <label
+                    for="rentAmount"
+                    style={{
+                      textAlign: "left",
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: "300",
+                      float: "left",
+                    }}
+                  >
+                    Select Rent Amaount (Rent + Maintenance)
+                  </label>
+                  <input
+                    type="text"
+                    id="rentAmount"
+                    name="rentAmount"
+                    value={formData.rentAmount}
+                    onChange={handleChange}
+                    // placeholder="Google Maps Plug-in"
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      padding: "10px",
+                      borderRadius: "10pxpx",
+                      border: "1px solid #52796F",
+                    }}
+                  />
 
-                <label
-                  for="map"
-                  style={{
-                    textAlign: "left",
-                    display: "block",
-                    marginBottom: "0.5rem",
-                    fontWeight: "300",
-                    float: "left",
-                  }}
-                >
-                  Enter Tenant Contact Number
-                </label>
-                <input
-                  type="text"
-                  id="map"
-                  name="map"
-                  //   value={formData.map}
-                  //   onChange={handleChange}
-                  placeholder="Google Maps Plug-in"
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    padding: "10px",
-                    borderRadius: "10pxpx",
-                    border: "1px solid #52796F",
-                  }}
-                />
+                  <label
+                    for="phoneNumber"
+                    style={{
+                      textAlign: "left",
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: "300",
+                      float: "left",
+                    }}
+                  >
+                    Enter Tenant Contact Number
+                  </label>
+                  <input
+                    type="text"
+                    id="mapphoneNumber"
+                    name="phoneNumber"
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                    // placeholder="Google Maps Plug-in"
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      padding: "10px",
+                      borderRadius: "10pxpx",
+                      border: "1px solid #52796F",
+                    }}
+                  />
 
-                <label
-                  for="map"
-                  style={{
-                    textAlign: "left",
-                    display: "block",
-                    marginBottom: "0.5rem",
-                    fontWeight: "300",
-                    float: "left",
-                  }}
-                >
-                  Agreement For
-                </label>
-                <input
-                  type="text"
-                  id="map"
-                  name="map"
-                  //   value={formData.map}
-                  //   onChange={handleChange}
-                  placeholder="Google Maps Plug-in"
-                  style={{
-                    backgroundColor: "#F5F5F5",
-                    padding: "10px",
-                    borderRadius: "10pxpx",
-                    border: "1px solid #52796F",
-                  }}
-                />
-              </div>
+                  <label
+                    for="tenancyStartDate"
+                    style={{
+                      textAlign: "left",
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: "300",
+                      float: "left",
+                    }}
+                  >
+                    Agreement For
+                  </label>
+                  <input
+                    type="date"
+                    id="tenancyStartDate"
+                    name="tenancyStartDate"
+                    value={formData.tenancyStartDate}
+                    onChange={handleChange}
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      padding: "10px",
+                      borderRadius: "10pxpx",
+                      border: "1px solid #52796F",
+                    }}
+                  />
+                    <label
+                    for="agreementFor"
+                    style={{
+                      textAlign: "left",
+                      display: "block",
+                      marginBottom: "0.5rem",
+                      fontWeight: "300",
+                      float: "left",
+                    }}
+                  >
+                    Agreement For
+                  </label>
+                  <input
+                    type="text"
+                    id="agreementFor"
+                    name="agreementFor"
+                    value={formData.agreementFor}
+                    onChange={handleChange}
+                    // placeholder="Google Maps Plug-in"
+                    style={{
+                      backgroundColor: "#F5F5F5",
+                      padding: "10px",
+                      borderRadius: "10pxpx",
+                      border: "1px solid #52796F",
+                    }}
+                  />
+                </div>
+                <div style={{ display: "flex", flexDirection: "row" }}>
+                  <BackButton title="Go Back" margin="" fontweight="bolder" />
+                  <CommonBtn
+                    title="Yes, close listing"
+                    margin="40%"
+                    fontweight="bolder"
+                  />
+                </div>
+              </form>
             </div>
           </div>
         ) : null}

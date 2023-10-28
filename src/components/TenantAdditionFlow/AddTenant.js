@@ -37,6 +37,7 @@ import security_deposit from "../Assets/Images/PropertyAdditionPageIcons/securit
 import space_or_area from "../Assets/Images/PropertyAdditionPageIcons/space_or_area/24.png";
 import swimming_pool from "../Assets/Images/PropertyAdditionPageIcons/swimming_pool/24.png";
 import veg_nonveg from "../Assets/Images/PropertyAdditionPageIcons/veg_non-veg_1/24.png";
+import { useNavigate } from "react-router-dom";
 
 function AddTenant() {
   const [checkedStateOne, setCheckedStateOne] = useState(true);
@@ -44,7 +45,6 @@ function AddTenant() {
   const [checkedStateThree, setCheckedStateThree] = useState(false);
 
   const [formData, setFormData] = useState({
-   
     phoneNumber: "",
     tenantData: {
       name: "",
@@ -115,17 +115,19 @@ function AddTenant() {
     },
   };
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Now you can navigate programmatically to other pages using navigate
+    navigate(-1);
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     // const Jdata =  JSON.stringify(formData, null, 2);
     // console.log("JSON VARIABLE",Jdata);
     // console.log(JSON.stringify(formData));
     axios
-      .post(
-        "https://b8rliving.com/tenant",
-        formData,
-        axiosConfig
-      )
+      .post("https://b8rliving.com/tenant", formData, axiosConfig)
       .then((response) => {
         // console.log(response.data.userID);
         alert("Your Tenant details has been submitted");
@@ -141,7 +143,6 @@ function AddTenant() {
     console.log("Finale In state:", formData);
     // alert("Tenant Created!");
   };
-
 
   //STYLES
 
@@ -242,7 +243,9 @@ function AddTenant() {
               <div style={{ marginTop: "50px" }}></div>
 
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <BackButton title="Back" margin="" fontweight="bolder" />
+                <div onClick={handleClick}>
+                  <BackButton title="Back" margin="" fontweight="bolder" />
+                </div>
                 <CommonBtn title="Submit" margin="50%" fontweight="bolder" />
               </div>
 
@@ -294,7 +297,9 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="" disabled selected>Select from Drop Drown</option>
+                <option value="" disabled selected>
+                  Select from Drop Drown
+                </option>
                 <option value="0-3">0-3 months</option>
                 <option value="3-6">3-6 months</option>
                 <option value="6-11">6-11 months</option>
@@ -313,25 +318,25 @@ function AddTenant() {
               >
                 Deposit amount prefered(in Months)
               </label>
-         
+
               <input
-                    type="number"
-                    id="numberOfMonth"
-                    value={formData.numberOfMonth}
-                    onChange={handleChange}
-                    name="numberOfMonth"
-                    placeholder="-number only*-"
-                    style={{
-                      backgroundColor: "white",
-                      padding: "10px",
-                      borderRadius: "5px",
-                      border: "1px solid #52796F",
-                      width: "350px",
-                      boxShadow:
-                        "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
-                      marginTop: "-10px",
-                    }}
-                  />
+                type="number"
+                id="numberOfMonth"
+                value={formData.numberOfMonth}
+                onChange={handleChange}
+                name="numberOfMonth"
+                placeholder="-number only*-"
+                style={{
+                  backgroundColor: "white",
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "1px solid #52796F",
+                  width: "350px",
+                  boxShadow:
+                    "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
+                  marginTop: "-10px",
+                }}
+              />
 
               <label
                 for="houseConfiguration"
@@ -358,18 +363,19 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
-                <option value="gated_apartment" disabled selected>Select from Drop Down</option>
+                <option value="gated_apartment" disabled selected>
+                  Select from Drop Down
+                </option>
                 {/* <option value="Studio">
                 Studio
               </option> */}
                 {/* <option value="1BHK">1BHK</option> */}
-               
+
                 <option value="Studio">Studio</option>
                 <option value="1 BHK">1 BHK</option>
                 <option value="2 BHK">2 BHK</option>
                 <option value="3 BHK">3 BHK</option>
                 <option value="4 BHK">4 BHK</option>
-               
               </select>
               <br></br>
 
@@ -397,10 +403,10 @@ function AddTenant() {
                   border: "1px solid #52796F",
                 }}
               >
+                <option value="" disabled selected>
+                  Select from drop down
+                </option>
 
-
-                 <option value="" disabled selected>Select from drop down</option>
-               
                 <option value="Full-furnished">Full-Furnished</option>
                 <option value="Semi-furnished">Semi-Furnished</option>
                 <option value="Un-furnished">UnFurnished</option>
@@ -435,12 +441,19 @@ function AddTenant() {
                 <option value="" disabled selected>
                   Select from Drop Down
                 </option>
-                <option value="Flat (in Gated Society)">Flat(in Gated Society)</option>
-                <option value="Standalone Individual House">Standalone Individual House</option>
-                <option value="Individual House(in Gated Society)"> Individual House(in Gated Society)</option>
-                <option value="Individual Builder Floor">Individual Builder Floor</option>
-
-                
+                <option value="Flat (in Gated Society)">
+                  Flat(in Gated Society)
+                </option>
+                <option value="Standalone Individual House">
+                  Standalone Individual House
+                </option>
+                <option value="Individual House(in Gated Society)">
+                  {" "}
+                  Individual House(in Gated Society)
+                </option>
+                <option value="Individual Builder Floor">
+                  Individual Builder Floor
+                </option>
               </select>
               <label
                 for="preferredLocation"
@@ -546,7 +559,11 @@ function AddTenant() {
             </div> */}
 
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <BackButton title="Back" margin="" fontweight="bolder" />
+                <div>
+
+                
+                <BackButton title="Back" margin="" fontweight="bolder" onClick={handleClick}/>
+                </div>
                 <CommonBtn title="Submit" margin="50%" fontweight="bolder" />
               </div>
 

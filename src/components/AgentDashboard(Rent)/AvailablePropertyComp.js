@@ -23,6 +23,7 @@ const AvailablePropertyComp = ({ props, name, activeProperies }) => {
       // Filter properties based on houseName
       const filtered = props.filter((property) =>
         property.houseName.toLowerCase().includes(searchTerm.toLowerCase())
+        
       );
       setfilteredData(filtered);
     }

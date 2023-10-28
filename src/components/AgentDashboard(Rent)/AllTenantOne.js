@@ -31,11 +31,10 @@ function AllTenantOne() {
     useState();
   const [WaitingFroPropertyCondition, setWaitingFroPropertyCondition] =
     useState(false);
-    
+
   const [isActive1, setIsActive1] = useState(false);
   const [isActive2, setIsActive2] = useState(false);
   const [isActive3, setIsActive3] = useState(false);
-
 
   const token = localStorage.getItem("token");
   // console.log(token);
@@ -47,9 +46,9 @@ function AllTenantOne() {
       Authorization: `Basic ${token}`,
     },
   };
-  useEffect(() => {
-  // console.log(activeCondition)
 
+  useEffect(() => {
+    // console.log(activeCondition)
     const fetchPosts = async () => {
       setLoading(true);
       axios
@@ -58,8 +57,8 @@ function AllTenantOne() {
           // console.log(response.data.data.tenants);
           // var myArrayPropertyCount = response.data.data.properties;
           setResponseTenat(response.data.data.tenants);
-          
-          filterTenants();
+          setFilteredTenants(response.data.data.tenants);
+          // filterTenants();
           // alert("Your data has been submitted");
           // do something with the response
         })
@@ -71,22 +70,19 @@ function AllTenantOne() {
     };
 
     fetchPosts();
+  }, []);
 
-  }, [activeCondition]);
-
-  // console.log(responseTenat);
+  console.log(responseTenat);
 
   // Function to handle button clicks and trigger filtering
   const handlePageAvailable = (condition) => {
     setActiveCondition(condition);
-    // console.log(condition);
+    console.log(condition);
     filterTenants(condition); // Trigger the filtering
   };
 
-
   // Filter function to filter tenants based on the active condition
   const filterTenants = (condition) => {
-
     switch (condition) {
       case "WaitingForProperty":
         setIsActive1(true);
@@ -99,9 +95,7 @@ function AllTenantOne() {
       case "CurrentlyViewing":
         setIsActive2(true);
         setFilteredTenants(
-          responseTenat.filter(
-            (tenant) => tenant.status === "CurrentlyViewing"
-          )
+          responseTenat.filter((tenant) => tenant.status === "CurrentlyViewing")
         );
         break;
       case "Shortlisted":
@@ -115,9 +109,9 @@ function AllTenantOne() {
           responseTenat.filter((tenant) => tenant.status === "Deactivate")
         );
         break;
-      // default:
-      //   setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
-      //   break;
+      default:
+        setFilteredTenants(responseTenat); // Show all tenants when no specific condition is selected
+        break;
     }
   };
   // console.log(filteredTenants)
@@ -132,37 +126,37 @@ function AllTenantOne() {
     // Perform search operations here
   };
 
-    // Perform search operations here
-    // const WaitingForProperty = (query) => {
-    //   // Custom search handling logic
-    //   console.log("WaitingForProperty:", query);
-    //   const fetchPosts = async () => {
-    //     setLoading(true);
-    //     axios
-    //       .get(
-    //         "https://b8rliving.com/tenant?filter=WaitingForProperty",
-    //         axiosConfig
-    //       )
-    //       .then((response) => {
-    //         // console.log(response.data.data.tenants);
-    //         // var myArrayPropertyCount = response.data.data.properties;
-    //         setresponseTenatWaitingForProperty(response.data.data);
-    //         // console.log(myArrayPropertyCount.length);
-  
-    //         if (response.data.data.properties.propertyInfo.purposeRent == true) {
-    //         }
-  
-    //         // alert("Your data has been submitted");
-    //         // do something with the response
-    //       })
-    //       .catch((error) => {
-    //         console.log(error);
-    //         // handle the error
-    //       });
-    //     setLoading(false);
-    //   };
-    // };
-  
+  // Perform search operations here
+  // const WaitingForProperty = (query) => {
+  //   // Custom search handling logic
+  //   console.log("WaitingForProperty:", query);
+  //   const fetchPosts = async () => {
+  //     setLoading(true);
+  //     axios
+  //       .get(
+  //         "https://b8rliving.com/tenant?filter=WaitingForProperty",
+  //         axiosConfig
+  //       )
+  //       .then((response) => {
+  //         // console.log(response.data.data.tenants);
+  //         // var myArrayPropertyCount = response.data.data.properties;
+  //         setresponseTenatWaitingForProperty(response.data.data);
+  //         // console.log(myArrayPropertyCount.length);
+
+  //         if (response.data.data.properties.propertyInfo.purposeRent == true) {
+  //         }
+
+  //         // alert("Your data has been submitted");
+  //         // do something with the response
+  //       })
+  //       .catch((error) => {
+  //         console.log(error);
+  //         // handle the error
+  //       });
+  //     setLoading(false);
+  //   };
+  // };
+
   return (
     <>
       <div
@@ -200,7 +194,6 @@ function AllTenantOne() {
               color={isActive2 ? "#FFFFFF" : "#77A8A4"}
               text="Currently Viewing"
               onclicked={() => handlePageAvailable("WaitingForProperty")}
-
             />
           </div>
           <div>
@@ -210,7 +203,6 @@ function AllTenantOne() {
               color={isActive3 ? "#FFFFFF" : "#77A8A4"}
               text="Shortlisted"
               onclicked={() => handlePageAvailable("Shortlisted")}
-
             />
 
             <div>
@@ -221,7 +213,6 @@ function AllTenantOne() {
                   color="#DAF0EE"
                   text="Archived"
                   onclicked={() => handlePageAvailable("Deactivate")}
-
                 />
               ) : (
                 <CommonTopButton
@@ -230,7 +221,6 @@ function AllTenantOne() {
                   color="#77A8A4"
                   text="Archived"
                   onclicked={() => handlePageAvailable("Deactivate")}
-
                 />
               )}
             </div>

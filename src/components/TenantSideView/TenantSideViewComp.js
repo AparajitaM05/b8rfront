@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../Dashboard.css";
 import Heart from "react-animated-heart";
 import { Link } from "react-router-dom";
@@ -12,11 +12,84 @@ import Parking from "../Assets/Images/TenantSide/Parking.png";
 import Parking2 from "../Assets/Images/TenantSide/Parking2.png";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 // import ActiveLeads from "./ActiveLeads";
 
-function TenantSideViewComp({ boards,boardId }) {
-  // const { img, rent, area, houseConfig, FurnishingType, parking } = props;
+function TenantSideViewComp({ boards, boardId }) {
+  const token = localStorage.getItem("token");
+  // console.log(token);
+
   const [isClick, setClick] = useState(false);
+  const [loading, setLoading] = useState(false);
+  
+
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+
+  // useEffect(() => {
+  //   const fetchPosts = async () => {
+  //     setLoading(true);
+  //     try {
+  //       const response = await axios.get(
+  //         "https://b8rliving.com/property",
+  //         axiosConfig
+  //       );
+  
+  //     //Filter Data
+  //     const filterData = response.data.data.properties ;
+
+
+  //     // Sort the response data by the 'imagesApproved' property in descending order
+  //     const sortedProperties = filterData.sort((a, b) => {
+  //       return a.imagesApproved - b.imagesApproved;
+  //     });
+
+  //       setresponsePendingProperties(sortedProperties);
+
+  //     } catch (error) {
+  //       console.log(error);
+  //       // Handle the error here if needed
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  
+  //   fetchPosts();
+  // }, []);
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Now you can navigate programmatically to other pages using navigate
+    navigate(-1);
+  };
+
+  const shortlist = async (propertyid) => {
+    // event.preventDefault();
+    setClick(true);
+    console.log("Received Id:", propertyid);
+
+    try {
+      const response = await axios.put(
+        `https://b8rliving.com/board/shortlist/${boardId}`,
+        {propertyid: propertyid},
+        axiosConfig
+      );
+      console.log(response);
+      alert(response.data.message);
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
+  };
+
   console.log(boards);
 
   return (
@@ -32,8 +105,6 @@ function TenantSideViewComp({ boards,boardId }) {
           </div>
           
 ))}; */}
-
-        
 
           <div
             style={{
@@ -52,14 +123,25 @@ function TenantSideViewComp({ boards,boardId }) {
                 color: "#DAF0EE",
               }}
             >
-                <Link to={`/DetailView?boardId=${boardId}` }><Carousel showThumbs={false} showArrows={true}>
-            {property.images.map((image, index) => (
-              <div key={index}>
-                <img src={image} />
-                <p className="legend" style={{color:"#FFFFF",fontSize:"16px",fontWeight:"bolder"}}>{property.houseName}</p>
-              </div>
-            ))}
-          </Carousel></Link>
+              <Link to={`/DetailView?boardId=${boardId}&propertyId=${property._id}`}>
+                <Carousel showThumbs={false} showArrows={true}>
+                  {property.images.map((image, index) => (
+                    <div key={index}>
+                      <img src={image} />
+                      <p
+                        className="legend"
+                        style={{
+                          color: "#FFFFF",
+                          fontSize: "16px",
+                          fontWeight: "bolder",
+                        }}
+                      >
+                        {property.houseName}
+                      </p>
+                    </div>
+                  ))}
+                </Carousel>
+              </Link>
               {/* For Images */}
               {/* <img src={homeDown} alt="Los Angeles" /> */}
             </div>
@@ -101,10 +183,11 @@ function TenantSideViewComp({ boards,boardId }) {
                   zoom: "0.5",
                 }}
               >
+                {/* <div onClick={shortlist(property._id)} > </div> */}
                 <Heart
                   height={10}
                   isClick={isClick}
-                  onClick={() => setClick(!isClick)}
+                  onClick={() => shortlist(property._id)}
                 />
                 {isClick ? (
                   <p

@@ -44,12 +44,17 @@ const YetToShareComp = ({ responseProperty }) => {
             }}
           >
             <div style={{ marginTop: "10px", marginLeft: "10px" }}>
-              <img src={demoimg} />
+              <img 
+              src={values.images[0]}
+              alt="imgOne"
+              style={{ marginLeft: "0px", marginTop: "0px",borderRadius:"15px" }}
+              height="60px"
+               />
             </div>
 
             {/* rigth side */}
             <div style={{ marginTop: "-10px" }}>
-              <h5 style={{ marginLeft: "-20px" }}>
+              <h5 style={{ marginLeft: "-10px" }}>
                 {values.houseName}, {values.societyName}
               </h5>
               <div

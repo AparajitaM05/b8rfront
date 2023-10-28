@@ -1,7 +1,7 @@
 import React from "react";
 import imgOne from "../Assets/Images/AgentDashboard/imgOne.png";
 import checkP from "../Assets/Images/AgentDashboard/CheckP.png";
-
+import { Link } from "react-router-dom";
 import sharedImg from "../Assets/Images/AgentDashboard/sharedImg.png"
 
 
@@ -20,7 +20,10 @@ const SharedNoactcomp = ({responseProperty})=>
             <div style={{height:"78px",width:"302px",background:"#FFFFFF",border:"1px solid #DAF0EE",borderRadius:"15px",boxShadow:"0px 4px 4px rgba(0, 0, 0, 0.25)", display:"flex"}}>
                     {/* img */}
                     <div>
-                            <img src={imgOne} alt="imgOne" style={{marginLeft:"10px", marginTop:"10px"}}/>
+                            <img src={values.images[0]}
+                            alt="imgOne"
+                            style={{ marginLeft: "10px", marginTop: "10px",borderRadius:"15px" }}
+                            height="60px"/>
                     </div>
                     <div style={{marginTop:"5px"}}>
                         <div style={{textAlign:"left",marginLeft:"10px"}}>
@@ -33,12 +36,12 @@ const SharedNoactcomp = ({responseProperty})=>
                     </div>
             </div>
             {/* right side */}
-            <div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
+            <Link to="/PropertyViewingStatus"><div style={{height:"75px",width:"52px",background:"#E8E7E7",borderRadius:"10px",marginLeft:"10px"}}> 
 
             <img src={checkP} style={{height:"27px",marginTop:"20px",marginBottom:"-8px"}}/>
             <text style={{fontSize:"12px",color:"#5D6560",fontWeight:"bold"}}>Detail</text>
                 
-            </div>
+            </div></Link>
                
 
                

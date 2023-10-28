@@ -37,6 +37,7 @@ import swimmingPool from "../../Assets/Images/PropertyAdditionPageIcons/swimming
 import nonVeg from "../../Assets/Images/PropertyAdditionPageIcons/veg_non-veg_1/24.png";
 import PropertyComp from "./PropertyComp";
 
+
 function CreateBoard() {
   const queryParameters = new URLSearchParams(window.location.search);
   const name = queryParameters.get("name");
@@ -121,6 +122,8 @@ function CreateBoard() {
           for (const key in tenant) {
             if (typeof tenant[key] === "boolean") {
               booleanValues[key] = tenant[key];
+              console.log(booleanValues);
+
             }
           }
         });

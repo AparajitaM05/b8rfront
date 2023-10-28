@@ -54,14 +54,17 @@ function TenantSideView() {
 
         console.log(responseDataBoardtData);
 
+        const filteredProperties = responseDataPropertiesData.filter(
+          (property) => property.status != "Closed"
+        );
 
 
         // Update the formData state with the response data
         setResponseDataBoard(responseDataBoardtData);
-        setResponseDataProperty(responseDataPropertiesData);
+        setResponseDataProperty(filteredProperties);
 
          // Count the number of properties
-        setResponseDataTotalProperties(responseDataPropertiesData.length);
+        setResponseDataTotalProperties(filteredProperties.length);
 
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -83,6 +86,7 @@ function TenantSideView() {
             axiosConfig
           );
   
+          
           // const responseData = response.data.data.tenant.tenantDetails;
           // const responseDataBoardData = response.data.data.board;
           const responseDataTenantData = response.data.data.tenant;

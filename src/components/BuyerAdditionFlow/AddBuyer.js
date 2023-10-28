@@ -10,6 +10,7 @@ import Footer from "../Footer";
 import CommonBtn from "../CommonButton";
 import BackButton from "../CommonButtonBack";
 import CommonHeader from "../CommonHeader";
+import { useNavigate } from "react-router-dom";
 
 function AddBuyer() {
   const [checkedStateOne, setCheckedStateOne] = useState(true);
@@ -39,6 +40,11 @@ function AddBuyer() {
     setCheckedStateOne((current) => !current);
   };
 
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Now you can navigate programmatically to other pages using navigate
+    navigate(-1);
+  };
   const handleChange = (event) => {
     const { name, value } = event.target;
     console.log(name, value);
@@ -177,7 +183,9 @@ function AddBuyer() {
                 />
 
                 <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div onClick={handleClick}>
                   <BackButton title="Back" margin="" fontweight="bolder" />
+                  </div>
                   <CommonBtn
                     title="Submit"
                     margin="50%"
@@ -395,7 +403,11 @@ function AddBuyer() {
               </div>
 
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <BackButton title="Back" margin="" fontweight="bolder" />
+                <div>
+
+               
+                <BackButton title="Back" margin="" fontweight="bolder" onClick={handleClick}/>
+                </div>
                 <CommonBtn
                   title="Save & Next"
                   margin="40%"

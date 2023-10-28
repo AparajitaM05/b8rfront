@@ -103,7 +103,7 @@ function BoardCreated()
             <p>Tenant Name : {responseDataTenantName} </p>
             <p>Log-in Mobile Number :  {responseDataTenant.phoneNumber}</p>
           </div>
-        <CommonBtn title="Preview Board" margin="90px"/>
+        <Link to={`/TenantSideView?boardId=${boardId}`}><CommonBtn title="Preview Board" margin="90px"/></Link>
 
         </div>
        <div style={{marginTop:"70px"}}>

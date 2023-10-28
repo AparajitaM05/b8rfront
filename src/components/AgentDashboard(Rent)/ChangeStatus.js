@@ -21,6 +21,7 @@ import CommonBtn from "../CommonButton";
 import CommonTopButton from "../CommonTopButton";
 import BackButton from "../CommonButtonBack";
 import editButton from "../Assets/Button.png";
+import { useNavigate } from "react-router-dom";
 
 function ChangeStatus() {
   const queryParameters = new URLSearchParams(window.location.search);
@@ -63,6 +64,13 @@ function ChangeStatus() {
       Authorization: `Basic ${token}`,
     },
   };
+
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Now you can navigate programmatically to other pages using navigate
+    navigate(-1);
+  };
+  
   useEffect(() => {
     const fetchpropertyDetails = async () => {
       setLoading(true);
@@ -682,7 +690,11 @@ function ChangeStatus() {
                   />
                 </div>
                 <div style={{ display: "flex", flexDirection: "row" }}>
+                  <div>
                   <BackButton title="Go Back" margin="" fontweight="bolder" />
+
+                  </div>
+                  
                   <CommonBtn
                     title="Yes, close listing"
                     margin="40%"

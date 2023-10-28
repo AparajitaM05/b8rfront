@@ -36,6 +36,8 @@ import veg_nonveg from "../Assets/Images/PropertyAdditionPageIcons/veg_non-veg_1
 import number_of_balcony from "../Assets/Images/PropertyAdditionPageIcons/number_of_balcony/24.png";
 import broom from "../Assets/Images/PropertyAdditionPageIcons/floor_number/broom.png";
 import Movein from "../Assets/Images/Move-in.png";
+import { useNavigate } from "react-router-dom";
+
 function PropertyInfo() {
   const [checkedStateOne, setCheckedStateOne] = useState(true);
   const [checkedStateTwo, setCheckedStateTwo] = useState(false);
@@ -107,6 +109,11 @@ function PropertyInfo() {
   //   const { name, value } = event.target;
   //   setFormData((prevState) => ({ ...prevState, [name]: value }));
   // };
+  const navigate = useNavigate();
+  const handleClick = () => {
+    // Now you can navigate programmatically to other pages using navigate
+    navigate(-1);
+  };
   const handleChange = (event) => {
     const { name, value, type, checked } = event.target;
     setFormData((prevState) => {
@@ -792,7 +799,11 @@ function PropertyInfo() {
                 className="n"
                 style={{ marginTop: "10px", marginLeft: "-7px" }}
               >
-                <BackButton title="Back" fontweight="bolder" />
+                <div>
+                <BackButton title="Back" fontweight="bolder" onClick={handleClick}/>
+
+                </div>
+                
                 <CommonBtn
                   title="Save and next"
                   margin="40%"
@@ -1155,26 +1166,7 @@ function PropertyInfo() {
                         marginTop: "20px",
                       }}
                     >
-                      {/* <label style={{marginTop:"-5px",fontSize:"10px"}}>Your Floor</label> */}
-                      <input
-                        type="number"
-                        id="your"
-                        value={formData.propertyData.featureInfo.floors.your}
-                        onChange={handleChange}
-                        name="your"
-                        placeholder="number only*"
-                        style={{
-                          backgroundColor: "white",
-                          padding: "5px",
-                          borderRadius: "5px",
-                          border: "1px solid #52796F",
-                          width: "50px",
-                          marginTop: "-15px",
-                          boxShadow:
-                            "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
-                        }}
-                      />
-                      {/* <label style={{marginTop:"-5px",fontSize:"10px"}}>Total Floor</label> */}
+                    {/* <label style={{marginTop:"-5px",fontSize:"10px"}}>Total Floor</label> */}
                       <input
                         type="number"
                         id="total"
@@ -1192,6 +1184,28 @@ function PropertyInfo() {
                             "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
                         }}
                       />
+
+                      {/* <label style={{marginTop:"-5px",fontSize:"10px"}}>Your Floor</label> */}
+                      <input
+                        type="number"
+                        max={formData.propertyData.featureInfo.floors.total}
+                        id="your"
+                        value={formData.propertyData.featureInfo.floors.your}
+                        onChange={handleChange}
+                        name="your"
+                        placeholder="number only*"
+                        style={{
+                          backgroundColor: "white",
+                          padding: "5px",
+                          borderRadius: "5px",
+                          border: "1px solid #52796F",
+                          width: "50px",
+                          marginTop: "-15px",
+                          boxShadow:
+                            "0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24)",
+                        }}
+                      />
+                   
                     </div>
                   </div>
                 </div>
@@ -1983,7 +1997,11 @@ function PropertyInfo() {
                 <p></p>
               )}
               <div style={{ display: "flex", flexDirection: "row" }}>
-                <BackButton title="Back" margin="" fontweight="bolder" />
+                <div>
+                <BackButton title="Back" margin="" fontweight="bolder" onClick={handleClick}/>
+
+                </div>
+                
                 <CommonBtn title="Save" margin="50%" fontweight="bolder" />
               </div>
             </form>

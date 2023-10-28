@@ -44,7 +44,11 @@ function AvailablePropertyrental() {
           return a.imagesApproved - b.imagesApproved;
         });
 
-        setresponsePendingProperties(sortedProperties);
+        const filteredProperties = sortedProperties.filter(
+          (property) => property.status != "Closed"
+        );
+
+        setresponsePendingProperties(filteredProperties);
       } catch (error) {
         console.log(error);
         // Handle the error here if needed

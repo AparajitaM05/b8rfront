@@ -100,10 +100,11 @@ const ViewBoardComp = ({ props, loading , Id, responseDataBoard }) => {
                 >
                   {/* img */}
                   <div>
-                    <img
-                      src={imgOne}
+                  <img
+                      src={values.images[0]}
                       alt="imgOne"
-                      style={{ marginLeft: "10px", marginTop: "10px" }}
+                      style={{ marginLeft: "10px", marginTop: "10px", borderRadius:"15%" }}
+                      height={60}
                     />
                   </div>
                   <div style={{ display: "flex" }}>

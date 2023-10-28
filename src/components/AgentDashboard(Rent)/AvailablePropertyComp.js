@@ -80,13 +80,15 @@ const AvailablePropertyComp = ({ props, name, activeProperies }) => {
             >
               {/* img */}
               <div>
+              {/* {values.images[0]} */}
                 {values.imagesApproved?(
                   
                 <img
                 
-                  src={imgOne}
+                  src={values.images[0]}
                   alt="imgOne"
-                  style={{ marginLeft: "10px", marginTop: "10px" }}
+                  style={{ marginLeft: "10px", marginTop: "10px",borderRadius:"15px" }}
+                  height="60px"
                 />
               ):(
                 <img

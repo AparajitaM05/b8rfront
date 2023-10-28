@@ -1,4 +1,4 @@
-import React, { Component, useState, useCallback, useMemo } from "react";
+import React, { Component, useState, useCallback, useMemo, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 import UploadPhotoscss from "./UploadPhotos.css";
@@ -28,6 +28,22 @@ function UploadPhotos() {
 
   const [uploadedFiles, setUploadedFiles] = useState([]);
 
+  useEffect(() => {
+    const script = document.createElement('script');
+  
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js";
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js";
+    script.src = "https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.6.2/prop-types.min.js";
+    script.src = "https://unpkg.com/react-dropzone-uploader@VERSION/dist/react-dropzone-uploader.umd.js";
+    script.src = "https://unpkg.com/react-dropzone-uploader@VERSION/dist/styles.css";
+    script.async = true;
+    document.body.appendChild(script);
+  
+    return () => {
+      document.body.removeChild(script);
+    }
+  }, []);
+
   let axiosConfig = {
     headers: {
       // "Content-Type": "application/json;charset=UTF-8",
@@ -48,17 +64,31 @@ function UploadPhotos() {
   //   });
   // }, []);
 
-  const onDrop = useCallback((acceptedFiles) => {
-    setSelectedImages((prevImages) => [...prevImages, ...acceptedFiles]);
-  }, []);
+  const getUploadParams = ({ meta }) => {
+    const url = 'https://httpbin.org/post'
+    return { url, meta: { fileUrl: `${url}/${encodeURIComponent(meta.name)}` } }
+  }
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-  } = useDropzone({ onDrop });
+  const handleChangeStatus = ({ meta }, status) => {
+    console.log(status, meta)
+  }
+
+  const handleSubmit = (files, allFiles) => {
+    console.log(files.map(f => f.meta))
+    allFiles.forEach(f => f.remove())
+  }
+    
+  // const onDrop = useCallback((acceptedFiles) => {
+  //   setSelectedImages((prevImages) => [...prevImages, ...acceptedFiles]);
+  // }, []);
+
+  // const {
+  //   getRootProps,
+  //   getInputProps,
+  //   isDragActive,
+  //   isDragAccept,
+  //   isDragReject,
+  // } = useDropzone({ onDrop });
 
   // Submit
   const onUpload = async () => {
@@ -97,20 +127,25 @@ function UploadPhotos() {
   };
 
   // Add this
-  const styles = useMemo(
-    () => ({
-      ...(isDragAccept ? { borderColor: "#00e676" } : {}),
-      ...(isDragReject ? { borderColor: "#ff1744" } : {}),
-    }),
-    [isDragAccept, isDragReject]
-  );
+  // const styles = useMemo(
+  //   () => ({
+  //     ...(isDragAccept ? { borderColor: "#00e676" } : {}),
+  //     ...(isDragReject ? { borderColor: "#ff1744" } : {}),
+  //   }),
+  //   [isDragAccept, isDragReject]
+  // );
+
+
 
   return (
     <>
+    
       <div className="login-page">
         <div className="button-container form">
+          
           {/* <h2 style={{color:" #52796F"}}>Upload Photos</h2> */}
           <CommonHeader title="Upload Photos" color="#52796F" />
+
 
           <div
             style={{
@@ -144,6 +179,8 @@ function UploadPhotos() {
                 marginTop: "50px",
               }}
             >
+             
+
               {/* <div style={{height:"292px",width:"301px",border:"1px dashed #000000",borderRadius:"30px",background:"rgba(217, 217, 217, 0.47)", marginLeft:"22px",marginTop:"50px"}}> */}
               <img
                 src={uploadImg}
@@ -156,6 +193,17 @@ function UploadPhotos() {
                 }}
               />
               <br />
+              <Dropzone
+      getUploadParams={getUploadParams}
+      onChangeStatus={handleChangeStatus}
+      onSubmit={handleSubmit}
+      accept="image/*,audio/*,video/*"
+      inputContent={(files, extra) => (extra.reject ? 'Image, audio and video files only' : 'Drag or Browse Files')}
+      styles={{
+        dropzoneReject: { borderColor: 'red', backgroundColor: '#DAA' },
+        inputLabel: (files, extra) => (extra.reject ? { color: 'red' } : {}),
+      }}
+    />
               {/* <label>Drop files here</label><br/> */}
               {/* <Dropzone
       // getUploadParams={getUploadParams}
@@ -169,7 +217,7 @@ function UploadPhotos() {
       }}
     /> */}
 
-              <div className={styles.container}>
+              {/* <div className={styles.container}>
                 <div className={styles.dropzone} {...getRootProps()}>
                   <input {...getInputProps()} />
                   {isDragActive ? (
@@ -177,6 +225,9 @@ function UploadPhotos() {
                   ) : (
                     <p>Drag and drop file(s) here, or click to select files</p>
                   )}
+                   </div>
+              </div> */}
+
                   {/* <div className={styles.images}>
         {selectedImages.length > 0 &&
           selectedImages.map((image, index) => (
@@ -184,8 +235,7 @@ function UploadPhotos() {
           ))}
       </div> */}
                   {/* Add this */}
-                </div>
-              </div>
+               
 
               <div>
                 {/* {selectedImages.length > 0 && (
@@ -205,9 +255,9 @@ function UploadPhotos() {
         )}
       </Dropzone> */}
               <div>
-                <h2>Uploaded Photos:</h2>
+                {/* <h2>Uploaded Photos:</h2> */}
                 <ul>
-                  {uploadedFiles.map((file, index) => (
+                  {/* {uploadedFiles.map((file, index) => (
                     <li key={index}>
                       <a
                         href={file.url}
@@ -217,7 +267,7 @@ function UploadPhotos() {
                         {file.name}
                       </a>
                     </li>
-                  ))}
+                  ))} */}
                 </ul>
               </div>
             </div>
@@ -225,7 +275,7 @@ function UploadPhotos() {
             <label>or</label>
             <br />
             <label>Click below</label>
-            <Stack direction="row" alignItems="center">
+            {/* <Stack direction="row" alignItems="center">
             {selectedImages.length > 0 && (
               <>
               <p onClick={onUpload}>
@@ -241,10 +291,8 @@ function UploadPhotos() {
                 component="label"
               >
                 <input hidden accept="image/*" type="file" />
-                {/* <PhotoCamera /> */}
               </IconButton>
-            </Stack>
-            {/* </div> */}
+            </Stack> */}
           </div>
           <h5 style={{ marginLeft: "19px", marginBottom: "60px" }}>
             Note: Only JPG, JPEG, and PNG. The larger image will be cropped.

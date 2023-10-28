@@ -40,6 +40,7 @@ function My_propertyPV() {
       Authorization: `Basic ${token}`,
     },
   };
+  
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -49,20 +50,22 @@ function My_propertyPV() {
           console.log(response.data.data);
           var propertiesData = response.data.data.properties;
           // Filter out properties where propertyDetails.purposeSale is true
-          const noImageProperties = propertiesData.filter((property) => {
+          
+            // Filter out properties where propertyDetails.purposeSale is true
+            const underReviewProperties = propertiesData.filter((property) => {
+              return property.fieldAgentStatus === "Completed" && property.status === "Pending";
+            });
+  
+            const noImageProperties = propertiesData.filter((property) => {
             return (
-              property.images.length == 0
+              property.images.length == 0 && property.fieldAgentStatus === "DetailsCompleted" 
             );
           });
 
-          // Filter out properties where propertyDetails.purposeSale is true
-          const underReviewProperties = propertiesData.filter((property) => {
-            return property.fieldAgentStatus === "Completed" && property.status === "Pending";
-          });
-
+        
           // var myArrayPropertyCount = response.data.data.properties;
-          setresponseNoImageProperty(noImageProperties);
           setresponseProperty(underReviewProperties);
+          setresponseNoImageProperty(noImageProperties);
 
         })
         .catch((error) => {

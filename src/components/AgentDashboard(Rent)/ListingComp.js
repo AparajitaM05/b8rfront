@@ -26,7 +26,7 @@ function ListingComp(responseNoImageProperty, responseProperty) {
             <div class="left-content">
               {/* <!-- img --> */}
               <div class="left-image">
-                <img src={imgOne} alt="imgOne" />
+                <img src={noImg} alt="imgOne" />
               </div>
               <div class="left-text-container">
                 <text class="left-address-text">

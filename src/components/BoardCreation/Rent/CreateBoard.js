@@ -110,6 +110,7 @@ function CreateBoard() {
         const responseData = response.data.data.tenant.tenantDetails;
         const responseDataTenant = response.data.data.tenant;
         const responseDataTenantBoardId = response.data.data.tenant.boardId;
+        const responseDataTenantPropertyId = response.data.data.tenant.propertyId;
         
         setResponseDataTenantBoard(responseDataTenantBoardId);
         // Update the formData state with the response data
@@ -158,7 +159,7 @@ function CreateBoard() {
             (property) => property.status == "Verified" && property.closeListingDetails == null
           );
 
-          console.log(filteredProperties);
+          // console.log(filteredProperties);
           setResponseDataProperty(filteredProperties);
         }
       } catch (error) {
@@ -172,7 +173,7 @@ function CreateBoard() {
   }, [tenantId]);
 
 
-  console.log(responseDataProperty);
+  // console.log(responseDataProperty);
 
   // console.log(responseDataTenantData);
 

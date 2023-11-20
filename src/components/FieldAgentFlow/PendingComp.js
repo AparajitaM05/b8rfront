@@ -108,7 +108,14 @@ function PendingComp({ properties }){
         {/* down extention */}
             <div style={{width:"262px",height:"40px",background:"#DAF0EE",marginTop:"-20px",marginLeft:"22px",borderBottomLeftRadius:"25px",borderBottomRightRadius:"25px"}}>
                 <h6 style={{marginTop:"25px"}}>Assigned on:</h6>
-                <h6 style={{marginTop:"-22px"}}>{property.propertyId.createdAt} , {daysGone} days have gone by since {startDate}</h6>
+                {daysGone >= 7 ? (
+                   <h6 style={{marginTop:"-22px"}}>{startDate} ,  {daysGone} days have gone by since {startDate}</h6>
+                )
+                :
+                (
+                  <h6 style={{marginTop:"-22px"}}>{startDate}</h6>
+                )}
+                
             </div>
 
         </div>

@@ -29,6 +29,7 @@ function ActiveLeads()
   };
 
 
+
   useEffect(() => {
     const fetchPosts = async () => {
       setLoading(true);
@@ -44,6 +45,8 @@ function ActiveLeads()
       // });
 
       console.log(response.data.data.tenants);
+
+     
        // Filter the response data to exclude tenants with status "deactive"
        const filteredTenants = response.data.data.tenants.filter(
         (tenant) => tenant.status !== "Deactivate"
@@ -51,12 +54,34 @@ function ActiveLeads()
 
       setresponsePendingTenants(filteredTenants);
 
+      // const sharedTenantCount = response.data.data.tenants.filter(
+      //   (tenant) => tenant.status == "Shared"
+      // );
+
+      // const boards = sharedTenantCount.map((tenant) => tenant.board);
+
+
+      // axios.get(`https://b8rliving.com/board/${myArrayTenantCount}`, axiosConfig)
+      // .then((response) => {
+      // // setSharedPropertyCount(response.data.data.board.propertyId.length); // Set sharedC in your state
+      //   // return response.data.data.board.propertyId.length;
+      //   console.log(response)
+      // })
+      // .catch((error) => {
+      //   console.log(error);
+      //   return 0; // Handle the error by returning 0 properties
+      // });
+
       } catch (error) {
         console.log(error);
         // Handle the error here if needed
       } finally {
         setLoading(false);
       }
+
+
+
+
     };
   
     fetchPosts();

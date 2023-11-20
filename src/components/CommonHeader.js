@@ -49,7 +49,7 @@ function CommonHeader(props) {
         
         <div className="MainLogo">
           <Link to="/dashboard">
-            <img src={logo} height={30} alt="fireSpot" />
+            <img src={logo} height={35} alt="fireSpot" />
           </Link>
         </div>
 

@@ -1514,9 +1514,9 @@ const handleChangeOne = (event) => {
                         <img src={number_of_balcony} alt="Icon description" />
                         <h5>No of Balconies</h5>
                         <select
-                          id="numofbal"
-                          name="numofbal"
-                          value={formData.numofbal}
+                          id="balconies"
+                          name="balconies"
+                          value={formData.propertyDetails.featureInfo.balconies}
                           onChange={handleChange}
                           style={{
                             backgroundColor: "white",

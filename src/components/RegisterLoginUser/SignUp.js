@@ -297,7 +297,7 @@ function SignUp() {
             >
               <form onSubmit={handleSubmit} className="login-form">
                 <div className="header">
-                  <img src={bgm} height={163} alt="headImage" />
+                  <img src={bgm} height={183} alt="headImage" />
                 </div>
 
                 <div className="SignInContainer">
@@ -360,6 +360,7 @@ function SignUp() {
                   required
                 />
                 <p className="error-message">{formError.password}</p>
+                {formData.password && (
                 <p
                   style={{
                     fontSize: "10px",
@@ -369,7 +370,9 @@ function SignUp() {
                   }}
                 >
                   {passwordStrength}
+                  
                 </p>
+                )}
                 <label
                   htmlFor="confirmPassword"
                   className="label-confirmPassword"

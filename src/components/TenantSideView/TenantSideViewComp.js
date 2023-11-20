@@ -23,7 +23,25 @@ function TenantSideViewComp({ boards, boardId }) {
 
   const [isClick, setClick] = useState(false);
   const [loading, setLoading] = useState(false);
-  
+  // Initialize isClick state as an array with the same length as boards
+  const [isClickArray, setIsClickArray] = useState(new Array(boards.length).fill(false));
+
+  const hitPutApi = async (pId) => {
+    try {
+      const response = await axios.put(
+        `https://b8rliving.com/board/share/${boardId}`,
+        { propertyid: pId },
+        axiosConfig
+      );
+      console.log(response);
+      alert(response.data.message);
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
+  };
 
   let axiosConfig = {
     headers: {
@@ -41,10 +59,9 @@ function TenantSideViewComp({ boards, boardId }) {
   //         "https://b8rliving.com/property",
   //         axiosConfig
   //       );
-  
+
   //     //Filter Data
   //     const filterData = response.data.data.properties ;
-
 
   //     // Sort the response data by the 'imagesApproved' property in descending order
   //     const sortedProperties = filterData.sort((a, b) => {
@@ -60,7 +77,7 @@ function TenantSideViewComp({ boards, boardId }) {
   //       setLoading(false);
   //     }
   //   };
-  
+
   //   fetchPosts();
   // }, []);
   const navigate = useNavigate();
@@ -71,13 +88,19 @@ function TenantSideViewComp({ boards, boardId }) {
 
   const shortlist = async (propertyid) => {
     // event.preventDefault();
-    setClick(true);
+    // setClick(true);
     console.log("Received Id:", propertyid);
+
+    setIsClickArray((prevState) => {
+      const updatedIsClickArray = [...prevState];
+      updatedIsClickArray[propertyid] = true;
+      return updatedIsClickArray;
+    });
 
     try {
       const response = await axios.put(
         `https://b8rliving.com/board/shortlist/${boardId}`,
-        {propertyid: propertyid},
+        { propertyid: propertyid },
         axiosConfig
       );
       console.log(response);
@@ -96,16 +119,7 @@ function TenantSideViewComp({ boards, boardId }) {
     <>
       {/* Mapping */}
       {boards.map((property, index) => (
-        <div key={index}>
-          {/* Full Div */}
-          {/* {property.images[0]} */}
-          {/* {property.images.map((image, index) => (
-            <div key={index}>
-               <img src={image} />
-          </div>
-          
-))}; */}
-
+        <div key={index} onClick={() => hitPutApi(property._id)}>
           <div
             style={{
               display: "flex",
@@ -123,7 +137,9 @@ function TenantSideViewComp({ boards, boardId }) {
                 color: "#DAF0EE",
               }}
             >
-              <Link to={`/DetailView?boardId=${boardId}&propertyId=${property._id}`}>
+              <Link
+                to={`/DetailView?boardId=${boardId}&propertyId=${property._id}`}
+              >
                 <Carousel showThumbs={false} showArrows={true}>
                   {property.images.map((image, index) => (
                     <div key={index}>
@@ -184,11 +200,20 @@ function TenantSideViewComp({ boards, boardId }) {
                 }}
               >
                 {/* <div onClick={shortlist(property._id)} > </div> */}
+                {isClickArray[index] ? (
                 <Heart
                   height={10}
                   isClick={isClick}
                   onClick={() => shortlist(property._id)}
-                />
+                /> ) :
+                (
+                  <Heart
+                  height={10}
+                  isClick={isClick}
+                  onClick={() => shortlist(property._id)}
+                /> 
+                )
+                }
                 {isClick ? (
                   <p
                     style={{

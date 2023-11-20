@@ -18,7 +18,7 @@ const PropertyComp = ({
   responseDataTenantData,
   responseDataTenantBoard,
   name,
-  boardId
+  boardId,
 }) => {
   const [visibleItems, setVisibleItems] = useState(3);
   const token = localStorage.getItem("token");
@@ -26,8 +26,9 @@ const PropertyComp = ({
   const [responseDataBoard, setResponseDataBoard] = useState([]);
   const [responseDataProperty, setResponseDataProperty] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
+  // const [isClickArray, setIsClickArray] = useState(new Array(boards.length).fill(false));
 
-  console.log(props);
+  // console.log(props);
   let axiosConfig = {
     headers: {
       "Content-Type": "application/json;charset=UTF-8",
@@ -36,54 +37,79 @@ const PropertyComp = ({
     },
   };
 
-  useEffect(() => {
-    const fetchBoardDetails = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `https://b8rliving.com/board/${boardId}`,
-          axiosConfig
-        );
-        console.log(props.some((prop) => prop._id === responseDataPropertiesData._id));
-        console.log("props:", props);
-        console.log("responseDataPropertiesData:", responseDataPropertiesData);
-              
-        // const responseData = response.data.data.tenant.tenantDetails;
-        // const responseDataBoardData = response.data.data.board;
-        const responseDataPropertiesData = response.data.data.board.propertyId;
-        // if (responseDataPropertiesData) {
-        //   const filteredProperties = responseDataPropertiesData.filter((property) =>
-        //   props.some((prop) => prop._id === property._id.toString())
-        //   );
-          
-        //   console.log("filteredProperties:", filteredProperties);
-        // setResponseDataProperty(responseDataPropertiesData); // Set All properties added to board
+  // useEffect(() => {
+  //   const fetchBoardDetails = async () => {
+  //     setLoading(true);
+  // Simulate an async operation, e.g., an API request
+  // setTimeout( async () => {
+  //   // console.log(props);
 
-        if (responseDataPropertiesData) {
-          // Create a set of unique _id values from responseDataPropertiesData
-          const responseDataPropertyIds = new Set(responseDataPropertiesData.map(property => property._id));
-  
-          // Filter props based on matching _id values
-          const filteredProps = props.filter(prop => responseDataPropertyIds.has(prop._id));
-  
-          setResponseDataProperty(filteredProps); // Set all properties added to the board
-          // setAddedItems(filteredProps); // Set matching items from props
-          // setFilteredProps(filteredProps); // Set the filtered props to a new state
-  
-          console.log("filteredProps:", filteredProps);
-        }
-        // console.log(responseDataBoardData);
+  //   const response = await axios.get(
+  //     `https://b8rliving.com/property`,
+  //     axiosConfig
+  //   );
+  //   const filteredProperties = response.data.data.property.filter(property => {
+  //     return props.some(prop => prop._id === property._id.toString());
+  //   });
 
-        // Update the formData state with the response data
-        // setResponseDataBoard(responseDataBoardData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      } finally {
-        setLoading(false); // Set loading to false when the request is complete
-      }
-    };
-    fetchBoardDetails(); // Call the fetch function
-  }, [boardId]);
+  //   console.log(response.data.data.property);
+
+  //   // setformData(response.data.data.property);
+  //   // Assuming you have your response data stored in a variable called 'response'
+  //   const responseDataPropertiesData = response.data.data.property;
+
+  //   // const responseData = response.data.data.tenant.tenantDetails;
+  //   // const responseDataBoardData = response.data.data.board;
+  //   // const responseDataPropertiesData =  response;
+  //   if (props && responseDataPropertiesData) {
+  //     console.log(props);
+  //     console.log(responseDataPropertiesData);
+  //     // Perform filtering here
+  //   } else {
+  //     console.log("Props or responseDataPropertiesData is not available yet.");
+  //   }
+
+ 
+  //     console.log("filteredProperties:", filteredProperties);
+
+    // setResponseDataProperty(responseDataPropertiesData); // Set All properties added to board
+    // console.log(
+    //   props.some((prop) => prop._id === responseDataPropertiesData._id)
+    // );
+    // console.log("responseDataPropertiesData:", responseDataPropertiesData);
+
+    // console.log(responseDataPropertiesData);
+    // if (responseDataPropertiesData) {
+    //   // Create a set of unique _id values from responseDataPropertiesData
+    //   const responseDataPropertyIds = new Set(
+    //     responseDataPropertiesData.map((property) => property._id)
+    //   );
+
+    //   // Filter props based on matching _id values
+    //   const filteredProps = props.filter((prop) =>
+    //     responseDataPropertyIds.has(prop._id)
+    //   );
+
+    //   setResponseDataProperty(filteredProps); // Set all properties added to the board
+    //   // setAddedItems(filteredProps); // Set matching items from props
+    //   // setFilteredProps(filteredProps); // Set the filtered props to a new state
+
+    //   console.log("filteredProps:", filteredProps);
+    // }
+    // console.log(responseDataBoardData);
+
+    // Update the formData state with the response data
+    // setResponseDataBoard(responseDataBoardData);
+    // } catch (error) {
+    //   console.error("Error fetching data:", error);
+    // } finally {
+    //   setLoading(false); // Set loading to false when the request is complete
+    // }
+  // }, 3000); // Simulating a 2-second delay
+  // };
+  //   fetchBoardDetails(); // Call the fetch function
+  // }, [boardId]);
+
 
   const addToBoard = async (pId) => {
     console.log(pId);
@@ -125,7 +151,7 @@ const PropertyComp = ({
     setVisibleItems(visibleItems + 3);
   };
 
-  console.log(responseDataProperty)
+  // console.log(responseDataProperty);
   return (
     <>
       {loading ? (
@@ -159,7 +185,11 @@ const PropertyComp = ({
                     <img
                       src={values.images[0]}
                       alt="imgOne"
-                      style={{ marginLeft: "10px", marginTop: "10px", borderRadius:"15%" }}
+                      style={{
+                        marginLeft: "10px",
+                        marginTop: "10px",
+                        borderRadius: "15%",
+                      }}
                       height={60}
                     />
                   </div>
@@ -236,7 +266,6 @@ const PropertyComp = ({
                   </p>
                 ) : (
                   <> */}
-
 
                 <text style={{ fontSize: "12px", color: "#5D6560" }}>
                   {/* <b onClick={() => addToBoard(values._id)}>

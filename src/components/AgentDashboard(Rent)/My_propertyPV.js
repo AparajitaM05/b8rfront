@@ -58,7 +58,7 @@ function My_propertyPV() {
   
             const noImageProperties = propertiesData.filter((property) => {
             return (
-              property.images.length == 0 && property.fieldAgentStatus === "DetailsCompleted" 
+              property.images.length == 0 && (property.fieldAgentStatus === "DetailsCompleted" || property.fieldAgentStatus === "Unassigned")
             );
           });
 

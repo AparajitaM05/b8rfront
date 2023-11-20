@@ -7,6 +7,8 @@
   align-items: center;
   height: 100%;
   padding: 25%;
+  margin-left: 5%;
+  margin-right: 5%;
   background: #f0fbf8 !important;
   border-radius: 15px;
 }
@@ -23,14 +25,14 @@
 
 .CommonnButton {
   box-sizing: border-box;
-  gap: 8px;
+  gap: 5px;
   /* position: absolute; */
   width: 100px;
   height: 45px;
   left: calc(50% - 174px / 2 + 1px);
   /* top: 1025px; */
   /* text-align: left !important; */
-  padding-left:10px;
+  padding-left:8px;
   font-size: 16px;
   background: #52796f !important;
   border: 3px solid #daf0ee !important;

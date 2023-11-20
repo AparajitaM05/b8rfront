@@ -13,7 +13,7 @@ function BoardCreated()
   const queryParameters = new URLSearchParams(window.location.search);
   const boardId = queryParameters.get("boardId");
   const path = queryParameters.get("path");
-  console.log(boardId);
+  // console.log(boardId);
 
   const [responseDataBoard, setResponseDataBoard] = useState([]);
   const [responseDataTenant, setResponseDataTenant] = useState([]);
@@ -23,7 +23,15 @@ function BoardCreated()
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
 
-  const handleClick = () => {
+  let axiosConfig = {
+    headers: {
+      "Content-Type": "application/json;charset=UTF-8",
+      "Access-Control-Allow-Origin": "*",
+      Authorization: `Basic ${token}`,
+    },
+  };
+
+  const handleClick = async () => {
     console.log("Handle")
     const linkToCopy = path; // The link you want to copy
 
@@ -37,16 +45,25 @@ function BoardCreated()
 
     // Optionally, you can provide some user feedback (e.g., a notification)
     alert(`Link copied to clipboard: ${linkToCopy}`);
+
+    try {
+      const response = await axios.put(
+        `https://b8rliving.com/board/share/${boardId}`,
+        {},
+        axiosConfig
+      );
+      console.log(response);
+      alert(response.data.message);
+    } catch (error) {
+      // Handle any errors that occur during the API request
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when the request is complete
+    }
+    
   };
 
 
-  let axiosConfig = {
-    headers: {
-      "Content-Type": "application/json;charset=UTF-8",
-      "Access-Control-Allow-Origin": "*",
-      Authorization: `Basic ${token}`,
-    },
-  };
   
   useEffect(() => {
     const fetchBoardDetails = async () => {

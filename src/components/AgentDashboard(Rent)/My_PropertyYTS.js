@@ -28,6 +28,7 @@ function My_PropertyYTS() {
   
   const [loading, setLoading] = useState(false);
   const [responseProperty, setresponseProperty] = useState([]);
+ 
 
 
 
@@ -52,10 +53,13 @@ function My_PropertyYTS() {
           // Filter out properties where propertyDetails.purposeSale is true
           const yetToShareProperties = propertiesData.filter((property) => {
             return (
-              property.sharedBuyerProperty.length == 0 &&
-              property.status == "Verified"
+              property.status === "Verified" &&
+              property.sharedProperty.length === 0 
+             
             );
           });
+
+         
 
           // var myArrayPropertyCount = response.data.data.properties;
           //   setresponseNoImageProperty(noImageProperties);
